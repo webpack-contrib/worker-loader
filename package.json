@@ -1,0 +1,16 @@
+{
+	"name": "worker-loader",
+	"version": "0.1.1",
+	"author": "Tobias Koppers @sokra",
+	"description": "worker loader module for webpack",
+	"dependencies": {
+		"clone": "0.1.x"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://www.opensource.org/licenses/mit-license.php"
+		}
+	],
+	"license": "MIT"
+}
