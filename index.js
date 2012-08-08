@@ -8,6 +8,7 @@ module.exports = function(source) {
 	var options = clone(this.options);
 	options.cache = this.options.cache;
 	options.watch = false;
+	options.noWrite = true;
 	var workerWrites = [];
 	options.output = "[hash].worker.js";
 	options.outputPostfix = ".[hash].worker.js";
