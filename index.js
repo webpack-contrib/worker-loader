@@ -27,7 +27,7 @@ module.exports = function(source) {
 	}
 	var self = this;
 	var callback = this.async();
-	webpack(remReq, options, function(err, stats) {
+	webpack(remReq, options, function webpackFinishedInWorkerLoader(err, stats) {
 		if(err) return callback(err);
 		var worker = null;
 		workerWrites.forEach(function(write) {
@@ -37,6 +37,6 @@ module.exports = function(source) {
 		self.emitSubStats(stats);
 		callback(null, "module.exports = function() {\n"+
 			"  return new Worker(" + require("webpack/api/getPublicPrefix") + " + " + 
-				JSON.stringify(stats.hash + ".worker.js") + ");\n" + "}");
+				JSON.stringify(options.output.replace(/\[hash\]/g, stats.hash)) + ");\n" + "}");
 	});
 }
