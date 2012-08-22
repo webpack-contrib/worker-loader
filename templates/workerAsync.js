@@ -24,6 +24,6 @@
 /******/		for(var moduleId in moreModules)
 /******/			modules[moduleId] = moreModules[moduleId];
 /******/		installedChunks[chunkId] = 1;
-/******/	}
+/******/	};
 /******/	return require(0);
 /******/})
