@@ -32,11 +32,11 @@ module.exports = function(source) {
 			}
 		}
 	}
-	var inlineWorker = this.options.worker.inline
 	var self = this;
 	var callback = this.async();
 	webpack(remReq, options, function webpackFinishedInWorkerLoader(err, stats) {
 		if(err) return callback(err);
+		var inlineWorker = this.options.worker.inline && Object.keys(stats.fileModules).length <= 1;
 		var worker = null;
 		var workerMainContent = null;
 		workerWrites.forEach(function(write) {
