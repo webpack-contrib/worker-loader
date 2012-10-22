@@ -1,6 +1,6 @@
 {
 	"name": "worker-loader",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"author": "Tobias Koppers @sokra",
 	"description": "worker loader module for webpack",
 	"dependencies": {

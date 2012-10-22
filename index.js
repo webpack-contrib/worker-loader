@@ -6,6 +6,7 @@ var EventEmitter = require("events").EventEmitter;
 module.exports = function(source) {
 	var loaderSign = this.request.indexOf("!");
 	var remReq = this.request.substr(loaderSign);
+	var originalOptions = this.options;
 	var options = clone(this.options);
 	var constructor = "new Worker";
 	options.cache = this.options.cache;
@@ -36,7 +37,7 @@ module.exports = function(source) {
 	var callback = this.async();
 	webpack(remReq, options, function webpackFinishedInWorkerLoader(err, stats) {
 		if(err) return callback(err);
-		var inlineWorker = this.options.worker && this.options.worker.inline && Object.keys(stats.fileModules).length <= 1;
+		var inlineWorker = originalOptions.worker && originalOptions.worker.inline && Object.keys(stats.fileModules).length <= 1;
 		var worker = null;
 		var workerMainContent = null;
 		workerWrites.forEach(function(write) {
