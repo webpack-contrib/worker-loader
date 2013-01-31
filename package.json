@@ -4,7 +4,8 @@
 	"author": "Tobias Koppers @sokra",
 	"description": "worker loader module for webpack",
 	"dependencies": {
-		"webpack": "0.9.x"
+		"webpack": "0.9.x",
+		"loader-utils": "0.2.x"
 	},
 	"licenses": [
 		{
