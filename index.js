@@ -1,4 +1,4 @@
-var WebWorkerTemplatePlugin = require("webpack/lib/WebWorkerTemplatePlugin");
+var WebWorkerTemplatePlugin = require("webpack/lib/webworker/WebWorkerTemplatePlugin");
 var SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
 var path = require("path");
 
