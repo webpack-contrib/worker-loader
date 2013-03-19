@@ -26,6 +26,14 @@ module.exports.pitch = function(request) {
 			workerCompiler.apply(plugin);
 		});
 	}
+	var subCache = "subcache " + __dirname + " " + request;
+	workerCompiler.plugin("compilation", function(compilation) {
+		if(compilation.cache) {
+			if(!compilation.cache[subCache])
+				compilation.cache[subCache] = {};
+			compilation.cache = compilation.cache[subCache];
+		}
+	});
 	workerCompiler.runAsChild(function(err, entries, compilation) {
 		if(err) return callback(err);
 		var workerFile = entries[0].files[0];
