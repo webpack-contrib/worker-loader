@@ -10,7 +10,7 @@ module.exports.pitch = function(request) {
 	var query = loaderUtils.parseQuery(this.query);
 	var outputOptions = {
 		filename: "[hash].worker.js",
-		chunkFilename: "[i].[hash].worker.js",
+		chunkFilename: "[id].[hash].worker.js",
 		namedChunkFilename: null
 	};
 	if(this.options && this.options.worker && this.options.worker.output) {
@@ -19,7 +19,7 @@ module.exports.pitch = function(request) {
 		}
 	}
 	var workerCompiler = this._compilation.createChildCompiler("worker", outputOptions);
-	workerCompiler.apply(new WebWorkerTemplatePlugin());
+	workerCompiler.apply(new WebWorkerTemplatePlugin(outputOptions));
 	workerCompiler.apply(new SingleEntryPlugin(this.context, "!!" + request, "main"));
 	if(this.options && this.options.worker && this.options.worker.plugins) {
 		this.options.worker.plugins.forEach(function(plugin) {
