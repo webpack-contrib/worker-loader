@@ -1,10 +1,12 @@
 {
 	"name": "worker-loader",
-	"version": "0.5.3",
+	"version": "0.5.4",
 	"author": "Tobias Koppers @sokra",
 	"description": "worker loader module for webpack",
+	"peerDependencies": {
+		"webpack": ">=0.9.x <=0.10.x"
+	},
 	"dependencies": {
-		"webpack": "0.9.x",
 		"loader-utils": "0.2.x"
 	},
 	"licenses": [
