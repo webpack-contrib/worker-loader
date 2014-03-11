@@ -2,6 +2,8 @@
 
 ## Usage
 
+[Documentation: Using loaders](http://webpack.github.io/docs/using-loaders.html)
+
 ``` javascript
 var MyWorker = require("worker!./file.js");
 
