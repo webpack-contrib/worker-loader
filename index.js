@@ -41,11 +41,11 @@ module.exports.pitch = function(request) {
 			var constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
 			if(query.inline) {
 				constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
-					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + ")"
+					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
 			}
-			return callback(null, "module.exports = function() {\n\treturn "+constructor+";\n};");
+			return callback(null, "module.exports = function() {\n\treturn " + constructor + ";\n};");
 		} else {
 			return callback(null, null);
 		}
 	});
-}
+};
