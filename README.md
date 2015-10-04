@@ -27,7 +27,7 @@ var o = {foo: 'foo'}
 _.has(o, 'foo') // true
 ```
 
-You can even use ES6 modules via the babel-loader:
+You can even use ES6 modules if you have the babel-loader configured:
 
 ``` javascript
 // file.js
