@@ -57,6 +57,13 @@ MyWorker({ scope: '/' }).then((registration) => {
 See [navigator.serviceWorker.register](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register) for available options. At the time of this writing it appears the only option is `scope`.
 
 
+### __assets__
+
+Service Workers may need to know the list of files Webpack produced. See [Introduction to Service Worker](http://www.html5rocks.com/en/tutorials/service-worker/introduction/) for an example of how the worker could cache your site.
+
+If your Service Worker needs an array of filenames webpack produced you can reference the magic value `__assets__` inside the worker. This will *not* work inside your main application as it depends on a Worker-only feature ([`importScripts`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#Importing_scripts_and_libraries))
+
+
 ## License
 
 MIT (http://www.opensource.org/licenses/mit-license.php)
