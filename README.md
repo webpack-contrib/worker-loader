@@ -16,6 +16,12 @@ worker.onmessage = function(event) {...};
 worker.addEventListener("message", function(event) {...});
 ```
 
+You can also inline the worker as a blob with the `inline` parameter:
+``` javascript
+var MyWorker = require("worker?inline!./file.js");
+```
+
+
 The worker file can import dependencies just like any other file:
 
 ``` javascript
