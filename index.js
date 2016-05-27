@@ -6,6 +6,7 @@ var loaderUtils = require("loader-utils");
 module.exports = function() {};
 module.exports.pitch = function(request) {
 	if(!this.webpack) throw new Error("Only usable with webpack");
+	this.cacheable(false);
 	var callback = this.async();
 	var query = loaderUtils.parseQuery(this.query);
 	var filename = loaderUtils.interpolateName(this, query.name || "[hash].worker.js", {
