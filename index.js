@@ -44,7 +44,9 @@ module.exports.pitch = function(request) {
 			var workerFile = entries[0].files[0];
 			var constructor
 			if(query.service) {
-				constructor = "navigator.serviceWorker.register(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options);"
+				constructor = "('serviceWorker' in navigator)" +
+				"? navigator.serviceWorker.register(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options);" +
+				": Promise.reject(new Error('navigator.serviceWorker is not supported in this browser'))"
 			} else {
 				constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
 				if(query.inline) {
