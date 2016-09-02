@@ -43,7 +43,7 @@ module.exports.pitch = function(request) {
 		if(err) return callback(err);
 		if (entries[0]) {
 			var workerFile = entries[0].files[0];
-			var workerUrl = "__webpack_public_path__ + " + JSON.stringify(workerFile) + ";
+			var workerUrl = "__webpack_public_path__ + " + JSON.stringify(workerFile);
 			var constructor = "new Worker("+workerUrl+")";
 			if(query.inline) {
 				var fallbackUrl = query.inline !== "only" ? workerUrl : "null";
