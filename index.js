@@ -43,10 +43,12 @@ module.exports.pitch = function(request) {
 		if(err) return callback(err);
 		if (entries[0]) {
 			var workerFile = entries[0].files[0];
-			var constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+			var workerUrl = "__webpack_public_path__ + " + JSON.stringify(workerFile) + ";
+			var constructor = "new Worker("+workerUrl+")";
 			if(query.inline) {
+				var fallbackUrl = query.inline !== "only" ? workerUrl : "null";
 				constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
-					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+					JSON.stringify(compilation.assets[workerFile].source()) + ", " + fallbackUrl + ")";
 			}
 			return callback(null, "module.exports = function() {\n\treturn " + constructor + ";\n};");
 		} else {
