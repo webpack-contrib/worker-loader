@@ -25,7 +25,7 @@ module.exports.pitch = function(request) {
 	}
 	var workerCompiler = this._compilation.createChildCompiler("worker", outputOptions);
 	workerCompiler.apply(new WebWorkerTemplatePlugin(outputOptions));
-	workerCompiler.apply(new SingleEntryPlugin(this.context, "!!" + request, "main"));
+	workerCompiler.apply(new SingleEntryPlugin(this.context, "!!" + request, query.name || "main"));
 	if(this.options && this.options.worker && this.options.worker.plugins) {
 		this.options.worker.plugins.forEach(function(plugin) {
 			workerCompiler.apply(plugin);
