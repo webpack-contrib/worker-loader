@@ -226,4 +226,26 @@ describe('worker-loader', () => {
       })
     );
   });
+
+  it('should use the publicPath option as the base URL if specified', () =>
+    makeBundle('public-path-override', {
+      module: {
+        rules: [
+          {
+            test: /worker\.js$/,
+            loader: '../index.js',
+            options: {
+              publicPath: '/some/proxy/',
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const assets = stats.compilation.assets;
+      const bundle = assets['bundle.js'];
+      const workerFile = Object.keys(assets).find(name => /worker\.js$/.test(name));
+
+      assert.notEqual(bundle._cachedSource.indexOf(`new Worker("/some/proxy/" + "${workerFile}")`), -1);
+    })
+  );
 });

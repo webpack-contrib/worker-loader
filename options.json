@@ -9,6 +9,9 @@
     },
     "fallback": {
       "type": "boolean"
+    },
+    "publicPath": {
+      "type": "string"
     }
   },
   "additionalProperties": false
