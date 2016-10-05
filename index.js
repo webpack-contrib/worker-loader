@@ -43,12 +43,22 @@ module.exports.pitch = function(request) {
 		if(err) return callback(err);
 		if (entries[0]) {
 			var workerFile = entries[0].files[0];
-			var constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
-			if(query.inline) {
-				constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
-					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+			var constructor;
+			if(query.service) {
+				constructor = "('serviceWorker' in navigator)" +
+				"? navigator.serviceWorker.register(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options);" +
+				": Promise.reject(new Error('navigator.serviceWorker is not supported in this browser'))"
 			}
-			return callback(null, "module.exports = function() {\n\treturn " + constructor + ";\n};");
+			else if(query.shared) {
+				constructor = new SharedWorker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+			} else {
+				constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+				if(query.inline) {
+					constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
+					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+				}
+			}
+			return callback(null, "module.exports = function(options) {\n\treturn " + constructor + ";\n};");
 		} else {
 			return callback(null, null);
 		}
