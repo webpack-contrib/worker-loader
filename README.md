@@ -69,6 +69,7 @@ Note: Shared workers cannot use the `inline` option. `require('worker?shared&inl
 ``` javascript
 // main.js
 var MyWorker = require("worker?shared!./worker.js");
+var worker = new MyWorker();
 worker.port.onmessage = function(event) {
   ...
 };
