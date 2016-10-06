@@ -69,7 +69,7 @@ Note: Shared workers cannot use the `inline` option. `require('worker?shared&inl
 ``` javascript
 // main.js
 var MyWorker = require("worker?shared!./worker.js");
-var worker = new MyWorker();
+var worker = new MyWorker("name"); //if no name parameter is supplied, it will default to "untitled" in chrome
 worker.port.onmessage = function(event) {
   ...
 };
