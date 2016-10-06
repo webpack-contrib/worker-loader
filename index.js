@@ -50,7 +50,11 @@ module.exports.pitch = function(request) {
 				": Promise.reject(new Error('navigator.serviceWorker is not supported in this browser'))"
 			}
 			else if(query.shared) {
-				constructor = "new SharedWorker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options)";
+				if(typeof options === "string") {
+					constructor = "new SharedWorker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options)";
+				} else {
+					constructor = "new SharedWorker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+				}
 			} else {
 				constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
 				if(query.inline) {
