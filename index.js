@@ -39,6 +39,7 @@ module.exports.pitch = function(request) {
 			compilation.cache = compilation.cache[subCache];
 		}
 	});
+	var self = this;
 	workerCompiler.runAsChild(function(err, entries, compilation) {
 		if(err) return callback(err);
 		if (entries[0]) {
@@ -49,6 +50,9 @@ module.exports.pitch = function(request) {
 				var fallbackUrl = query.inline !== "only" ? workerUrl : "null";
 				constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
 					JSON.stringify(compilation.assets[workerFile].source()) + ", " + fallbackUrl + ")";
+				if(query.inline == "only"){
+					delete self._compilation.assets[workerFile];
+				}
 			}
 			return callback(null, "module.exports = function() {\n\treturn " + constructor + ";\n};");
 		} else {
