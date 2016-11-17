@@ -50,7 +50,7 @@ module.exports.pitch = function(request) {
 				var fallbackUrl = query.inline !== "only" ? workerUrl : "null";
 				constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
 					JSON.stringify(compilation.assets[workerFile].source()) + ", " + fallbackUrl + ")";
-				if(query.inline == "only"){
+				if(query.inline === "only"){
 					delete self._compilation.assets[workerFile];
 				}
 			}
