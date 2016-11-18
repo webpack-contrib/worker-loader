@@ -33,7 +33,7 @@ module.exports.pitch = function(request) {
 	}
 	var subCache = "subcache " + __dirname + " " + request;
 	workerCompiler.plugin("compilation", function(compilation) {
-		if(compilation.cache) {
+		if(compilation.cache && !(subCache in compilation.cache)) {
 			if(!compilation.cache[subCache])
 				compilation.cache[subCache] = {};
 			compilation.cache = compilation.cache[subCache];
