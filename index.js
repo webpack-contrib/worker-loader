@@ -1,5 +1,6 @@
 var WebWorkerTemplatePlugin = require("webpack/lib/webworker/WebWorkerTemplatePlugin");
 var SingleEntryPlugin = require("webpack/lib/SingleEntryPlugin");
+var ExternalsPlugin = require("webpack/lib/ExternalsPlugin");
 var path = require("path");
 
 var loaderUtils = require("loader-utils");
@@ -24,6 +25,9 @@ module.exports.pitch = function(request) {
 		}
 	}
 	var workerCompiler = this._compilation.createChildCompiler("worker", outputOptions);
+	if (this.options && this.options.worker && this.options.worker.externals) {
+		workerCompiler.apply(new ExternalsPlugin(this.options.worker.output.libraryTarget, this.options.worker.externals));
+	}
 	workerCompiler.apply(new WebWorkerTemplatePlugin(outputOptions));
 	workerCompiler.apply(new SingleEntryPlugin(this.context, "!!" + request, "main"));
 	if(this.options && this.options.worker && this.options.worker.plugins) {
