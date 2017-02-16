@@ -3,16 +3,23 @@
   "version": "0.7.1",
   "author": "Tobias Koppers @sokra",
   "description": "worker loader module for webpack",
+  "scripts": {
+    "test": "mocha"
+  },
   "peerDependencies": {
-    "webpack": ">=0.9 <2 || ^2.1.0-beta"
+    "webpack": ">=0.9 <2 || ^2.1.0-beta || ^2.0.0"
   },
   "dependencies": {
     "loader-utils": "0.2.x"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ]
+  "devDependencies": {
+    "del": "^2.2.2",
+    "mocha": "^3.2.0",
+    "webpack": "^2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack-contrib/worker-loader.git"
+  },
+  "license": "MIT"
 }
