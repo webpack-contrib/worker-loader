@@ -18,6 +18,10 @@ module.exports = function(content, url) {
 			return new Worker('data:application/javascript,' + encodeURIComponent(content));
 		}
 	} catch(e) {
+		if (!url) {
+			// no URL provided for backwards compatability
+			throw new Error("Could not inline web worker.");
+		}
 		return new Worker(url);
 	}
 }
