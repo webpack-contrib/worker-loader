@@ -20,7 +20,9 @@
           "exports": "always-multiline",
           "functions": "never"
         }
-      ]
+      ],
+      "no-underscore-dangle": 0,
+      "no-param-reassign": 0
     }
   },
   "peerDependencies": {
