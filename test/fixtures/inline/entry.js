@@ -1,1 +1,1 @@
-import Worker from '../../../index.js?inline!./worker.js';
+const Worker = require('../../../index.js?inline!./worker.js');
