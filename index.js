@@ -39,7 +39,11 @@ module.exports.pitch = function(request) {
 			compilation.cache = compilation.cache[subCache];
 		}
 	});
+	var _module = this._module;
 	workerCompiler.runAsChild(function(err, entries, compilation) {
+		compilation.errors.forEach(function(e) {
+			 _module.errors.push(e);
+		});
 		if(err) return callback(err);
 		if (entries[0]) {
 			var workerFile = entries[0].files[0];
