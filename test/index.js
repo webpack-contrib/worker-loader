@@ -116,4 +116,35 @@ describe('worker-loader', () => {
       assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined via options'), -1);
     })
   );
+
+  it('should add fallback chunks with inline option', () =>
+    makeBundle('inline-fallbacks', {
+      module: {
+        rules: [
+          {
+            test: /(w1|w2)\.js$/,
+            loader: '../index.js',
+            options: {
+              inline: true,
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const files = stats.toJson('minimal').children
+        .map(item => item.chunks)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => item.files)
+        .map(item => `expected/inline-fallbacks/${item}`);
+      assert.equal(files.length, 2);
+      const w1 = readFile(files[0]);
+      const w2 = readFile(files[1]);
+      if (w1.indexOf('// w1 via worker options') !== -1) {
+        assert.notEqual(w2.indexOf('// w2 via worker options'), -1);
+      }
+      if (w1.indexOf('// w2 via worker options') !== -1) {
+        assert.notEqual(w2.indexOf('// w1 via worker options'), -1);
+      }
+    })
+  );
 });
