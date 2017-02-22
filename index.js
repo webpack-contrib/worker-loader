@@ -1,3 +1,5 @@
+'use strict';
+
 const path = require('path');
 const WebWorkerTemplatePlugin = require('webpack/lib/webworker/WebWorkerTemplatePlugin');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');

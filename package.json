@@ -23,7 +23,8 @@
       ],
       "no-underscore-dangle": 0,
       "no-param-reassign": 0,
-      "prefer-destructuring": 0
+      "prefer-destructuring": 0,
+      "strict": 0
     }
   },
   "peerDependencies": {
