@@ -92,4 +92,28 @@ describe('worker-loader', () => {
       assert.notEqual(readFile(bundleFile).indexOf('// inlined worker test mark'), -1);
     })
   );
+
+  it('should inline worker with inline in options', () =>
+    makeBundle('inline-options', {
+      module: {
+        rules: [
+          {
+            test: /(w1|w2)\.js$/,
+            loader: '../index.js',
+            options: {
+              inline: true,
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const bundleFile = stats.toJson('minimal').chunks
+        .map(item => item.files)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => `expected/inline-options/${item}`)[0];
+      assert(bundleFile);
+      assert.notEqual(readFile(bundleFile).indexOf('// w1 inlined via options'), -1);
+      assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined via options'), -1);
+    })
+  );
 });
