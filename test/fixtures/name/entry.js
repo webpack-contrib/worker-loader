@@ -1,1 +1,1 @@
-import Worker from '../../../index.js?name=namedWorker.js!./worker.js';
+const Worker = require('../../../index.js?name=namedWorker.js!./worker.js');
