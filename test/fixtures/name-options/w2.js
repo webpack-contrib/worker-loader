@@ -1,0 +1,1 @@
+// w2 via worker options

@@ -9,14 +9,15 @@ process.chdir(__dirname);
 
 const readFile = file => fs.readFileSync(file, 'utf-8');
 
-const makeBundle = name => del(`expected/${name}`).then(() => {
-  const bundle = webpack({
+const makeBundle = (name, options) => del(`expected/${name}`).then(() => {
+  const config = Object.assign({
     entry: `./fixtures/${name}/entry.js`,
     output: {
       path: `expected/${name}`,
       filename: 'bundle.js',
     },
-  });
+  }, options);
+  const bundle = webpack(config);
   return new Promise((resolve, reject) => {
     bundle.run((err, stats) => {
       if (err) {
@@ -41,27 +42,78 @@ describe('worker-loader', () => {
     })
   );
 
-  it('should create chunk with specified name', () =>
-    makeBundle('name').then((stats) => {
-      const workerFile = 'expected/name/namedWorker.js';
-      const receivedWorkerFile = stats.toJson('minimal').children
+  it('should create chunk with specified name in query', () =>
+    makeBundle('name-query').then((stats) => {
+      const file = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/name/${item}`)[0];
-      assert.equal(receivedWorkerFile, workerFile);
-      assert.notEqual(readFile(workerFile).indexOf('// named worker test mark'), -1);
+        .map(item => `expected/name-query/${item}`)[0];
+      assert.equal(file, 'expected/name-query/namedWorker.js');
+      assert.notEqual(readFile(file).indexOf('// named worker test mark'), -1);
     })
   );
 
-  it('should inline worker with inline option', () =>
-    makeBundle('inline').then((stats) => {
+  it('should create named chunks with workers via options', () =>
+    makeBundle('name-options', {
+      module: {
+        rules: [
+          {
+            test: /(w1|w2)\.js$/,
+            loader: '../index.js',
+            options: {
+              name: '[name].js',
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const files = stats.toJson('minimal').children
+        .map(item => item.chunks)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => item.files)
+        .map(item => `expected/name-options/${item}`);
+      const w1 = files.find(file => file === 'expected/name-options/w1.js');
+      const w2 = files.find(file => file === 'expected/name-options/w2.js');
+      assert(w1);
+      assert(w2);
+      assert.notEqual(readFile(w1).indexOf('// w1 via worker options'), -1);
+      assert.notEqual(readFile(w2).indexOf('// w2 via worker options'), -1);
+    })
+  );
+
+  it('should inline worker with inline option in query', () =>
+    makeBundle('inline-query').then((stats) => {
       const bundleFile = stats.toJson('minimal').chunks
         .map(item => item.files)
         .reduce((acc, item) => acc.concat(item), [])
-        .map(item => `expected/inline/${item}`)[0];
+        .map(item => `expected/inline-query/${item}`)[0];
       assert(bundleFile);
       assert.notEqual(readFile(bundleFile).indexOf('// inlined worker test mark'), -1);
+    })
+  );
+
+  it('should inline worker with inline in options', () =>
+    makeBundle('inline-options', {
+      module: {
+        rules: [
+          {
+            test: /(w1|w2)\.js$/,
+            loader: '../index.js',
+            options: {
+              inline: true,
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const bundleFile = stats.toJson('minimal').chunks
+        .map(item => item.files)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => `expected/inline-options/${item}`)[0];
+      assert(bundleFile);
+      assert.notEqual(readFile(bundleFile).indexOf('// w1 inlined via options'), -1);
+      assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined via options'), -1);
     })
   );
 });
