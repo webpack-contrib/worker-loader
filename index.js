@@ -9,7 +9,8 @@ const getWorker = (file, content, query) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
   if (query.inline) {
     const createInlineWorkerPath = JSON.stringify(`!!${path.resolve('createInlineWorker.js')}`);
-    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${workerPublicPath})`;
+    const fallbackWorkerPath = query.fallback === false ? 'null' : workerPublicPath;
+    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
   }
   return `new Worker(${workerPublicPath})`;
 };
@@ -55,6 +56,9 @@ module.exports.pitch = function pitch(request) {
     if (entries[0]) {
       const workerFile = entries[0].files[0];
       const workerFactory = getWorker(workerFile, compilation.assets[workerFile].source(), query);
+      if (query.fallback === false) {
+        delete this._compilation.assets[workerFile];
+      }
       return callback(null, `module.exports = function() {\n\treturn ${workerFactory};\n};`);
     }
     return callback(null, null);

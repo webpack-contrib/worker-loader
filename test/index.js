@@ -147,4 +147,36 @@ describe('worker-loader', () => {
       }
     })
   );
+
+  it.only('should not add fallback chunks with inline and fallback === false', () =>
+    makeBundle('no-fallbacks', {
+      module: {
+        rules: [
+          {
+            test: /(w1|w2)\.js$/,
+            loader: '../index.js',
+            options: {
+              inline: true,
+              fallback: false
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const workerFiles = stats.toJson('minimal').children
+        .map(item => item.chunks)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => item.files)
+        .map(item => `expected/no-fallbacks/${item}`);
+      const bundleFile = stats.toJson('minimal').chunks
+        .map(item => item.files)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => `expected/no-fallbacks/${item}`)[0];
+      assert(bundleFile);
+      assert.equal(fs.readdirSync('expected/no-fallbacks').length, 1);
+      assert.equal(workerFiles.length, 0);
+      assert.notEqual(readFile(bundleFile).indexOf('// w1 inlined without fallbacks'), -1);
+      assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined without fallbacks'), -1);
+    })
+  );
 });

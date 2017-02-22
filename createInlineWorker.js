@@ -18,6 +18,9 @@ module.exports = function(content, url) {
       return new Worker('data:application/javascript,' + encodeURIComponent(content));
     }
   } catch(e) {
+    if (!url) {
+      throw Error('Inline worker is not supported');
+    }
     return new Worker(url);
   }
 }
