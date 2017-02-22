@@ -30,13 +30,13 @@ const makeBundle = (name, options) => del(`expected/${name}`).then(() => {
 });
 
 describe('worker-loader', () => {
-  it('should create chunk with worker via query', () =>
-    makeBundle('worker-query').then((stats) => {
+  it('should create chunk with worker', () =>
+    makeBundle('worker').then((stats) => {
       const workerFile = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/worker-query/${item}`)[0];
+        .map(item => `expected/worker/${item}`)[0];
       assert(workerFile);
       assert.notEqual(readFile(workerFile).indexOf('// worker test mark'), -1);
     })
@@ -44,14 +44,41 @@ describe('worker-loader', () => {
 
   it('should create chunk with specified name in query', () =>
     makeBundle('name-query').then((stats) => {
-      const workerFile = 'expected/name-query/namedWorker.js';
-      const receivedWorkerFile = stats.toJson('minimal').children
+      const file = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
         .map(item => `expected/name-query/${item}`)[0];
-      assert.equal(receivedWorkerFile, workerFile);
-      assert.notEqual(readFile(workerFile).indexOf('// named worker test mark'), -1);
+      assert.equal(file, 'expected/name-query/namedWorker.js');
+      assert.notEqual(readFile(file).indexOf('// named worker test mark'), -1);
+    })
+  );
+
+  it('should create named chunks with workers via options', () =>
+    makeBundle('name-options', {
+      module: {
+        rules: [
+          {
+            test: /(w1|w2)\.js$/,
+            loader: '../index.js',
+            options: {
+              name: '[name].js',
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      const files = stats.toJson('minimal').children
+        .map(item => item.chunks)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => item.files)
+        .map(item => `expected/name-options/${item}`);
+      assert.deepEqual(files, [
+        'expected/name-options/w1.js',
+        'expected/name-options/w2.js',
+      ]);
+      assert.notEqual(readFile(files[0]).indexOf('// w1 via worker options'), -1);
+      assert.notEqual(readFile(files[1]).indexOf('// w2 via worker options'), -1);
     })
   );
 
