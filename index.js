@@ -42,7 +42,7 @@ module.exports.pitch = function pitch(request) {
   workerCompiler.runAsChild((err, entries, compilation) => {
     if (err) return callback(err);
     if (entries[0]) {
-      const [workerFile] = entries[0].files;
+      const workerFile = entries[0].files[0];
       let constructor = `new Worker(__webpack_public_path__ + ${JSON.stringify(workerFile)})`;
       if (query.inline) {
         constructor = `require(${JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`)})(${

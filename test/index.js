@@ -29,11 +29,11 @@ const makeBundle = name => del(`expected/${name}`).then(() => {
 describe('worker-loader', () => {
   it('should create chunk with worker', () =>
     makeBundle('worker').then((stats) => {
-      const [workerFile] = stats.toJson('minimal').children
+      const workerFile = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/worker/${item}`);
+        .map(item => `expected/worker/${item}`)[0];
       assert(workerFile);
       assert.notEqual(readFile(workerFile).indexOf('// worker test mark'), -1);
     })
@@ -42,11 +42,11 @@ describe('worker-loader', () => {
   it('should create chunk with specified name', () =>
     makeBundle('name').then((stats) => {
       const workerFile = 'expected/name/namedWorker.js';
-      const [receivedWorkerFile] = stats.toJson('minimal').children
+      const receivedWorkerFile = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/name/${item}`);
+        .map(item => `expected/name/${item}`)[0];
       assert.equal(receivedWorkerFile, workerFile);
       assert.notEqual(readFile(workerFile).indexOf('// named worker test mark'), -1);
     })
@@ -54,10 +54,10 @@ describe('worker-loader', () => {
 
   it('should inline worker with inline option', () =>
     makeBundle('inline').then((stats) => {
-      const [bundleFile] = stats.toJson('minimal').chunks
+      const bundleFile = stats.toJson('minimal').chunks
         .map(item => item.files)
         .reduce((acc, item) => acc.concat(item), [])
-        .map(item => `expected/inline/${item}`);
+        .map(item => `expected/inline/${item}`)[0];
       assert(bundleFile);
       assert.notEqual(readFile(bundleFile).indexOf('// inlined worker test mark'), -1);
     })
