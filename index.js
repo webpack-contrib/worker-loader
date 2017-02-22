@@ -33,7 +33,7 @@ module.exports.pitch = function(request) {
 	}
 	var subCache = "subcache " + __dirname + " " + request;
 	workerCompiler.plugin("compilation", function(compilation) {
-		if(compilation.cache) {
+		if(compilation.cache && !(subCache in compilation.cache)) {
 			if(!compilation.cache[subCache])
 				compilation.cache[subCache] = {};
 			compilation.cache = compilation.cache[subCache];
@@ -43,10 +43,10 @@ module.exports.pitch = function(request) {
 		if(err) return callback(err);
 		if (entries[0]) {
 			var workerFile = entries[0].files[0];
-			var constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+			var constructor = "new Worker(__webpack_public_path__ + " + JSON.stringify(workerFile) + " + window.location.search)";
 			if(query.inline) {
 				constructor = "require(" + JSON.stringify("!!" + path.join(__dirname, "createInlineWorker.js")) + ")(" +
-					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + ")";
+					JSON.stringify(compilation.assets[workerFile].source()) + ", __webpack_public_path__ + " + JSON.stringify(workerFile) + " + window.location.search)";
 			}
 			return callback(null, "module.exports = function() {\n\treturn " + constructor + ";\n};");
 		} else {
