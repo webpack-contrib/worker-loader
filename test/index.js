@@ -73,12 +73,12 @@ describe('worker-loader', () => {
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
         .map(item => `expected/name-options/${item}`);
-      assert.deepEqual(files, [
-        'expected/name-options/w1.js',
-        'expected/name-options/w2.js',
-      ]);
-      assert.notEqual(readFile(files[0]).indexOf('// w1 via worker options'), -1);
-      assert.notEqual(readFile(files[1]).indexOf('// w2 via worker options'), -1);
+      const w1 = files.find(file => file === 'expected/name-options/w1.js');
+      const w2 = files.find(file => file === 'expected/name-options/w2.js');
+      assert(w1);
+      assert(w2);
+      assert.notEqual(readFile(w1).indexOf('// w1 via worker options'), -1);
+      assert.notEqual(readFile(w2).indexOf('// w2 via worker options'), -1);
     })
   );
 
