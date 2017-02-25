@@ -5,6 +5,16 @@ const WebWorkerTemplatePlugin = require('webpack/lib/webworker/WebWorkerTemplate
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 const loaderUtils = require('loader-utils');
 
+const getWorker = (file, content, query) => {
+  const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
+  if (query.inline) {
+    const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`);
+    const fallbackWorkerPath = query.fallback === false ? 'null' : workerPublicPath;
+    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
+  }
+  return `new Worker(${workerPublicPath})`;
+};
+
 module.exports = function workerLoader() {};
 
 module.exports.pitch = function pitch(request) {
@@ -45,15 +55,11 @@ module.exports.pitch = function pitch(request) {
     if (err) return callback(err);
     if (entries[0]) {
       const workerFile = entries[0].files[0];
-      let constructor = `new Worker(__webpack_public_path__ + ${JSON.stringify(workerFile)})`;
-      if (query.inline) {
-        constructor = `require(${JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`)})(${
-          JSON.stringify(compilation.assets[workerFile].source())
-        }, __webpack_public_path__ + ${
-          JSON.stringify(workerFile)
-        })`;
+      const workerFactory = getWorker(workerFile, compilation.assets[workerFile].source(), query);
+      if (query.fallback === false) {
+        delete this._compilation.assets[workerFile];
       }
-      return callback(null, `module.exports = function() {\n\treturn ${constructor};\n};`);
+      return callback(null, `module.exports = function() {\n\treturn ${workerFactory};\n};`);
     }
     return callback(null, null);
   });
