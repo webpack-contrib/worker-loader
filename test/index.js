@@ -34,25 +34,25 @@ const makeBundle = (name, options) => del(`expected/${name}`).then(() => {
 describe('worker-loader', () => {
   it('should create chunk with worker', () =>
     makeBundle('worker').then((stats) => {
-      const workerFile = stats.toJson('minimal').children
+      const files = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/worker/${item}`)[0];
-      assert(workerFile);
-      assert.notEqual(readFile(workerFile).indexOf('// worker test mark'), -1);
+        .map(item => `expected/worker/${item}`);
+      assert.equal(files.length, 1);
+      assert.notEqual(readFile(files[0]).indexOf('// worker test mark'), -1);
     })
   );
 
   it('should create chunk with specified name in query', () =>
     makeBundle('name-query').then((stats) => {
-      const file = stats.toJson('minimal').children
+      const files = stats.toJson('minimal').children
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/name-query/${item}`)[0];
-      assert.equal(file, 'expected/name-query/namedWorker.js');
-      assert.notEqual(readFile(file).indexOf('// named worker test mark'), -1);
+        .map(item => `expected/name-query/${item}`);
+      assert.equal(files[0], 'expected/name-query/namedWorker.js');
+      assert.notEqual(readFile(files[0]).indexOf('// named worker test mark'), -1);
     })
   );
 
@@ -74,24 +74,22 @@ describe('worker-loader', () => {
         .map(item => item.chunks)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => item.files)
-        .map(item => `expected/name-options/${item}`);
-      const w1 = files.find(file => file === 'expected/name-options/w1.js');
-      const w2 = files.find(file => file === 'expected/name-options/w2.js');
-      assert(w1);
-      assert(w2);
-      assert.notEqual(readFile(w1).indexOf('// w1 via worker options'), -1);
-      assert.notEqual(readFile(w2).indexOf('// w2 via worker options'), -1);
+        .map(item => `expected/name-options/${item}`)
+        .sort();
+      assert.equal(files.length, 2);
+      assert.notEqual(readFile(files[0]).indexOf('// w1 via worker options'), -1);
+      assert.notEqual(readFile(files[1]).indexOf('// w2 via worker options'), -1);
     })
   );
 
   it('should inline worker with inline option in query', () =>
     makeBundle('inline-query').then((stats) => {
-      const bundleFile = stats.toJson('minimal').chunks
+      const files = stats.toJson('minimal').chunks
         .map(item => item.files)
         .reduce((acc, item) => acc.concat(item), [])
-        .map(item => `expected/inline-query/${item}`)[0];
-      assert(bundleFile);
-      assert.notEqual(readFile(bundleFile).indexOf('// inlined worker test mark'), -1);
+        .map(item => `expected/inline-query/${item}`);
+      assert.equal(files.length, 1);
+      assert.notEqual(readFile(files[0]).indexOf('// inlined worker test mark'), -1);
     })
   );
 
@@ -109,13 +107,13 @@ describe('worker-loader', () => {
         ],
       },
     }).then((stats) => {
-      const bundleFile = stats.toJson('minimal').chunks
+      const files = stats.toJson('minimal').chunks
         .map(item => item.files)
         .reduce((acc, item) => acc.concat(item), [])
-        .map(item => `expected/inline-options/${item}`)[0];
-      assert(bundleFile);
-      assert.notEqual(readFile(bundleFile).indexOf('// w1 inlined via options'), -1);
-      assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined via options'), -1);
+        .map(item => `expected/inline-options/${item}`);
+      assert.equal(files.length, 1);
+      assert.notEqual(readFile(files[0]).indexOf('// w1 inlined via options'), -1);
+      assert.notEqual(readFile(files[0]).indexOf('// w2 inlined via options'), -1);
     })
   );
 
