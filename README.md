@@ -37,7 +37,20 @@ worker.addEventListener("message", function(event) {...});
 
 You can also inline the worker as a blob with the `inline` parameter:
 ``` javascript
-var MyWorker = require("worker-loader?inline!./file.js");
+var MyWorker = require("worker-loader?inline!./myWorker.js");
+```
+
+Inline mode will also create chunks for browsers without supporting of inline workers,
+to disable this behavior just set `fallback` parameter as `false`:
+
+``` javascript
+var MyWorker = require("worker-loader?inline&fallback=false!./myWorker.js");
+```
+
+To set custom name use the `name` parameter:
+
+``` javascript
+var MyWorker = require("worker-loader?name=[name].js!./myWorker.js");
 ```
 
 
@@ -91,6 +104,12 @@ _.has(o, 'foo') // true
         src="https://avatars3.githubusercontent.com/u/3408176?v=3&s=150">
         </br>
         <a href="https://github.com/TheLarkInn">Sean Larkin</a>
+      </td>
+      <td align="center">
+        <img width="150" height="150"
+        src="https://avatars3.githubusercontent.com/u/5635476?v=3&s=150">
+        </br>
+        <a href="https://github.com/TrySound">Bogdan Chadkin</a>
       </td>
     </tr>
   <tbody>
