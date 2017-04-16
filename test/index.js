@@ -2,6 +2,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
+const path = require('path');
 const del = require('del');
 const webpack = require('webpack');
 
@@ -13,7 +14,7 @@ const makeBundle = (name, options) => del(`expected/${name}`).then(() => {
   const config = Object.assign({
     entry: `./fixtures/${name}/entry.js`,
     output: {
-      path: `expected/${name}`,
+      path: path.join(__dirname, `expected/${name}`),
       filename: 'bundle.js',
     },
   }, options);
