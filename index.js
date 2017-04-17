@@ -46,7 +46,7 @@ module.exports.pitch = function(request) {
 			var constructor;
 			if(query.service) {
 				constructor = "('serviceWorker' in navigator)" +
-				"? navigator.serviceWorker.register(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options);" +
+				"? navigator.serviceWorker.register(__webpack_public_path__ + " + JSON.stringify(workerFile) + ", options)" +
 				": Promise.reject(new Error('navigator.serviceWorker is not supported in this browser'))"
 			}
 			else if(query.shared) {
