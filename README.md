@@ -23,9 +23,7 @@ or
 yarn add worker-loader --dev
 ```
 
-<h2 align="center">Usage</h2>
-
-[Documentation: Using loaders](https://webpack.js.org/concepts/loaders/)
+<h2 align="center"><a href="https://webpack.js.org/concepts/loaders">Usage</a></h2>
 
 Import the worker file:
 
