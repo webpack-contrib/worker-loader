@@ -8,7 +8,7 @@
     <img width="200" height="200" hspace="25" src="https://cdn.rawgit.com/webpack/media/e7485eb2/logo/icon.svg">
   </a>
   <h1>Worker Loader</h1>
-  <p>Worker loader for Webpack.<p>
+  <p>This loader registers the script as <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Worker</a>.<p>
 </div>
 
 <h2 align="center">Install</h2>
