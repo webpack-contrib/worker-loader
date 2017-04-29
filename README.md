@@ -67,9 +67,11 @@ var o = {foo: 'foo'}
 
 _.has(o, 'foo') // true
 
-self.postMessage({foo: 'foo'}) //Post data to parent thread
- 
-self.addEventListener('message', function(event){  // respond to message from parent thread});
+// Post data to parent thread
+self.postMessage({foo: 'foo'}) 
+
+// Respond to message from parent thread
+self.addEventListener('message', function(event){ console.log(event); });  
 ```
 
 You can even use ES6 modules if you have the babel-loader configured:
@@ -82,9 +84,11 @@ let o = {foo: 'foo'}
 
 _.has(o, 'foo') // true
 
-self.postMessage({foo: 'foo'}) //Post data to parent thread
+// Post data to parent thread
+self.postMessage({foo: 'foo'}) 
 
-self.addEventListener('message', (event) => {  // respond to message from parent thread});
+// Respond to message from parent thread
+self.addEventListener('message', (event) => { console.log(event); });
 ```
 
 <h2 align="center">Maintainers</h2>
