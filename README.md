@@ -1,7 +1,6 @@
 [![npm][npm]][npm-url]
 [![deps][deps]][deps-url]
 [![test][test]][test-url]
-[![chat][chat]][chat-url]
 
 <div align="center">
   <a href="https://github.com/webpack/webpack">
