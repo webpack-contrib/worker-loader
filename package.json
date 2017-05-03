@@ -1,8 +1,8 @@
 {
-  "name": "worker-loader",
-  "version": "0.8.0",
-  "author": "Tobias Koppers @sokra",
-  "description": "worker loader module for webpack",
+  "name": "sharedworker-loader",
+  "version": "0.0.0",
+  "author": "Jordan Gensler <jordangens@gmail.com>",
+  "description": "shared worker loader module for webpack",
   "scripts": {
     "test": "mocha",
     "posttest": "eslint ."
