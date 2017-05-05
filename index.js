@@ -6,7 +6,7 @@ const loaderUtils = require('loader-utils');
 
 const getWorker = (file) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
-  return `new SharedWorker(${workerPublicPath})`;
+  return `new SharedWorker(${workerPublicPath}, name)`;
 };
 
 module.exports = function workerLoader() {};
@@ -50,7 +50,7 @@ module.exports.pitch = function pitch(request) {
     if (entries[0]) {
       const workerFile = entries[0].files[0];
       const workerFactory = getWorker(workerFile);
-      return callback(null, `module.exports = function() {\n\treturn ${workerFactory};\n};`);
+      return callback(null, `module.exports = function SharedWorkerWrapper(name) {\n\treturn ${workerFactory};\n};`);
     }
     return callback(null, null);
   });
