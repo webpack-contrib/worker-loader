@@ -78,6 +78,8 @@ describe('worker-loader', () => {
         .map(item => `expected/name-options/${item}`)
         .sort();
       assert.equal(files.length, 2);
+      assert.equal(files[0], 'expected/name-options/w1.js');
+      assert.equal(files[1], 'expected/name-options/w2.js');
       assert.notEqual(readFile(files[0]).indexOf('// w1 via worker options'), -1);
       assert.notEqual(readFile(files[1]).indexOf('// w2 via worker options'), -1);
     })
