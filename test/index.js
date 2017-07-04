@@ -184,7 +184,7 @@ describe('worker-loader', () => {
   ['web', 'webworker'].forEach((target) => {
     it(`should have missing dependencies (${target})`, () =>
       makeBundle('nodejs-core-modules', {
-        target: target,
+        target,
         module: {
           rules: [
             {
@@ -206,7 +206,7 @@ describe('worker-loader', () => {
   ['node', 'async-node', 'node-webkit', 'atom', 'electron', 'electron-main', 'electron-renderer'].forEach((target) => {
     it(`should not have missing dependencies (${target})`, () =>
       makeBundle('nodejs-core-modules', {
-        target: target,
+        target,
         module: {
           rules: [
             {
