@@ -5,6 +5,7 @@ const loaderUtils = require('loader-utils');
 const validateOptions = require('schema-utils');
 const WebWorkerTemplatePlugin = require('webpack/lib/webworker/WebWorkerTemplatePlugin');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
+const schema = require('./options.json');
 
 const getWorker = (file, content, options) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
@@ -24,8 +25,7 @@ module.exports.pitch = function pitch(request) {
   const callback = this.async();
   const options = loaderUtils.getOptions(this) || {};
 
-  // eslint-disable-next-line
-  validateOptions(require('./options.json'), options, 'Worker Loader');
+  validateOptions(schema, options, 'Worker Loader');
 
   const filename = loaderUtils.interpolateName(this, options.name || '[hash].worker.js', {
     context: options.context || this.options.context,
