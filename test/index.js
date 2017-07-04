@@ -180,4 +180,43 @@ describe('worker-loader', () => {
       assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined without fallback'), -1);
     })
   );
+
+  it('should have missing dependencies', () =>
+    makeBundle('nodejs-core-modules', {
+      module: {
+        rules: [
+          {
+            test: /worker\.js$/,
+            loader: '../index.js',
+            options: {
+              inline: true,
+              fallback: false,
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      assert.notEqual(stats.compilation.missingDependencies.length, 0);
+    })
+  );
+
+  it('should not have missing dependencies', () =>
+    makeBundle('nodejs-core-modules', {
+      target: 'node-webkit',
+      module: {
+        rules: [
+          {
+            test: /worker\.js$/,
+            loader: '../index.js',
+            options: {
+              inline: true,
+              fallback: false,
+            },
+          },
+        ],
+      },
+    }).then((stats) => {
+      assert.equal(stats.compilation.missingDependencies.length, 0);
+    })
+  );
 });
