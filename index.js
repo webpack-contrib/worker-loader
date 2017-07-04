@@ -39,7 +39,7 @@ module.exports.pitch = function pitch(request) {
   }
   const workerCompiler = this._compilation.createChildCompiler('worker', outputOptions);
   workerCompiler.apply(new WebWorkerTemplatePlugin(outputOptions));
-  if (this.options.target !== 'webworker' && this.options.target !== 'web') {
+  if (this.target !== 'webworker' && this.target !== 'web') {
     workerCompiler.apply(new NodeTargetPlugin());
   }
   workerCompiler.apply(new SingleEntryPlugin(this.context, `!!${request}`, 'main'));
