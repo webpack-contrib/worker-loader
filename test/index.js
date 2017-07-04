@@ -180,4 +180,48 @@ describe('worker-loader', () => {
       assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined without fallback'), -1);
     })
   );
+
+  ['web', 'webworker'].forEach((target) => {
+    it(`should have missing dependencies (${target})`, () =>
+      makeBundle('nodejs-core-modules', {
+        target,
+        module: {
+          rules: [
+            {
+              test: /worker\.js$/,
+              loader: '../index.js',
+              options: {
+                inline: true,
+                fallback: false,
+              },
+            },
+          ],
+        },
+      }).then((stats) => {
+        assert.notEqual(stats.compilation.missingDependencies.length, 0);
+      })
+    );
+  });
+
+  ['node', 'async-node', 'node-webkit', 'atom', 'electron', 'electron-main', 'electron-renderer'].forEach((target) => {
+    it(`should not have missing dependencies (${target})`, () =>
+      makeBundle('nodejs-core-modules', {
+        target,
+        module: {
+          rules: [
+            {
+              test: /worker\.js$/,
+              loader: '../index.js',
+              options: {
+                inline: true,
+                fallback: false,
+              },
+            },
+          ],
+        },
+      }).then((stats) => {
+        assert.equal(stats.compilation.missingDependencies.length, 0);
+      })
+    );
+  });
 });
