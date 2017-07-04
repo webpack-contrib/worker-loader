@@ -2,7 +2,7 @@
 
 const path = require('path');
 const WebWorkerTemplatePlugin = require('webpack/lib/webworker/WebWorkerTemplatePlugin');
-const NodeTargetPlugin = require("webpack/lib/node/NodeTargetPlugin");
+const NodeTargetPlugin = require('webpack/lib/node/NodeTargetPlugin');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 const loaderUtils = require('loader-utils');
 
@@ -39,11 +39,9 @@ module.exports.pitch = function pitch(request) {
   }
   const workerCompiler = this._compilation.createChildCompiler('worker', outputOptions);
   workerCompiler.apply(new WebWorkerTemplatePlugin(outputOptions));
-  
   if (this.options.target !== 'webworker' && this.options.target !== 'web'){
     workerCompiler.apply(new NodeTargetPlugin());
   }
-  
   workerCompiler.apply(new SingleEntryPlugin(this.context, `!!${request}`, 'main'));
   if (this.options && this.options.worker && this.options.worker.plugins) {
     this.options.worker.plugins.forEach(plugin => workerCompiler.apply(plugin));
