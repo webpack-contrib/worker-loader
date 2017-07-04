@@ -1,16 +1,18 @@
 'use strict';
 
 const path = require('path');
+const loaderUtils = require('loader-utils');
+const validateOptions = require('schema-utils');
 const WebWorkerTemplatePlugin = require('webpack/lib/webworker/WebWorkerTemplatePlugin');
 const NodeTargetPlugin = require('webpack/lib/node/NodeTargetPlugin');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
-const loaderUtils = require('loader-utils');
+const schema = require('./options.json');
 
-const getWorker = (file, content, query) => {
+const getWorker = (file, content, options) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
-  if (query.inline) {
+  if (options.inline) {
     const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`);
-    const fallbackWorkerPath = query.fallback === false ? 'null' : workerPublicPath;
+    const fallbackWorkerPath = options.fallback === false ? 'null' : workerPublicPath;
     return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
   }
   return `new Worker(${workerPublicPath})`;
@@ -22,10 +24,13 @@ module.exports.pitch = function pitch(request) {
   if (!this.webpack) throw new Error('Only usable with webpack');
   this.cacheable(false);
   const callback = this.async();
-  const query = loaderUtils.getOptions(this) || {};
-  const filename = loaderUtils.interpolateName(this, query.name || '[hash].worker.js', {
-    context: query.context || this.options.context,
-    regExp: query.regExp,
+  const options = loaderUtils.getOptions(this) || {};
+
+  validateOptions(schema, options, 'Worker Loader');
+
+  const filename = loaderUtils.interpolateName(this, options.name || '[hash].worker.js', {
+    context: options.context || this.options.context,
+    regExp: options.regExp,
   });
   const outputOptions = {
     filename,
@@ -59,8 +64,8 @@ module.exports.pitch = function pitch(request) {
     if (err) return callback(err);
     if (entries[0]) {
       const workerFile = entries[0].files[0];
-      const workerFactory = getWorker(workerFile, compilation.assets[workerFile].source(), query);
-      if (query.fallback === false) {
+      const workerFactory = getWorker(workerFile, compilation.assets[workerFile].source(), options);
+      if (options.fallback === false) {
         delete this._compilation.assets[workerFile];
       }
       return callback(null, `module.exports = function() {\n\treturn ${workerFactory};\n};`);
