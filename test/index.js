@@ -181,42 +181,47 @@ describe('worker-loader', () => {
     })
   );
 
-  it('should have missing dependencies', () =>
-    makeBundle('nodejs-core-modules', {
-      module: {
-        rules: [
-          {
-            test: /worker\.js$/,
-            loader: '../index.js',
-            options: {
-              inline: true,
-              fallback: false,
+  ['web', 'webworker'].forEach((target) => {
+    it(`should have missing dependencies (${target})`, () =>
+      makeBundle('nodejs-core-modules', {
+        target: target,
+        module: {
+          rules: [
+            {
+              test: /worker\.js$/,
+              loader: '../index.js',
+              options: {
+                inline: true,
+                fallback: false,
+              },
             },
-          },
-        ],
-      },
-    }).then((stats) => {
-      assert.notEqual(stats.compilation.missingDependencies.length, 0);
-    })
-  );
+          ],
+        },
+      }).then((stats) => {
+        assert.notEqual(stats.compilation.missingDependencies.length, 0);
+      })
+    );
+  });
 
-  it('should not have missing dependencies', () =>
-    makeBundle('nodejs-core-modules', {
-      target: 'node-webkit',
-      module: {
-        rules: [
-          {
-            test: /worker\.js$/,
-            loader: '../index.js',
-            options: {
-              inline: true,
-              fallback: false,
+  ['node', 'async-node', 'node-webkit', 'atom', 'electron', 'electron-main', 'electron-renderer'].forEach((target) => {
+    it(`should not have missing dependencies (${target})`, () =>
+      makeBundle('nodejs-core-modules', {
+        target: target,
+        module: {
+          rules: [
+            {
+              test: /worker\.js$/,
+              loader: '../index.js',
+              options: {
+                inline: true,
+                fallback: false,
+              },
             },
-          },
-        ],
-      },
-    }).then((stats) => {
-      assert.equal(stats.compilation.missingDependencies.length, 0);
-    })
-  );
+          ],
+        },
+      }).then((stats) => {
+        assert.equal(stats.compilation.missingDependencies.length, 0);
+      })
+    );
+  });
 });
