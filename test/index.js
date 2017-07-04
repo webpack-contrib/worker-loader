@@ -164,20 +164,35 @@ describe('worker-loader', () => {
         ],
       },
     }).then((stats) => {
-      // const workerFiles = stats.toJson('minimal').children
-      //   .map(item => item.chunks)
-      //   .reduce((acc, item) => acc.concat(item), [])
-      //   .map(item => item.files)
-      //   .map(item => `expected/no-fallbacks/${item}`);
       const bundleFile = stats.toJson('minimal').chunks
         .map(item => item.files)
         .reduce((acc, item) => acc.concat(item), [])
         .map(item => `expected/no-fallbacks/${item}`)[0];
       assert(bundleFile);
       assert.equal(fs.readdirSync('expected/no-fallbacks').length, 1);
-      // assert.equal(workerFiles.length, 0);
       assert.notEqual(readFile(bundleFile).indexOf('// w1 inlined without fallback'), -1);
       assert.notEqual(readFile(bundleFile).indexOf('// w2 inlined without fallback'), -1);
+    })
+  );
+
+  it('should require external modules', () =>
+    makeBundle('externals', {
+      module: {
+        rules: [
+          {
+            test: /worker\.js$/,
+            loader: '../index.js',
+          },
+        ],
+      },
+    }).then((stats) => {
+      const files = stats.toJson('minimal').children
+        .map(item => item.chunks)
+        .reduce((acc, item) => acc.concat(item), [])
+        .map(item => item.files)
+        .map(item => `expected/externals/${item}`);
+      assert.equal(files.length, 1);
+      assert.notEqual(readFile(files[0]).indexOf('// external one'), -1);
     })
   );
 });
