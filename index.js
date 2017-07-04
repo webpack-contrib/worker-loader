@@ -1,10 +1,8 @@
 'use strict';
 
 const path = require('path');
-
 const loaderUtils = require('loader-utils');
 const validateOptions = require('schema-utils');
-
 const WebWorkerTemplatePlugin = require('webpack/lib/webworker/WebWorkerTemplatePlugin');
 const SingleEntryPlugin = require('webpack/lib/SingleEntryPlugin');
 
@@ -26,6 +24,7 @@ module.exports.pitch = function pitch(request) {
   const callback = this.async();
   const options = loaderUtils.getOptions(this) || {};
 
+  // eslint-disable-next-line
   validateOptions(require('./options.json'), options, 'Worker Loader');
 
   const filename = loaderUtils.interpolateName(this, options.name || '[hash].worker.js', {
