@@ -16,13 +16,14 @@ module.exports.pitch = function pitch(request) {
   this.cacheable(false);
   const callback = this.async();
   const query = loaderUtils.getOptions(this) || {};
-  const filename = loaderUtils.interpolateName(this, query.name || '[hash].worker.js', {
+  const configuredFilename = query.name || (this.options.output && this.options.output.chunkFilename) || '[hash].sharedworker.js';
+  const filename = loaderUtils.interpolateName(this, configuredFilename, {
     context: query.context || this.options.context,
     regExp: query.regExp,
   });
   const outputOptions = {
     filename,
-    chunkFilename: `[id].${filename}`,
+    chunkFilename: filename,
     namedChunkFilename: null,
   };
   if (this.options && this.options.worker && this.options.worker.output) {
