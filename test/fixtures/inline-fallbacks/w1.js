@@ -1,0 +1,1 @@
+// w1 inlined with fallback

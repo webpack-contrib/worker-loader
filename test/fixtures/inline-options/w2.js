@@ -1,0 +1,1 @@
+// w2 inlined via options
