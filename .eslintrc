@@ -1,0 +1,20 @@
+{
+  "extends": "webpack",
+  "rules": {
+    "linebreak-style": 0,
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
+    "no-underscore-dangle": 0,
+    "no-param-reassign": 0,
+    "prefer-destructuring": 0,
+    "strict": 0
+  }
+}

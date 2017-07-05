@@ -1,1 +1,1 @@
-const Worker = require('../../../index.js?inline!./worker.js');
+const Worker = require('../../../src/cjs.js?inline!./worker.js');

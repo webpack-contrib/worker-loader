@@ -1,3 +1,6 @@
 test/fixtures
 test/expected
 createInlineWorker.js
+
+/node_modules
+/dist
