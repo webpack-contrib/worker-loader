@@ -12,7 +12,7 @@ const getWorker = (file, content, options) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
   if (options.service) {
     return "('serviceWorker' in navigator)" +
-    "? navigator.serviceWorker.register(${workerPublicPath}, options);" +
+    "? navigator.serviceWorker.register(${workerPublicPath}, options)" +
     ": Promise.reject(new Error('navigator.serviceWorker is not supported in this browser'))"
   } else if (options.shared) {
     return "new SharedWorker(${workerPublicPath}, options)";
