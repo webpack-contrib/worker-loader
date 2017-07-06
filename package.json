@@ -1,18 +1,50 @@
 {
   "name": "worker-loader",
-  "version": "0.7.1",
+  "version": "0.8.1",
   "author": "Tobias Koppers @sokra",
   "description": "worker loader module for webpack",
+  "scripts": {
+    "test": "mocha",
+    "posttest": "eslint ."
+  },
+  "eslintConfig": {
+    "extends": "webpack",
+    "rules": {
+      "linebreak-style": 0,
+      "comma-dangle": [
+        "error",
+        {
+          "arrays": "always-multiline",
+          "objects": "always-multiline",
+          "imports": "always-multiline",
+          "exports": "always-multiline",
+          "functions": "never"
+        }
+      ],
+      "no-underscore-dangle": 0,
+      "no-param-reassign": 0,
+      "prefer-destructuring": 0,
+      "strict": 0
+    }
+  },
   "peerDependencies": {
-    "webpack": ">=0.9 <2 || ^2.1.0-beta"
+    "webpack": ">=0.9 <2 || ^2.1.0-beta || ^2.2.0"
   },
   "dependencies": {
-    "loader-utils": "0.2.x"
+    "loader-utils": "^1.0.2",
+    "schema-utils": "^0.3.0"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://www.opensource.org/licenses/mit-license.php"
-    }
-  ]
+  "devDependencies": {
+    "del": "^2.2.2",
+    "eslint": "^3.16.0",
+    "eslint-config-webpack": "^1.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "mocha": "^3.2.0",
+    "webpack": "^2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webpack-contrib/worker-loader.git"
+  },
+  "license": "MIT"
 }
