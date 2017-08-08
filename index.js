@@ -10,12 +10,21 @@ const schema = require('./options.json');
 
 const getWorker = (file, content, options) => {
   const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
-  if (options.inline) {
-    const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`);
-    const fallbackWorkerPath = options.fallback === false ? 'null' : workerPublicPath;
-    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
+  if (options.service) {
+    return "('serviceWorker' in navigator)" +
+    "? navigator.serviceWorker.register(${workerPublicPath}, options)" +
+    ": Promise.reject(new Error('navigator.serviceWorker is not supported in this browser'))"
+  } else if (options.shared) {
+    return "new SharedWorker(${workerPublicPath}, options)";
+  } else {
+      if (options.inline) {
+        const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, 'createInlineWorker.js')}`);
+        const fallbackWorkerPath = options.fallback === false ? 'null' : workerPublicPath;
+        return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
+      } else {
+        return `new Worker(${workerPublicPath})`;
+      }
   }
-  return `new Worker(${workerPublicPath})`;
 };
 
 module.exports = function workerLoader() {};
@@ -68,7 +77,7 @@ module.exports.pitch = function pitch(request) {
       if (options.fallback === false) {
         delete this._compilation.assets[workerFile];
       }
-      return callback(null, `module.exports = function() {\n\treturn ${workerFactory};\n};`);
+      return callback(null, `module.exports = function(options) {\n\treturn ${workerFactory};\n};`);
     }
     return callback(null, null);
   });

@@ -91,6 +91,38 @@ self.postMessage({foo: 'foo'})
 self.addEventListener('message', (event) => { console.log(event); });
 ```
 
+### Service Workers
+
+Note: Service workers cannot use the `inline` option. `require('worker?service&inline!./worker')` the `inline` here is ignored.
+
+``` javascript
+// main.js
+var MyWorker = require("worker?service!./worker.js");
+
+// Options passed here become the 2nd parameter to navigator.serviceWorker.register
+MyWorker({ scope: '/' }).then((registration) => {
+    console.log('registration successful')
+}).catch((err) => {
+    console.log('registration failed', err)
+})
+```
+
+See [navigator.serviceWorker.register](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/register) for available options. At the time of this writing it appears the only option is `scope`.
+
+### Shared Workers
+
+Note: Shared workers cannot use the `inline` option. `require('worker?shared&inline!./worker')` the `inline` here is ignored.
+
+``` javascript
+// main.js
+var MyWorker = require("worker?shared!./worker.js");
+var worker = new MyWorker("name"); //if no name parameter is supplied, it will default to "untitled" in chrome
+worker.port.onmessage = function(event) {
+  ...
+};
+worker.port.postMessage("blah");
+```
+
 ### Integrating with TypeScript
 
 To integrate with TypeScript, you will need to define a custom module for the exports of your worker. You will also need to cast the new worker as the `Worker` type:
