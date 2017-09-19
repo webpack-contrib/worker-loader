@@ -22,10 +22,10 @@ module.exports = function workerLoader() {};
 
 module.exports.pitch = function pitch(request) {
   if (!this.webpack) throw new Error('Only usable with webpack');
-  this.cacheable(false);
   const callback = this.async();
   const options = loaderUtils.getOptions(this) || {};
-
+  const cacheable = options.cacheable !== undefined ? options.cacheable : false; //eslint-disable-line
+  this.cacheable(cacheable);
   validateOptions(schema, options, 'Worker Loader');
 
   const filename = loaderUtils.interpolateName(this, options.name || '[hash].worker.js', {
