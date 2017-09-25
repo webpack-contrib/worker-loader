@@ -1,0 +1,18 @@
+# Change Log
+
+All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/webpack-contrib/worker-loader/compare/v0.8.0...v1.0.0) (2017-09-25)
+
+
+### Features
+
+* add `options` validation (`schema-utils`) ([#78](https://github.com/webpack-contrib/worker-loader/issues/78)) ([5e2f5e6](https://github.com/webpack-contrib/worker-loader/commit/5e2f5e6))
+* support loading node core modules ([#76](https://github.com/webpack-contrib/worker-loader/issues/76)) ([edcda35](https://github.com/webpack-contrib/worker-loader/commit/edcda35))
+
+
+### BREAKING CHANGES
+
+* loader-utils upgrade to > 1.0 is not backwards
+compatible with previous versions
