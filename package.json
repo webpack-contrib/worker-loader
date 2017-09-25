@@ -5,7 +5,8 @@
   "description": "worker loader module for webpack",
   "scripts": {
     "test": "mocha",
-    "posttest": "eslint ."
+    "posttest": "eslint .",
+    "release": "standard-version"
   },
   "eslintConfig": {
     "extends": "webpack",
@@ -40,6 +41,7 @@
     "eslint-config-webpack": "^1.0.0",
     "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0",
+    "standard-version": "^4.2.0",
     "webpack": "^2.2.1"
   },
   "repository": {
