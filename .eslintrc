@@ -3,8 +3,7 @@
   "rules": {
     "linebreak-style": 0,
     "comma-dangle": [
-      "error",
-      {
+      "error", {
         "arrays": "always-multiline",
         "objects": "always-multiline",
         "imports": "always-multiline",
