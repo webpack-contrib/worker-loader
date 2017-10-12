@@ -35,7 +35,7 @@ const makeBundle = (name, options) => del(`expected/${name}`).then(() => {
 
 test('should create chunk with worker', () =>
   makeBundle('worker').then((stats) => {
-    const files = stats.toJson('minimal').children
+    const files = stats.toJson().children
       .map(item => item.chunks)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => item.files)
@@ -49,7 +49,7 @@ test('should create chunk with worker', () =>
 
 test('should create chunk with specified name in query', () =>
   makeBundle('name-query').then((stats) => {
-    const files = stats.toJson('minimal').children
+    const files = stats.toJson().children
       .map(item => item.chunks)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => item.files)
@@ -75,7 +75,7 @@ test('should create named chunks with workers via options', () =>
       ],
     },
   }).then((stats) => {
-    const files = stats.toJson('minimal').children
+    const files = stats.toJson().children
       .map(item => item.chunks)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => item.files)
@@ -93,7 +93,7 @@ test('should create named chunks with workers via options', () =>
 
 test('should inline worker with inline option in query', () =>
   makeBundle('inline-query').then((stats) => {
-    const files = stats.toJson('minimal').chunks
+    const files = stats.toJson().chunks
       .map(item => item.files)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => `expected/inline-query/${item}`);
@@ -118,7 +118,7 @@ test('should inline worker with inline in options', () =>
       ],
     },
   }).then((stats) => {
-    const files = stats.toJson('minimal').chunks
+    const files = stats.toJson().chunks
       .map(item => item.files)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => `expected/inline-options/${item}`);
@@ -144,7 +144,7 @@ test('should add fallback chunks with inline option', () =>
       ],
     },
   }).then((stats) => {
-    const files = stats.toJson('minimal').children
+    const files = stats.toJson().children
       .map(item => item.chunks)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => item.files)
@@ -180,7 +180,7 @@ test('should not add fallback chunks with inline and fallback === false', () =>
       ],
     },
   }).then((stats) => {
-    const [bundleFile] = stats.toJson('minimal').chunks
+    const [bundleFile] = stats.toJson().chunks
       .map(item => item.files)
       .reduce((acc, item) => acc.concat(item), [])
       .map(item => `expected/no-fallbacks/${item}`);
