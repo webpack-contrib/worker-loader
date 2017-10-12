@@ -1,12 +1,12 @@
 /* eslint-disable
-  linebreak-style,
   import/first,
   import/order,
+  comma-dangle,
+  linebreak-style,
   no-param-reassign,
-  no-underscore-dangle
+  no-underscore-dangle,
+  prefer-destructuring
 */
-import path from 'path';
-
 import schema from './options.json';
 import loaderUtils from 'loader-utils';
 import validateOptions from 'schema-utils';
@@ -15,67 +15,68 @@ import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
 
-const getWorker = (file, content, options) => {
-  const workerPublicPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
-
-  if (options.inline) {
-    const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, '..', 'createInlineWorker.js')}`);
-
-    const fallbackWorkerPath = options.fallback === false ? 'null' : workerPublicPath;
-
-    return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
-  }
-
-  return `new Worker(${workerPublicPath})`;
-};
+import getWorker from './workers/';
+import LoaderError from './Error';
 
 export default function loader() {}
 
 export function pitch(request) {
-  if (!this.webpack) throw new Error('Only usable with webpack');
-
-  this.cacheable(false);
-
-  const callback = this.async();
   const options = loaderUtils.getOptions(this) || {};
 
   validateOptions(schema, options, 'Worker Loader');
+
+  if (!this.webpack) {
+    throw new LoaderError({
+      name: 'Worker Loader',
+      message: 'This loader is only usable with webpack'
+    });
+  }
+
+  this.cacheable(false);
+
+  const cb = this.async();
 
   const filename = loaderUtils.interpolateName(this, options.name || '[hash].worker.js', {
     context: options.context || this.options.context,
     regExp: options.regExp,
   });
 
-  const outputOptions = {
+  const worker = {};
+
+  worker.options = {
     filename,
     chunkFilename: `[id].${filename}`,
     namedChunkFilename: null,
   };
 
+  // TODO remove and triage eventual replacement via an option if needed
+  // doesn't work with webpack > v2.0.0
   if (this.options && this.options.worker && this.options.worker.output) {
     Object.keys(this.options.worker.output).forEach((name) => {
-      outputOptions[name] = this.options.worker.output[name];
+      worker.options[name] = this.options.worker.output[name];
     });
   }
 
-  const workerCompiler = this._compilation
-    .createChildCompiler('worker', outputOptions);
+  worker.compiler = this._compilation
+    .createChildCompiler('worker', worker.options);
 
-  workerCompiler.apply(new WebWorkerTemplatePlugin(outputOptions));
+  worker.compiler.apply(new WebWorkerTemplatePlugin(worker.options));
 
   if (this.target !== 'webworker' && this.target !== 'web') {
-    workerCompiler.apply(new NodeTargetPlugin());
+    worker.compiler.apply(new NodeTargetPlugin());
   }
 
-  workerCompiler.apply(new SingleEntryPlugin(this.context, `!!${request}`, 'main'));
+  worker.compiler.apply(new SingleEntryPlugin(this.context, `!!${request}`, 'main'));
 
+  // TODO remove and triage eventual replacement via an option if needed
+  // doesn't work with webpack > v2.0.0
   if (this.options && this.options.worker && this.options.worker.plugins) {
-    this.options.worker.plugins.forEach(plugin => workerCompiler.apply(plugin));
+    this.options.worker.plugins.forEach(plugin => worker.compiler.apply(plugin));
   }
 
   const subCache = `subcache ${__dirname} ${request}`;
 
-  workerCompiler.plugin('compilation', (compilation) => {
+  worker.compiler.plugin('compilation', (compilation) => {
     if (compilation.cache) {
       if (!compilation.cache[subCache]) compilation.cache[subCache] = {};
 
@@ -83,25 +84,25 @@ export function pitch(request) {
     }
   });
 
-  workerCompiler.runAsChild((err, entries, compilation) => {
-    if (err) return callback(err);
+  worker.compiler.runAsChild((err, entries, compilation) => {
+    if (err) return cb(err);
 
     if (entries[0]) {
-      const [workerFile] = entries[0].files;
+      worker.file = entries[0].files[0];
 
-      const workerFactory = getWorker(
-        workerFile,
-        compilation.assets[workerFile].source(),
+      worker.factory = getWorker(
+        worker.file,
+        compilation.assets[worker.file].source(),
         options
       );
 
       if (options.fallback === false) {
-        delete this._compilation.assets[workerFile];
+        delete this._compilation.assets[worker.file];
       }
 
-      return callback(null, `module.exports = function() {\n\treturn ${workerFactory};\n};`);
+      return cb(null, `module.exports = function() {\n  return ${worker.factory};\n};`);
     }
 
-    return callback(null, null);
+    return cb(null, null);
   });
 }
