@@ -1,4 +1,9 @@
-/* eslint-disable linebreak-style, import/order */
+/* eslint-disable
+  linebreak-style,
+  import/order,
+  comma-dangle,
+  linebreak-style
+*/
 import fs from 'fs';
 import del from 'del';
 import path from 'path';
