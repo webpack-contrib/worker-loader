@@ -20,6 +20,7 @@ const getWorker = (file, content, options) => {
 
   if (options.inline) {
     const createInlineWorkerPath = JSON.stringify(`!!${path.join(__dirname, '..', 'createInlineWorker.js')}`);
+
     const fallbackWorkerPath = options.fallback === false ? 'null' : workerPublicPath;
 
     return `require(${createInlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
@@ -28,9 +29,9 @@ const getWorker = (file, content, options) => {
   return `new Worker(${workerPublicPath})`;
 };
 
-export default function workerLoader() {}
+export default function loader() {}
 
-workerLoader.pitch = function pitch(request) {
+export function pitch(request) {
   if (!this.webpack) throw new Error('Only usable with webpack');
 
   this.cacheable(false);
@@ -103,4 +104,4 @@ workerLoader.pitch = function pitch(request) {
 
     return callback(null, null);
   });
-};
+}
