@@ -8,6 +8,15 @@ const getWorker = (file, content, options) => {
     if (options.mode === 'shared') {
       return `new SharedWorker(${publicWorkerPath}, options)`;
     }
+
+    if (options.mode === 'service') {
+      return `('serviceWorker' in navigator)
+  ? navigator.serviceWorker.register(${publicWorkerPath}, options)
+  : Promise.reject(
+    new Error('navigator.serviceWorker is not supported in this browser')
+  )
+`;
+    }
   }
 
   if (options.inline) {

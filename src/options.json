@@ -4,6 +4,9 @@
     "name": {
       "type": "string"
     },
+    "mode": {
+      "type": "string"
+    },
     "inline": {
       "type": "boolean"
     },
