@@ -4,6 +4,12 @@ import path from 'path';
 const getWorker = (file, content, options) => {
   const publicWorkerPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
 
+  if (options.mode) {
+    if (options.mode === 'shared') {
+      return `new SharedWorker(${publicWorkerPath}, options)`;
+    }
+  }
+
   if (options.inline) {
     const InlineWorkerPath = JSON.stringify(`!!${
       path.join(__dirname, 'workers', 'InlineWorker.js')
