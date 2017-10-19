@@ -26,7 +26,7 @@ npm i -D worker-loader
 
 **App.js**
 ```js
-import Worker from 'worker-loader!./Worker.js'
+import Worker from 'worker-loader!./Worker.js';
 ```
 
 ### `Config`
@@ -47,24 +47,24 @@ import Worker from 'worker-loader!./Worker.js'
 
 **App.js**
 ```js
-import Worker from './file.worker.js'
+import Worker from './file.worker.js';
 
-const worker = new Worker()
+const worker = new Worker();
 
-worker.postMessage({ a: 1 })
-worker.onmessage = function (event) {}
+worker.postMessage({ a: 1 });
+worker.onmessage = function (event) {};
 
-worker.addEventListener("message", function (event) {})
+worker.addEventListener("message", function (event) {});
 ```
 
 <h2 align="center">Options</h2>
 
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
-|**`name`**|`{String}`|`[hash].worker.js`|Set a custom name for the output script|
-|**`inline`**|`{Boolean}`|`false`|Inline the worker as a BLOB|
-|**`fallback`**|`{Boolean}`|`false`|Require a fallback for non-worker supporting environments|
-|**`publicPath`**|`{String}`|`null`|Override the path from which worker scripts are downloaded|
+|[**`name`**](#name)|`{String}`|`[hash].worker.js`|Set a custom name for the output script|
+|[**`inline`**](#inline)|`{Boolean}`|`false`|Inline the worker as a BLOB|
+|[**`fallback`**](#fallback)|`{Boolean}`|`false`|Require a fallback for non-worker supporting environments|
+|[**`publicPath`**](#publicPath)|`{String}`|`null`|Override the path from which worker scripts are downloaded|
 
 ### `name`
 
@@ -112,6 +112,19 @@ Require a fallback for non-worker supporting environments
 }
 ```
 
+### `publicPath`
+
+Overrides the path from which worker scripts are downloaded. If not specified, the same public path used for other
+webpack assets is used
+
+**webpack.config.js**
+```js
+{
+  loader: 'worker-loader'
+  options: { publicPath: '/scripts/workers/' }
+}
+```
+
 <h2 align="center">Examples</h2>
 
 The worker file can import dependencies just like any other file
@@ -129,18 +142,6 @@ self.postMessage({ foo: 'foo' })
 
 // Respond to message from parent thread
 self.addEventListener('message', (event) => console.log(event))  
-```
-
-### `publicPath`
-
-Overrides the path from which worker scripts are downloaded. If not specified, the same public path used for other 
-webpack assets is used.
-
-```js
-{
-  loader: 'worker-loader'
-  options: { publicPath: '/scripts/workers/' }
-}
 ```
 
 ### `Integrating with ES2015 Modules`
@@ -200,26 +201,40 @@ worker.onmessage = (event) => {};
 worker.addEventListener("message", (event) => {});
 ```
 
-### Cross-origin policy workarounds
+### `Cross-Origin Policy`
 
-Web Workers are restricted by a same-origin policy, so if your webpack assets are not being served from the same origin
-as your application, their download may be blocked by your browser. This scenario can commonly occur if you are hosting
-your assets under a CDN domain. Even downloads from the webpack dev server could be blocked.
+[`WebWorkers`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) are restricted by a [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy), so if your `webpack` assets are not being served from the same origin as your application, their download may be blocked by your browser. This scenario can commonly occur if you are hosting your assets under a CDN domain. Even downloads from the `webpack-dev-server` could be blocked. There are two workarounds.
 
-There are two workarounds. Firstly, you can inline the worker as a blob instead of downloading it as an external
-script via the [`inline`](#inline) parameter:
+Firstly, you can inline the worker as a blob instead of downloading it as an external script via the [`inline`](#inline) parameter
 
-``` javascript
-var MyWorker = require("worker?inline!./file.js");
+**App.js**
+```js
+import Worker from './file.worker.js';
+```
+
+**webpack.config.js**
+```js
+{
+  loader: 'worker-loader'
+  options: { inline: true }
+}
 ```
 
 Secondly, you may override the base download URL for your worker script via the [`publicPath`](#publicpath) option.
 
-```javascript
-// This will cause the worker to be downloaded from `/workers/file.js`
-var MyWorker = require("worker?publicPath=%2Fworkers%2F!./file.js");
+**App.js**
+```js
+// This will cause the worker to be downloaded from `/workers/file.worker.js`
+import Worker from './file.worker.js';
 ```
 
+**webpack.config.js**
+```js
+{
+  loader: 'worker-loader'
+  options: { publicPath: '/workers/' }
+}
+```
 
 <h2 align="center">Maintainers</h2>
 
