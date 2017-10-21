@@ -22,7 +22,7 @@ npm i -D worker-loader
 
 <h2 align="center"><a href="https://webpack.js.org/concepts/loaders">Usage</a></h2>
 
-### `Inline`
+### `Inlined`
 
 **App.js**
 ```js
@@ -191,9 +191,9 @@ ctx.addEventListener("message", (event) => console.log(event));
 
 **App.ts**
 ```ts
-import MyWorker = require("worker-loader!./Worker");
+import Worker = require("worker-loader!./Worker");
 
-const worker = new MyWorker();
+const worker = new Worker();
 
 worker.postMessage({ a: 1 });
 worker.onmessage = (event) => {};
@@ -203,7 +203,7 @@ worker.addEventListener("message", (event) => {});
 
 ### `Cross-Origin Policy`
 
-[`WebWorkers`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) are restricted by a [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy), so if your `webpack` assets are not being served from the same origin as your application, their download may be blocked by your browser. This scenario can commonly occur if you are hosting your assets under a CDN domain. Even downloads from the `webpack-dev-server` could be blocked. There are two workarounds.
+[`WebWorkers`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) are restricted by a [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy), so if your `webpack` assets are not being served from the same origin as your application, their download may be blocked by your browser. This scenario can commonly occur if you are hosting your assets under a CDN domain. Even downloads from the `webpack-dev-server` could be blocked. There are two workarounds
 
 Firstly, you can inline the worker as a blob instead of downloading it as an external script via the [`inline`](#inline) parameter
 
@@ -220,7 +220,7 @@ import Worker from './file.worker.js';
 }
 ```
 
-Secondly, you may override the base download URL for your worker script via the [`publicPath`](#publicpath) option.
+Secondly, you may override the base download URL for your worker script via the [`publicPath`](#publicpath) option
 
 **App.js**
 ```js
