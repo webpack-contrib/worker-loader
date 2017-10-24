@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/webpack-contrib/worker-loader/compare/v1.0.0...v1.1.0) (2017-10-24)
+
+
+### Features
+
+* add `publicPath` support (`options.publicPath`) ([#31](https://github.com/webpack-contrib/worker-loader/issues/31)) ([96c6144](https://github.com/webpack-contrib/worker-loader/commit/96c6144))
+
+
 
 <a name="1.0.0"></a>
 ## [1.0.0](https://github.com/webpack-contrib/worker-loader/compare/v0.8.0...v1.0.0) (2017-09-25)
