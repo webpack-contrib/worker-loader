@@ -49,14 +49,6 @@ export function pitch(request) {
     namedChunkFilename: null,
   };
 
-  // TODO remove and triage eventual replacement via an option if needed
-  // doesn't work with webpack > v2.0.0
-  if (this.options && this.options.worker && this.options.worker.output) {
-    Object.keys(this.options.worker.output).forEach((name) => {
-      worker.options[name] = this.options.worker.output[name];
-    });
-  }
-
   worker.compiler = this._compilation
     .createChildCompiler('worker', worker.options);
 
@@ -67,12 +59,6 @@ export function pitch(request) {
   }
 
   worker.compiler.apply(new SingleEntryPlugin(this.context, `!!${request}`, 'main'));
-
-  // TODO remove and triage eventual replacement via an option if needed
-  // doesn't work with webpack > v2.0.0
-  if (this.options && this.options.worker && this.options.worker.plugins) {
-    this.options.worker.plugins.forEach(plugin => worker.compiler.apply(plugin));
-  }
 
   const subCache = `subcache ${__dirname} ${request}`;
 
