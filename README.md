@@ -15,9 +15,16 @@
 
 
 <h2 align="center">Install</h2>
+YARN
 
 ```bash
-npm i -D worker-loader
+yarn add worker-loader webpack --dev
+```
+
+NPM
+
+```bash
+npm i -D worker-loader webpack
 ```
 
 <h2 align="center"><a href="https://webpack.js.org/concepts/loaders">Usage</a></h2>
