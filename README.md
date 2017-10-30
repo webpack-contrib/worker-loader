@@ -15,12 +15,13 @@
 
 
 <h2 align="center">Install</h2>
+YARN
 
 ```bash
 yarn add worker-loader webpack --dev
 ```
 
-We recommend using yarn, but you can also still use npm:
+NPM
 
 ```bash
 npm i -D worker-loader webpack
