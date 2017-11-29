@@ -168,7 +168,7 @@ self.addEventListener('message', (event) => console.log(event))
 To integrate with TypeScript, you will need to define a custom module for the exports of your worker
 
 **typings/custom.d.ts**
-```ts
+```typescript
 declare module "worker-loader!*" {
   class WebpackWorker extends Worker {
     constructor();
@@ -179,7 +179,7 @@ declare module "worker-loader!*" {
 ```
 
 **Worker.ts**
-```ts
+```typescript
 const ctx: Worker = self as any;
 
 // Post data to parent thread
@@ -190,7 +190,7 @@ ctx.addEventListener("message", (event) => console.log(event));
 ```
 
 **App.ts**
-```ts
+```typescript
 import Worker = require("worker-loader!./Worker");
 
 const worker = new Worker();
