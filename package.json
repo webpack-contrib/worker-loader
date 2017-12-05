@@ -7,9 +7,6 @@
   "files": [
     "dist"
   ],
-  "engines": {
-    "node": ">= 4.8 < 5.0.0 || >= 5.10"
-  },
   "scripts": {
     "test": "jest",
     "posttest": "eslint .",
@@ -29,9 +26,6 @@
     "travis:lint": "npm run lint && npm run security",
     "travis:test": "npm run test -- --runInBand",
     "travis:coverage": "npm run test:coverage -- --runInBand"
-  },
-  "peerDependencies": {
-    "webpack": "^2.0.0 || ^3.0.0"
   },
   "dependencies": {
     "loader-utils": "^1.0.0",
@@ -56,6 +50,12 @@
     "standard-version": "^4.0.0",
     "webpack": "^3.0.0",
     "webpack-defaults": "^1.6.0"
+  },
+  "peerDependencies": {
+    "webpack": "^3.0.0 || ^4.0.0-alpha.0 || ^4.0.0"
+  },
+  "engines": {
+    "node": ">= 6 || >= 8"
   },
   "repository": {
     "type": "git",
