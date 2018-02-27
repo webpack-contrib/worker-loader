@@ -68,7 +68,7 @@ worker.addEventListener("message", function (event) {});
 
 ### `name`
 
-To set a custom name for the output script, use the `name` parameter. The name may contain the string `[hash]`, which will be replaced with a content dependent hash for caching purposes. When using name alone hash is omitted.
+To set a custom name for the output script, use the `name` parameter. The name may contain the string `[hash]`, which will be replaced with a content dependent hash for caching purposes. When using `name` alone `[hash]` is omitted.
 
 *webpack.config.js**
 ```js
