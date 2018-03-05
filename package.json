@@ -4,10 +4,6 @@
   "author": "Jordan Gensler <jordangens@gmail.com>",
   "description": "shared worker loader module for webpack",
   "scripts": {
-    "test": "mocha",
-    "posttest": "eslint ."
-  },
-  "scripts": {
     "start": "npm run build -- -w",
     "build": "cross-env NODE_ENV=production babel src -d dist --ignore 'src/**/*.test.js' --copy-files",
     "clean": "del-cli dist",
@@ -24,7 +20,8 @@
     "travis:test": "npm run test -- --runInBand",
     "travis:coverage": "npm run test:coverage -- --runInBand",
     "appveyor:test": "npm run test",
-    "defaults": "webpack-defaults"
+    "defaults": "webpack-defaults",
+    "webpack-defaults": "webpack-defaults"
   },
   "peerDependencies": {
     "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
