@@ -1,1 +1,0 @@
-// w1 via worker options
