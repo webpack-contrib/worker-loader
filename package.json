@@ -1,15 +1,9 @@
 {
-  "name": "worker-loader",
-  "version": "1.1.1",
-  "author": "Tobias Koppers @sokra",
-  "description": "worker loader module for webpack",
+  "name": "sharedworker-loader",
+  "version": "2.0.0-1",
+  "author": "Jordan Gensler <jordangens@gmail.com>",
+  "description": "shared worker loader module for webpack",
   "main": "dist/cjs.js",
-  "files": [
-    "dist"
-  ],
-  "engines": {
-    "node": ">= 4.8 < 5.0.0 || >= 5.10"
-  },
   "scripts": {
     "start": "npm run build -- -w",
     "build": "cross-env NODE_ENV=production babel src -d dist --ignore 'src/**/*.test.js' --copy-files",
@@ -27,7 +21,8 @@
     "travis:test": "npm run test -- --runInBand",
     "travis:coverage": "npm run test:coverage -- --runInBand",
     "appveyor:test": "npm run test",
-    "defaults": "webpack-defaults"
+    "defaults": "webpack-defaults",
+    "webpack-defaults": "webpack-defaults"
   },
   "peerDependencies": {
     "webpack": "^2.0.0 || ^3.0.0 || ^4.0.0"
