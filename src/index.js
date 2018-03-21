@@ -52,13 +52,13 @@ export function pitch(request) {
   worker.compiler = this._compilation
     .createChildCompiler('worker', worker.options);
 
-  worker.compiler.apply(new WebWorkerTemplatePlugin(worker.options));
+  new WebWorkerTemplatePlugin(worker.options).apply(worker.compiler);
 
   if (this.target !== 'webworker' && this.target !== 'web') {
-    worker.compiler.apply(new NodeTargetPlugin());
+    new NodeTargetPlugin().apply(worker.compiler);
   }
 
-  worker.compiler.apply(new SingleEntryPlugin(this.context, `!!${request}`, 'main'));
+  new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(worker.compiler);
 
   const subCache = `subcache ${__dirname} ${request}`;
 
