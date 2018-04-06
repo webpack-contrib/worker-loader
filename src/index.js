@@ -52,6 +52,8 @@ export function pitch(request) {
   worker.compiler = this._compilation
     .createChildCompiler('worker', worker.options);
 
+  // Tapable.apply is deprecated in tapable@1.0.0-x.
+  // The plugins should now call apply themselves.
   new WebWorkerTemplatePlugin(worker.options).apply(worker.compiler);
 
   if (this.target !== 'webworker' && this.target !== 'web') {
