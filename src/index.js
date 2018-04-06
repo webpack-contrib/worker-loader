@@ -37,7 +37,7 @@ export function pitch(request) {
   const cb = this.async();
 
   const filename = loaderUtils.interpolateName(this, options.name || '[hash].worker.js', {
-    context: options.context || this.options.context,
+    context: options.context || this.rootContext || this.options.context,
     regExp: options.regExp,
   });
 
@@ -62,13 +62,23 @@ export function pitch(request) {
 
   const subCache = `subcache ${__dirname} ${request}`;
 
-  worker.compiler.plugin('compilation', (compilation) => {
+  worker.compilation = (compilation) => {
     if (compilation.cache) {
-      if (!compilation.cache[subCache]) compilation.cache[subCache] = {};
+      if (!compilation.cache[subCache]) {
+        compilation.cache[subCache] = {};
+      }
 
       compilation.cache = compilation.cache[subCache];
     }
-  });
+  };
+
+  if (worker.compiler.hooks) {
+    const plugin = { name: 'WorkerLoader' };
+
+    worker.compiler.hooks.compilation.tap(plugin, worker.compilation);
+  } else {
+    worker.compiler.plugin('compilation', worker.compilation);
+  }
 
   worker.compiler.runAsChild((err, entries, compilation) => {
     if (err) return cb(err);
