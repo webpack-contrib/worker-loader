@@ -3,6 +3,10 @@
   "version": "1.1.1",
   "author": "Tobias Koppers @sokra",
   "description": "worker loader module for webpack",
+  "repository": "https://github.com/webpack-contrib/worker-loader.git",
+  "bugs": "https://github.com/webpack-contrib/worker-loader/issues",
+  "homepage": "https://github.com/webpack-contrib/worker-loader",
+  "license": "MIT",
   "main": "dist/cjs.js",
   "files": [
     "dist"
@@ -55,10 +59,6 @@
   "engines": {
     "node": ">= 6.9.0 || >= 8.9.0"
   },
-  "repository": "https://github.com/webpack-contrib/worker-loader.git",
-  "bugs": "https://github.com/webpack-contrib/worker-loader/issues",
-  "homepage": "https://github.com/webpack-contrib/worker-loader",
-  "license": "MIT",
   "pre-commit": "lint-staged",
   "lint-staged": {
     "*.js": [
