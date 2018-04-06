@@ -23,9 +23,9 @@
     "security": "nsp check",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
-    "travis:lint": "npm run lint && npm run security",
-    "travis:test": "npm run test -- --runInBand",
-    "travis:coverage": "npm run test:coverage -- --runInBand"
+    "ci:lint": "npm run lint && npm run security",
+    "ci:test": "npm run test -- --runInBand",
+    "ci:coverage": "npm run test:coverage -- --runInBand"
   },
   "dependencies": {
     "loader-utils": "^1.0.0",
