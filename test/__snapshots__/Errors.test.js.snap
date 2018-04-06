@@ -8,9 +8,7 @@ This loader is only usable with webpack
 `;
 
 exports[`Errors Validation Error 1`] = `
-"Validation Error
-
-Worker Loader Invalid Options
+"Worker Loader Invalid Options
 
 options.name should be string
 "
