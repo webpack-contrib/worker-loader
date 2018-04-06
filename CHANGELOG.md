@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.1"></a>
+## [1.1.1](https://github.com/webpack-contrib/worker-loader/compare/v1.1.0...v1.1.1) (2018-02-25)
+
+
+### Bug Fixes
+
+* **index:** add `webpack >= v4.0.0` support ([#128](https://github.com/webpack-contrib/worker-loader/issues/128)) ([d1a7a94](https://github.com/webpack-contrib/worker-loader/commit/d1a7a94))
+
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/webpack-contrib/worker-loader/compare/v1.0.0...v1.1.0) (2017-10-24)
 
