@@ -10,6 +10,9 @@
     "fallback": {
       "type": "boolean"
     },
+    "queryParams": {
+      "type": "boolean"
+    },
     "publicPath": {
       "type": "string"
     }

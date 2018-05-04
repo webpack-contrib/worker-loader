@@ -20,7 +20,12 @@ const getWorker = (file, content, options) => {
     return `require(${InlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
   }
 
-  return `new Worker(${publicWorkerPath})`;
+  let queryParams = '';
+  if (options.queryParams && typeof location !== 'undefined') {
+    /* global location */
+    queryParams = location.search;
+  }
+  return `new Worker(${publicWorkerPath + queryParams})`;
 };
 
 export default getWorker;
