@@ -12,6 +12,9 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "crossOrigin": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false

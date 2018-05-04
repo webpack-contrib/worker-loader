@@ -61,10 +61,11 @@ worker.addEventListener("message", function (event) {});
 
 |Name|Type|Default|Description|
 |:--:|:--:|:-----:|:----------|
-|[**`name`**](#name)|`{String}`|`[hash].worker.js`|Set a custom name for the output script| 
+|[**`name`**](#name)|`{String}`|`[hash].worker.js`|Set a custom name for the output script|
 |[**`inline`**](#inline)|`{Boolean}`|`false`|Inline the worker as a BLOB|
 |[**`fallback`**](#fallback)|`{Boolean}`|`false`|Require a fallback for non-worker supporting environments|
 |[**`publicPath`**](#publicPath)|`{String}`|`null`|Override the path from which worker scripts are downloaded|
+|[**`crossOrigin`**](#crossOrigin)|`{Boolean}`|`false`|Use an inline BLOB worker to trigger an `importScripts` call for the `publicPath`|
 
 ### `name`
 
@@ -125,6 +126,24 @@ webpack assets is used
 }
 ```
 
+### `crossOrigin`
+
+Results in the use of an intermediate BLOB worker that will allow loading the worker code hosted on another origin.
+This is useful if you want to host your javascript and worker code on a CDN and only makes sense if you have
+configured a `publicPath` (either globally, using `publicPath: true`, or local to this loader)
+that is an `http://` or `https://` url.
+
+**webpack.config.js**
+```js
+{
+  loader: 'worker-loader'
+  options: {
+    publicPath: 'https://cdn.mysite.fast/',
+    crossOrigin: true,
+  }
+}
+```
+
 <h2 align="center">Examples</h2>
 
 The worker file can import dependencies just like any other file
@@ -141,7 +160,7 @@ _.has(obj, 'foo')
 self.postMessage({ foo: 'foo' })
 
 // Respond to message from parent thread
-self.addEventListener('message', (event) => console.log(event))  
+self.addEventListener('message', (event) => console.log(event))
 ```
 
 ### `Integrating with ES2015 Modules`

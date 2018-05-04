@@ -20,6 +20,19 @@ const getWorker = (file, content, options) => {
     return `require(${InlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
   }
 
+  if (options.crossOrigin) {
+    const InlineWorkerPath = JSON.stringify(`!!${
+      path.join(__dirname, 'InlineWorker.js')
+    }`);
+
+    const fallbackWorkerPath = options.fallback === false
+      ? 'null'
+      : publicWorkerPath;
+
+
+    return `require(${InlineWorkerPath})('importScripts("' + ${publicWorkerPath} + '")', ${fallbackWorkerPath})`;
+  }
+
   return `new Worker(${publicWorkerPath})`;
 };
 
