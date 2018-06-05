@@ -1,4 +1,4 @@
-class LoaderError extends Error {
+class WorkerLoaderError extends Error {
   constructor(err) {
     super(err);
 
@@ -8,4 +8,4 @@ class LoaderError extends Error {
   }
 }
 
-export default LoaderError;
+export default WorkerLoaderError;
