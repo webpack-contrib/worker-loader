@@ -174,7 +174,7 @@ declare module "worker-loader!*" {
     constructor();
   }
 
-  export default WebpackWorker;
+  export = WebpackWorker;
 }
 ```
 
@@ -191,7 +191,7 @@ ctx.addEventListener("message", (event) => console.log(event));
 
 **App.ts**
 ```typescript
-import Worker from "worker-loader!./Worker";
+import Worker = require("worker-loader!./Worker");
 
 const worker = new Worker();
 
