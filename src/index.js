@@ -9,7 +9,7 @@
 */
 import schema from './options.json';
 import loaderUtils from 'loader-utils';
-import validateOptions from 'schema-utils';
+import validateOptions from '@webpack-contrib/schema-utils';
 
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
