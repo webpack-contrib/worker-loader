@@ -106,9 +106,13 @@ export function pitch(request) {
         delete this._compilation.assets[worker.file];
       }
 
+      const moduleCode = `function() {\n  return ${worker.factory};\n}`;
+
       return cb(
         null,
-        `module.exports = function() {\n  return ${worker.factory};\n};`
+        options.outputModule === 'es6'
+          ? `export default ${moduleCode}`
+          : `module.exports = ${moduleCode};`
       );
     }
 

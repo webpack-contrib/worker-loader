@@ -12,6 +12,10 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "outputModule": {
+      "type": "string",
+      "enum": ["es6", "commonjs"]
     }
   },
   "additionalProperties": false
