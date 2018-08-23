@@ -95,6 +95,10 @@ export function pitch(request) {
 
     if (entries[0]) {
       worker.file = entries[0].files[0];
+      
+      if (options.url===true) {
+        return cb(null, `module.exports = __webpack_public_path__ + ${JSON.stringify(worker.file)}`);
+      }
 
       worker.factory = getWorker(
         worker.file,
