@@ -12,6 +12,9 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "url": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false
