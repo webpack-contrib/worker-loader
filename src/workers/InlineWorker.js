@@ -3,6 +3,7 @@
 var URL = window.URL || window.webkitURL;
 
 module.exports = function (content, url) {
+  content = `self.window = {};var window = {};${content}`
   try {
     try {
       var blob;
