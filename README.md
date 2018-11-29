@@ -31,7 +31,7 @@ $ npm install worker-loader --save-dev
 
 ```js
 // App.js
-import Worker from 'worker-loader!./Worker.js';
+import Worker from 'worker-loader?inline=true!./Worker.js';
 ```
 
 ### Config
