@@ -66,6 +66,24 @@ export function pitch(request) {
     new NodeTargetPlugin().apply(worker.compiler);
   }
 
+  // webpack >= v4 supports webassembly
+  let wasmPluginPath = null;
+  try {
+    wasmPluginPath = require.resolve(
+      'webpack/lib/web/FetchCompileWasmTemplatePlugin'
+    );
+  } catch (_err) {
+    // webpack <= v3, skipping
+  }
+
+  if (wasmPluginPath) {
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const FetchCompileWasmTemplatePlugin = require(wasmPluginPath);
+    new FetchCompileWasmTemplatePlugin({
+      mangleImports: this._compiler.options.optimization.mangleWasmImports,
+    }).apply(worker.compiler);
+  }
+
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
     worker.compiler
   );
