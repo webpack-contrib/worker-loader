@@ -2,7 +2,15 @@
 
 var URL = window.URL || window.webkitURL;
 
-module.exports = function (content, url) {
+function CreateWorker(url, isSharedWorker) {
+  if (isSharedWorker) {
+    return new isSharedWorker(url);
+  } else {
+    return Worker(url);
+  }
+}
+
+module.exports = function (content, url, options) {
   try {
     try {
       var blob;
@@ -24,15 +32,15 @@ module.exports = function (content, url) {
         blob = new Blob([content]);
       }
 
-      return new Worker(URL.createObjectURL(blob));
+      return new createWorker(URL.createObjectURL(blob), options.isSharedWorker);
     } catch (e) {
-      return new Worker('data:application/javascript,' + encodeURIComponent(content));
+      return new CreateWorker('data:application/javascript,' + encodeURIComponent(content), options.isSharedWorker);
     }
   } catch (e) {
     if (!url) {
       throw Error('Inline worker is not supported');
     }
 
-    return new Worker(url);
+    return new CreateWorker(url, options.isSharedWorker);
   }
 };
