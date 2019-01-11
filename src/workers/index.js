@@ -9,15 +9,16 @@ const getWorker = (file, content, options) => {
   const publicWorkerPath = `${publicPath} + ${JSON.stringify(file)}`;
 
   if (options.inline) {
-    const InlineWorkerPath = JSON.stringify(`!!${
-      path.join(__dirname, 'InlineWorker.js')
-    }`);
+    const InlineWorkerPath = JSON.stringify(
+      `!!${path.join(__dirname, 'InlineWorker.js')}`
+    );
 
-    const fallbackWorkerPath = options.fallback === false
-      ? 'null'
-      : publicWorkerPath;
+    const fallbackWorkerPath =
+      options.fallback === false ? 'null' : publicWorkerPath;
 
-    return `require(${InlineWorkerPath})(${JSON.stringify(content)}, ${fallbackWorkerPath})`;
+    return `require(${InlineWorkerPath})(${JSON.stringify(
+      content
+    )}, ${fallbackWorkerPath})`;
   }
 
   if (options.crossOrigin) {
