@@ -8,8 +8,10 @@ This loader is only usable with webpack
 `;
 
 exports[`Errors Validation Error 1`] = `
-"Worker Loader Invalid Options
+"Worker Loader
 
-options.name should be string
+  [4mOptions Validation Error[24m
+
+  [2moptions[22m.name  [34mshould be string[39m
 "
 `;
