@@ -76,7 +76,7 @@ Require a fallback for non-worker supporting environments
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { fallback: false }
 }
 ```
@@ -239,7 +239,7 @@ import Worker from './file.worker.js';
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { inline: true }
 }
 ```
