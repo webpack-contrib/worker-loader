@@ -256,7 +256,7 @@ import Worker from './file.worker.js';
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { publicPath: '/workers/' }
 }
 ```
