@@ -32,15 +32,15 @@ module.exports = function (content, url, options) {
         blob = new Blob([content]);
       }
 
-      return new createWorker(URL.createObjectURL(blob), options.isSharedWorker);
+      return CreateWorker(URL.createObjectURL(blob), options.isSharedWorker);
     } catch (e) {
-      return new CreateWorker('data:application/javascript,' + encodeURIComponent(content), options.isSharedWorker);
+      return CreateWorker('data:application/javascript,' + encodeURIComponent(content), options.isSharedWorker);
     }
   } catch (e) {
     if (!url) {
       throw Error('Inline worker is not supported');
     }
 
-    return new CreateWorker(url, options.isSharedWorker);
+    return CreateWorker(url, options.isSharedWorker);
   }
 };
