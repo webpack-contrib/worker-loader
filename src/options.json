@@ -12,6 +12,9 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "globalObject": {
+      "type": "string"
     }
   },
   "additionalProperties": false

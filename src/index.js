@@ -51,6 +51,7 @@ export function pitch(request) {
     filename,
     chunkFilename: `[id].${filename}`,
     namedChunkFilename: null,
+    globalObject: options.globalObject || 'self',
   };
 
   worker.compiler = this._compilation.createChildCompiler(
