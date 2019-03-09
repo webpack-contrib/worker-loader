@@ -104,6 +104,7 @@ export function pitch(request) {
 
       if (options.fallback === false) {
         delete this._compilation.assets[worker.file];
+        delete this._compilation.assets[worker.file + '.map'];
       }
 
       return cb(
