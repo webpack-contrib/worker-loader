@@ -70,7 +70,7 @@
     "pre-commit": "^1.0.0",
     "prettier": "^1.13.4",
     "standard-version": "^4.0.0",
-    "webpack": "^3.0.0"
+    "webpack": "^4.0.0"
   },
   "keywords": [
     "webpack"
