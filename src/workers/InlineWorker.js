@@ -2,7 +2,7 @@
 
 var URL = window.URL || window.webkitURL;
 
-module.exports = function (content, url) {
+module.exports = function (content, url, shared) {
   try {
     try {
       var blob;
@@ -24,15 +24,27 @@ module.exports = function (content, url) {
         blob = new Blob([content]);
       }
 
-      return new Worker(URL.createObjectURL(blob));
+      if(shared) {
+        return function(name) { new SharedWorker(URL.createObjectURL(blob), name); };
+      } else {
+        return function() { new Worker(URL.createObjectURL(blob)); };
+      }
     } catch (e) {
-      return new Worker('data:application/javascript,' + encodeURIComponent(content));
+      if(shared) {
+        return function(name) { new SharedWorker('data:application/javascript,' + encodeURIComponent(content), name); };
+      } else {
+        return function() { new Worker('data:application/javascript,' + encodeURIComponent(content)); };
+      }
     }
   } catch (e) {
     if (!url) {
       throw Error('Inline worker is not supported');
     }
 
-    return new Worker(url);
+    if (options.shared) {
+      return function(name) { new SharedWorker(url, name); };
+    } else {
+      return function() { new Worker(url); };
+    }
   }
 };

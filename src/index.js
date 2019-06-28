@@ -96,20 +96,23 @@ export function pitch(request) {
     if (entries[0]) {
       worker.file = entries[0].files[0];
 
+      if (options.fallback === false) {
+        delete this._compilation.assets[worker.file];
+      }
+
       worker.factory = getWorker(
         worker.file,
         compilation.assets[worker.file].source(),
         options
       );
 
-      if (options.fallback === false) {
-        delete this._compilation.assets[worker.file];
-      }
+      const finalOutput = options.shared
+        ? `module.exports = function(name) { return (${
+            worker.factory
+          })(name); }`
+        : `module.exports = function() { return (${worker.factory})(); }`;
 
-      return cb(
-        null,
-        `module.exports = function() {\n  return ${worker.factory};\n};`
-      );
+      return cb(null, finalOutput);
     }
 
     return cb(null, null);
