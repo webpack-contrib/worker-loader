@@ -203,7 +203,7 @@ test('should use the publicPath option as the base URL if specified', () =>
         },
       },
     }).then((stats) => {
-      expect(stats.compilation.missingDependencies.length).not.toEqual(0);
+      expect(stats.compilation.missingDependencies.size).not.toEqual(0);
     }));
 });
 
@@ -211,8 +211,6 @@ test('should use the publicPath option as the base URL if specified', () =>
   'node',
   'async-node',
   'node-webkit',
-  'atom',
-  'electron',
   'electron-main',
   'electron-renderer',
 ].forEach((target) => {
@@ -226,6 +224,6 @@ test('should use the publicPath option as the base URL if specified', () =>
         },
       },
     }).then((stats) => {
-      assert.equal(stats.compilation.missingDependencies.length, 0);
+      assert.equal(stats.compilation.missingDependencies.size, 0);
     }));
 });

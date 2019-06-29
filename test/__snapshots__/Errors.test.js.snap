@@ -12,6 +12,6 @@ exports[`Errors Validation Error 1`] = `
 
   [4mOptions Validation Error[24m
 
-  [2moptions[22m.name  [34mshould be string[39m
+  [2moptions[22m.name  [94mshould be string[39m
 "
 `;

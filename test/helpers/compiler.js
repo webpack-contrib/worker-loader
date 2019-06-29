@@ -12,6 +12,7 @@ import webpack from 'webpack';
 export default function(name, config = {}) {
   return del(path.resolve(__dirname, `../__expected__/${name}`)).then(() => {
     config = {
+      mode: 'none',
       target: config.target || 'web',
       context: path.resolve(__dirname, '../fixtures'),
       entry: `./${name}/entry.js`,
