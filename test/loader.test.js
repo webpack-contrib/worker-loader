@@ -194,17 +194,19 @@ test('should use the publicPath option as the base URL if specified', () =>
 
 ['web', 'webworker'].forEach((target) => {
   test(`should have missing dependencies (${target})`, () =>
-    webpack('nodejs-core-modules', {
-      target,
-      loader: {
-        options: {
-          inline: true,
-          fallback: false,
+    expect(
+      webpack('nodejs-core-modules', {
+        target,
+        loader: {
+          options: {
+            inline: true,
+            fallback: false,
+          },
         },
-      },
-    }).then((stats) => {
-      expect(stats.compilation.missingDependencies.length).not.toEqual(0);
-    }));
+      })
+    ).rejects.toContain(
+      "ModuleNotFoundError: Module not found: Error: Can't resolve 'fs'"
+    ));
 });
 
 [
