@@ -24,7 +24,11 @@ module.exports = function (content, url) {
         blob = new Blob([content]);
       }
 
-      return new Worker(URL.createObjectURL(blob));
+      var objectURL = URL.createObjectURL(blob);
+      var worker = new Worker(objectURL);
+      URL.revokeObjectURL(objectURL);
+
+      return worker;
     } catch (e) {
       return new Worker('data:application/javascript,' + encodeURIComponent(content));
     }
