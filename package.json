@@ -76,7 +76,15 @@
     "webpack"
   ],
   "jest": {
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "globals": {
+      "window": {}
+    }
+  },
+  "eslintConfig": {
+    "globals": {
+      "window": true
+    }
   },
   "pre-commit": "lint-staged",
   "lint-staged": {

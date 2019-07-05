@@ -1,7 +1,5 @@
 // http://stackoverflow.com/questions/10343913/how-to-create-a-web-worker-from-a-string
 
-var URL = window.URL || window.webkitURL;
-
 module.exports = function (content, url) {
   try {
     try {
@@ -21,22 +19,23 @@ module.exports = function (content, url) {
         blob = blob.getBlob();
       } catch (e) {
         // The proposed API
-        blob = new Blob([content]);
+        blob = new window.Blob([content]);
       }
 
+      var URL = window.URL || window.webkitURL;
       var objectURL = URL.createObjectURL(blob);
-      var worker = new Worker(objectURL);
+      var worker = new window.Worker(objectURL);
       URL.revokeObjectURL(objectURL);
 
       return worker;
     } catch (e) {
-      return new Worker('data:application/javascript,' + encodeURIComponent(content));
+      return new window.Worker('data:application/javascript,' + encodeURIComponent(content));
     }
   } catch (e) {
     if (!url) {
       throw Error('Inline worker is not supported');
     }
 
-    return new Worker(url);
+    return new window.Worker(url);
   }
 };
