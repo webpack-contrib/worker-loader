@@ -76,7 +76,7 @@ Require a fallback for non-worker supporting environments
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { fallback: false }
 }
 ```
@@ -103,7 +103,7 @@ inline workers, to disable this behavior just set `fallback` parameter as
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { inline: true, fallback: false }
 }
 ```
@@ -136,7 +136,7 @@ the same public path used for other webpack assets is used.
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { publicPath: '/scripts/workers/' }
 }
 ```
@@ -239,7 +239,7 @@ import Worker from './file.worker.js';
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { inline: true }
 }
 ```
@@ -256,7 +256,7 @@ import Worker from './file.worker.js';
 ```js
 // webpack.config.js
 {
-  loader: 'worker-loader'
+  loader: 'worker-loader',
   options: { publicPath: '/workers/' }
 }
 ```
