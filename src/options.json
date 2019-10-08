@@ -11,7 +11,10 @@
       "type": "boolean"
     },
     "publicPath": {
-      "type": "string"
+      "type": "string" 
+    },
+    "runtimeImportFunctionName": {
+      "type": "string" 
     }
   },
   "additionalProperties": false

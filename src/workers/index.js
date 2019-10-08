@@ -21,6 +21,11 @@ const getWorker = (file, content, options) => {
     )}, ${fallbackWorkerPath})`;
   }
 
+  if (options.runtimeImportFunctionName) {
+    const fn = options.runtimeImportFunctionName;
+    return `new Worker(${fn}(${publicWorkerPath}))`;
+  }
+
   return `new Worker(${publicWorkerPath})`;
 };
 
