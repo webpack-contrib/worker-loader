@@ -141,6 +141,28 @@ the same public path used for other webpack assets is used.
 }
 ```
 
+### runtimeImportFunctionName
+
+Type: `String`
+Default: `null`
+
+Specifies a function, by name, to be called at runtime, just before the worker is created.
+The function must receive a single string argument and must return a string.
+
+```js
+// webpack.config.js
+{
+  loader: 'worker-loader',
+  options: { runtimeImportFunctionName: 'getWorkerPath' }
+}
+
+// App.js
+function getWorkerPath(workerPath) {
+  return '/scripts/workers/' + workerPath;
+}
+const Worker = require('./Worker.js');
+```
+
 ## Examples
 
 The worker file can import dependencies just like any other file:

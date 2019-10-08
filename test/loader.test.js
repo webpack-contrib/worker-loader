@@ -192,6 +192,25 @@ test('should use the publicPath option as the base URL if specified', () =>
     );
   }));
 
+test('should invoke a function named after the value of runtimeImportFunctionName when creating the Worker', () => {
+  webpack('runtime-import-function-name', {
+    loader: {
+      options: {
+        runtimeImportFunctionName: 'testRuntimeFunction',
+      },
+    },
+  }).then((stats) => {
+    const assets = stats.compilation.assets;
+
+    const bundle = assets['bundle.js'];
+    const worker = Object.keys(assets)[1];
+
+    expect(bundle.source()).toContain(
+      `new Worker(testRuntimeFunction(__webpack_require__.p + "${worker}"))`
+    );
+  });
+});
+
 ['web', 'webworker'].forEach((target) => {
   test(`should have missing dependencies (${target})`, () =>
     webpack('nodejs-core-modules', {
