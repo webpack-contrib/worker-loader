@@ -1,0 +1,6 @@
+dist
+coverage
+node_modules
+CHANGELOG.md
+test/fixtures/
+test/__expected__

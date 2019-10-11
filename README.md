@@ -43,9 +43,9 @@ import Worker from 'worker-loader!./Worker.js';
     rules: [
       {
         test: /\.worker\.js$/,
-        use: { loader: 'worker-loader' }
-      }
-    ]
+        use: { loader: 'worker-loader' },
+      },
+    ];
   }
 }
 ```
@@ -57,9 +57,9 @@ import Worker from './file.worker.js';
 const worker = new Worker();
 
 worker.postMessage({ a: 1 });
-worker.onmessage = function (event) {};
+worker.onmessage = function(event) {};
 
-worker.addEventListener("message", function (event) {});
+worker.addEventListener('message', function(event) {});
 ```
 
 And run `webpack` via your preferred method.
@@ -147,17 +147,17 @@ The worker file can import dependencies just like any other file:
 
 ```js
 // Worker.js
-const _ = require('lodash')
+const _ = require('lodash');
 
-const obj = { foo: 'foo' }
+const obj = { foo: 'foo' };
 
-_.has(obj, 'foo')
+_.has(obj, 'foo');
 
 // Post data to parent thread
-self.postMessage({ foo: 'foo' })
+self.postMessage({ foo: 'foo' });
 
 // Respond to message from parent thread
-self.addEventListener('message', (event) => console.log(event))
+self.addEventListener('message', (event) => console.log(event));
 ```
 
 ### Integrating with ES2015 Modules
@@ -167,17 +167,17 @@ _Note: You can even use ES2015 Modules if you have the
 
 ```js
 // Worker.js
-import _ from 'lodash'
+import _ from 'lodash';
 
-const obj = { foo: 'foo' }
+const obj = { foo: 'foo' };
 
-_.has(obj, 'foo')
+_.has(obj, 'foo');
 
 // Post data to parent thread
-self.postMessage({ foo: 'foo' })
+self.postMessage({ foo: 'foo' });
 
 // Respond to message from parent thread
-self.addEventListener('message', (event) => console.log(event))
+self.addEventListener('message', (event) => console.log(event));
 ```
 
 ### Integrating with TypeScript
@@ -186,7 +186,7 @@ To integrate with TypeScript, you will need to define a custom module for the ex
 
 ```typescript
 // typings/custom.d.ts
-declare module "worker-loader!*" {
+declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
     constructor();
   }
@@ -200,22 +200,22 @@ declare module "worker-loader!*" {
 const ctx: Worker = self as any;
 
 // Post data to parent thread
-ctx.postMessage({ foo: "foo" });
+ctx.postMessage({ foo: 'foo' });
 
 // Respond to message from parent thread
-ctx.addEventListener("message", (event) => console.log(event));
+ctx.addEventListener('message', (event) => console.log(event));
 ```
 
 ```typescript
 // App.ts
-import Worker from "worker-loader!./Worker";
+import Worker from 'worker-loader!./Worker';
 
 const worker = new Worker();
 
 worker.postMessage({ a: 1 });
 worker.onmessage = (event) => {};
 
-worker.addEventListener("message", (event) => {});
+worker.addEventListener('message', (event) => {});
 ```
 
 ### Cross-Origin Policy
@@ -273,21 +273,15 @@ Please take a moment to read our contributing guidelines if you haven't yet done
 
 [npm]: https://img.shields.io/npm/v/worker-loader.svg
 [npm-url]: https://npmjs.com/package/worker-loader
-
 [node]: https://img.shields.io/node/v/worker-loader.svg
 [node-url]: https://nodejs.org
-
 [deps]: https://david-dm.org/webpack-contrib/worker-loader.svg
 [deps-url]: https://david-dm.org/webpack-contrib/worker-loader
-
-[tests]: 	https://img.shields.io/circleci/project/github/webpack-contrib/worker-loader.svg
+[tests]: https://img.shields.io/circleci/project/github/webpack-contrib/worker-loader.svg
 [tests-url]: https://circleci.com/gh/webpack-contrib/worker-loader
-
 [cover]: https://codecov.io/gh/webpack-contrib/worker-loader/branch/master/graph/badge.svg
 [cover-url]: https://codecov.io/gh/webpack-contrib/worker-loader
-
 [chat]: https://img.shields.io/badge/gitter-webpack%2Fwebpack-brightgreen.svg
 [chat-url]: https://gitter.im/webpack/webpack
-
 [size]: https://packagephobia.now.sh/badge?p=worker-loader
 [size-url]: https://packagephobia.now.sh/result?p=worker-loader
