@@ -1,1 +1,1 @@
-// w2 inlined via options
+console.log('w2 inlined via options');

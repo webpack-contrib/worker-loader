@@ -19,6 +19,10 @@ export default function(name, config = {}) {
         path: path.resolve(__dirname, `../__expected__/${name}`),
         filename: 'bundle.js',
       },
+      optimization: {
+        // To keep filename consistent
+        chunkIds: 'deterministic',
+      },
       module: {
         rules: [
           {

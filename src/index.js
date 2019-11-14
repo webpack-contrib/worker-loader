@@ -14,6 +14,7 @@ import validateOptions from '@webpack-contrib/schema-utils';
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
+import getLazyHashedEtag from 'webpack/lib/cache/getLazyHashedEtag';
 
 import getWorker from './workers/';
 import WorkerLoaderError from './Error';
@@ -70,45 +71,58 @@ export function pitch(request) {
     worker.compiler
   );
 
-  const subCache = `subcache ${__dirname} ${request}`;
-
-  worker.compilation = (compilation) => {
-    if (compilation.cache) {
-      if (!compilation.cache[subCache]) {
-        compilation.cache[subCache] = {};
-      }
-
-      compilation.cache = compilation.cache[subCache];
-    }
-  };
-
-  if (worker.compiler.hooks) {
-    const plugin = { name: 'WorkerLoader' };
-
-    worker.compiler.hooks.compilation.tap(plugin, worker.compilation);
-  } else {
-    worker.compiler.plugin('compilation', worker.compilation);
-  }
-
   worker.compiler.runAsChild((err, entries, compilation) => {
-    if (err) return cb(err);
+    if (err) {
+      return cb(err);
+    }
 
     if (entries[0]) {
-      worker.file = entries[0].files[0];
+      worker.file = [...entries[0].files][0];
 
-      worker.factory = getWorker(
-        worker.file,
-        compilation.assets[worker.file].source(),
-        options
-      );
+      const cacheIdent = `${worker.compiler.compilerPath}${__dirname}/${
+        this.resource
+      }`;
+      const cacheETag = getLazyHashedEtag(compilation.assets[worker.file]);
 
-      if (options.fallback === false) {
-        delete this._compilation.assets[worker.file];
-      }
+      return worker.compiler.cache.get(
+        cacheIdent,
+        cacheETag,
+        (err, content) => {
+          if (err) {
+            return cb(err);
+          }
 
-      return cb(
-        null,
-        `module.exports = function() {\n  return ${worker.factory};\n};`
+          if (content) {
+            return cb(null, content);
+          }
+
+          worker.factory = getWorker(
+            worker.file,
+            compilation.assets[worker.file].source(),
+            options
+          );
+
+          if (options.fallback === false) {
+            delete this._compilation.assets[worker.file];
+          }
+
+          const newContent = `module.exports = function() {\n  return ${
+            worker.factory
+          };\n};`;
+
+          return worker.compiler.cache.store(
+            cacheIdent,
+            cacheETag,
+            newContent,
+            (err) => {
+              if (err) {
+                return cb(err);
+              }
+
+              return cb(null, newContent);
+            }
+          );
+        }
       );
     }
 
