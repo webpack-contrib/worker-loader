@@ -79,9 +79,9 @@ export function pitch(request) {
     if (entries[0]) {
       worker.file = [...entries[0].files][0];
 
-      const cacheIdent = `${worker.compiler.compilerPath}${__dirname}/${
-        this.resource
-      }`;
+      const cacheIdent = `${
+        worker.compiler.compilerPath
+      }/worker-loader/${__dirname}/${this.resource}`;
       const cacheETag = getLazyHashedEtag(compilation.assets[worker.file]);
 
       return worker.compiler.cache.get(
@@ -90,6 +90,10 @@ export function pitch(request) {
         (err, content) => {
           if (err) {
             return cb(err);
+          }
+
+          if (options.fallback === false) {
+            delete this._compilation.assets[worker.file];
           }
 
           if (content) {
@@ -101,10 +105,6 @@ export function pitch(request) {
             compilation.assets[worker.file].source(),
             options
           );
-
-          if (options.fallback === false) {
-            delete this._compilation.assets[worker.file];
-          }
 
           const newContent = `module.exports = function() {\n  return ${
             worker.factory
