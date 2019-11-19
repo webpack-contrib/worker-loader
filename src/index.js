@@ -16,7 +16,7 @@ import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
 import WorkerLoaderError from './Error';
 import supportWebpack5 from './supportWebpack5';
-import supportWebpackPrior5 from './supportWebpackPrior5';
+import supportWebpack4 from './supportWebpack4';
 
 export default function loader() {}
 
@@ -76,6 +76,6 @@ export function pitch(request) {
   ) {
     supportWebpack5.call(this, worker, options, cb);
   } else {
-    supportWebpackPrior5.call(this, worker, request, options, cb);
+    supportWebpack4.call(this, worker, request, options, cb);
   }
 }

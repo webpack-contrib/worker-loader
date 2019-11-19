@@ -13,14 +13,7 @@ export default function(worker, request, options, cb) {
     }
   };
 
-  if (worker.compiler.hooks) {
-    const plugin = { name: 'WorkerLoader' };
-
-    worker.compiler.hooks.compilation.tap(plugin, worker.compilation);
-  } else {
-    worker.compiler.plugin('compilation', worker.compilation);
-  }
-
+  worker.compiler.hooks.compilation.tap('WorkerLoader', worker.compilation);
   worker.compiler.runAsChild((err, entries, compilation) => {
     if (err) return cb(err);
 
