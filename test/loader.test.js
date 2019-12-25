@@ -93,6 +93,7 @@ test('should inline worker with inline in options', () =>
       test: /(w1|w2)\.js$/,
       options: {
         inline: true,
+        name: '[hash].worker.js',
       },
     },
   }).then((stats) => {
@@ -178,6 +179,7 @@ test('should use the publicPath option as the base URL if specified', () =>
   webpack('public-path-override', {
     loader: {
       options: {
+        name: '[hash].worker.js',
         publicPath: '/some/proxy/',
       },
     },

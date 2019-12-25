@@ -1,1 +1,1 @@
-const Worker = require('!../../../src?inline!./worker.js');
+const Worker = require('!../../../src?inline&name=[hash].worker.js!./worker.js');

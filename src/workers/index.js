@@ -1,12 +1,16 @@
 /* eslint-disable multiline-ternary */
 import path from 'path';
 
-const getWorker = (file, content, options) => {
+const getWorkerPath = (file, options) => {
   const publicPath = options.publicPath
     ? JSON.stringify(options.publicPath)
     : '__webpack_public_path__';
 
-  const publicWorkerPath = `${publicPath} + ${JSON.stringify(file)}`;
+  return `${publicPath} + ${JSON.stringify(file)}`;
+};
+
+const getWorker = (file, content, options) => {
+  const publicWorkerPath = getWorkerPath(file, options);
 
   if (options.inline) {
     const InlineWorkerPath = JSON.stringify(
@@ -24,4 +28,10 @@ const getWorker = (file, content, options) => {
   return `new Worker(${publicWorkerPath})`;
 };
 
-export default getWorker;
+const getWorkerFactory = (file, content, options) => {
+  const worker = getWorker(file, content, options);
+  const workerPath = getWorkerPath(file, options);
+  return `module.exports = function () {\n  return ${worker};\n};\nmodule.exports.url = '${workerPath}';`;
+};
+
+export default getWorkerFactory;

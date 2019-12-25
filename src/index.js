@@ -7,6 +7,7 @@
   no-underscore-dangle,
   prefer-destructuring
 */
+import path from 'path';
 import schema from './options.json';
 import loaderUtils from 'loader-utils';
 import validateOptions from '@webpack-contrib/schema-utils';
@@ -15,7 +16,7 @@ import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
 
-import getWorker from './workers/';
+import getWorkerFactory from './workers/';
 import WorkerLoaderError from './Error';
 
 export default function loader() {}
@@ -38,7 +39,7 @@ export function pitch(request) {
 
   const filename = loaderUtils.interpolateName(
     this,
-    options.name || '[hash].worker.js',
+    options.name || this._compilation.outputOptions.filename,
     {
       context: options.context || this.rootContext || this.options.context,
       regExp: options.regExp,
@@ -49,7 +50,7 @@ export function pitch(request) {
 
   worker.options = {
     filename,
-    chunkFilename: `[id].${filename}`,
+    chunkFilename: this._compilation.outputOptions.chunkFilename,
     namedChunkFilename: null,
   };
 
@@ -66,9 +67,11 @@ export function pitch(request) {
     new NodeTargetPlugin().apply(worker.compiler);
   }
 
-  new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
-    worker.compiler
-  );
+  new SingleEntryPlugin(
+    this.context,
+    `!!${request}`,
+    path.parse(options.name || this.resourcePath).name
+  ).apply(worker.compiler);
 
   const subCache = `subcache ${__dirname} ${request}`;
 
@@ -96,7 +99,7 @@ export function pitch(request) {
     if (entries[0]) {
       worker.file = entries[0].files[0];
 
-      worker.factory = getWorker(
+      worker.factory = getWorkerFactory(
         worker.file,
         compilation.assets[worker.file].source(),
         options
@@ -106,10 +109,7 @@ export function pitch(request) {
         delete this._compilation.assets[worker.file];
       }
 
-      return cb(
-        null,
-        `module.exports = function() {\n  return ${worker.factory};\n};`
-      );
+      return cb(null, worker.factory);
     }
 
     return cb(null, null);
