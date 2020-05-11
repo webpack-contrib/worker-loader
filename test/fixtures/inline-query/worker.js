@@ -1,1 +1,1 @@
-// inlined worker test mark
+console.log('inlined worker test mark');

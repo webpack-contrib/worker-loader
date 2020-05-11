@@ -1,1 +1,1 @@
-// named worker test mark
+console.log('named worker test mark');

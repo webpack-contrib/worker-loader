@@ -1,1 +1,1 @@
-// worker test mark
+console.log('worker test mark');

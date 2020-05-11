@@ -1,1 +1,1 @@
-// w1 inlined without fallback
+console.log('w1 inlined without fallback');

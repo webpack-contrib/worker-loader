@@ -1,1 +1,1 @@
-// w1 via worker options
+console.log('w1 via worker options')
