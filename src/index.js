@@ -1,36 +1,25 @@
-/* eslint-disable
-  import/first,
-  import/order,
-  comma-dangle,
-  linebreak-style,
-  no-param-reassign,
-  no-underscore-dangle,
-  prefer-destructuring
-*/
-import schema from './options.json';
 import loaderUtils from 'loader-utils';
-import validateOptions from '@webpack-contrib/schema-utils';
+import validateOptions from 'schema-utils';
 
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
-import WorkerLoaderError from './Error';
+
+import schema from './options.json';
 import supportWebpack5 from './supportWebpack5';
 import supportWebpack4 from './supportWebpack4';
 
 export default function loader() {}
 
 export function pitch(request) {
-  const options = loaderUtils.getOptions(this) || {};
+  const options = loaderUtils.getOptions(this);
+
+  validateOptions(schema, options, {
+    name: 'Worker Loader',
+    baseDataPath: 'options',
+  });
 
   validateOptions({ name: 'Worker Loader', schema, target: options });
-
-  if (!this.webpack) {
-    throw new WorkerLoaderError({
-      name: 'Worker Loader',
-      message: 'This loader is only usable with webpack',
-    });
-  }
 
   this.cacheable(false);
 

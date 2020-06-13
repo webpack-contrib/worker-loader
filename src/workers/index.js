@@ -1,4 +1,3 @@
-/* eslint-disable multiline-ternary */
 import path from 'path';
 
 const getWorker = (file, content, options) => {

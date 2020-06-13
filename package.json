@@ -7,32 +7,31 @@
   "author": "Tobias Koppers @sokra",
   "homepage": "https://github.com/webpack-contrib/worker-loader",
   "bugs": "https://github.com/webpack-contrib/worker-loader/issues",
-  "bin": "",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/webpack"
+  },
   "main": "dist/cjs.js",
   "engines": {
-    "node": ">= 6.9.0 < 7.0.0 || >= 8.9.0"
+    "node": ">= 10.13.0"
   },
   "scripts": {
     "start": "npm run build -- -w",
-    "build": "cross-env NODE_ENV=production babel src -d dist --ignore 'src/**/*.test.js' --copy-files",
     "clean": "del-cli dist",
-    "commitlint": "commitlint",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
-    "lint": "eslint --cache src test",
-    "ci:lint:commits": "commitlint --from=${CIRCLE_BRANCH} --to=${CIRCLE_SHA1}",
-    "lint-staged": "lint-staged",
     "prebuild": "npm run clean",
-    "prepublish": "npm run build",
+    "build": "cross-env NODE_ENV=production babel src -d dist --copy-files",
+    "commitlint": "commitlint --from=master",
+    "security": "npm audit",
+    "lint:prettier": "prettier --list-different .",
+    "lint:js": "eslint --cache .",
+    "lint": "npm-run-all -l -p \"lint:**\"",
+    "test:only": "cross-env NODE_ENV=test jest",
+    "test:watch": "npm run test:only -- --watch",
+    "test:coverage": "npm run test:only -- --collectCoverageFrom=\"src/**/*.js\" --coverage",
+    "pretest": "npm run lint",
+    "test": "npm run test:coverage",
+    "prepare": "npm run build",
     "release": "standard-version",
-    "release:ci": "conventional-github-releaser -p angular",
-    "release:validate": "commitlint --from=$(git describe --tags --abbrev=0) --to=$(git rev-parse HEAD)",
-    "security": "nsp check",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
-    "ci:lint": "npm run lint && npm run security",
-    "ci:test": "npm run test -- --runInBand",
-    "ci:coverage": "npm run test:coverage -- --runInBand",
     "defaults": "webpack-defaults"
   },
   "files": [
@@ -42,47 +41,39 @@
     "webpack": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
-    "@webpack-contrib/schema-utils": "^1.0.0-beta.0",
-    "loader-utils": "^1.0.0"
+    "schema-utils": "^2.7.0",
+    "loader-utils": "^2.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.10.1",
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
-    "@webpack-contrib/defaults": "^2.4.0",
+    "@webpack-contrib/defaults": "^6.3.0",
     "@webpack-contrib/eslint-config-webpack": "^2.0.4",
-    "babel-cli": "^6.0.0",
-    "babel-jest": "^21.0.0",
-    "babel-plugin-transform-object-rest-spread": "^6.0.0",
-    "babel-polyfill": "^6.0.0",
-    "babel-preset-env": "^1.0.0",
-    "conventional-github-releaser": "^3.1.0",
-    "cross-env": "^5.0.0",
-    "del": "^3.0.0",
-    "del-cli": "^1.0.0",
-    "eslint": "^4.0.0",
-    "eslint-config-webpack": "^1.0.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-prettier": "^2.6.0",
+    "babel-jest": "^26.0.1",
+    "commitlint-azure-pipelines-cli": "^1.0.3",
+    "cross-env": "^7.0.2",
+    "del": "^5.1.0",
+    "del-cli": "^3.0.1",
+    "eslint": "^7.2.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.21.2",
     "husky": "^0.14.3",
-    "jest": "^21.0.0",
-    "lint-staged": "^4.0.0",
-    "nsp": "^2.6.0",
-    "pre-commit": "^1.0.0",
-    "prettier": "^1.13.4",
-    "standard-version": "^4.0.0",
-    "webpack": "next"
+    "jest": "^26.0.1",
+    "jest-junit": "^10.0.0",
+    "lint-staged": "^10.2.10",
+    "memfs": "^3.2.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "standard-version": "^8.0.0",
+    "webpack": "^4.43.0"
   },
   "keywords": [
     "webpack"
   ],
   "jest": {
     "testEnvironment": "node"
-  },
-  "pre-commit": "lint-staged",
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
   }
 }
