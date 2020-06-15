@@ -1,16 +1,11 @@
-/* eslint-disable
-  import/order,
-  comma-dangle,
-  arrow-parens,
-  multiline-ternary,
-  no-param-reassign
-*/
-import del from 'del';
 import path from 'path';
+
+import del from 'del';
 import webpack from 'webpack';
 
-export default function(name, config = {}) {
+export default function compiler(name, config = {}) {
   return del(path.resolve(__dirname, `../__expected__/${name}`)).then(() => {
+    // eslint-disable-next-line no-param-reassign
     config = {
       target: config.target || 'web',
       context: path.resolve(__dirname, '../fixtures'),
@@ -21,7 +16,7 @@ export default function(name, config = {}) {
       },
       optimization: {
         // To keep filename consistent
-        chunkIds: 'deterministic',
+        chunkIds: 'natural',
       },
       module: {
         rules: [
@@ -36,6 +31,7 @@ export default function(name, config = {}) {
       },
     };
 
+    // eslint-disable-next-line no-shadow
     const compiler = webpack(config);
 
     return new Promise((resolve, reject) => {
