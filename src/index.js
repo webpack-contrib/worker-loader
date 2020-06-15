@@ -1,6 +1,7 @@
 import loaderUtils from 'loader-utils';
 import validateOptions from 'schema-utils';
 
+import FetchCompileWasmTemplatePlugin from 'webpack/lib/web/FetchCompileWasmTemplatePlugin';
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
@@ -47,13 +48,15 @@ export function pitch(request) {
     worker.options
   );
 
-  // Tapable.apply is deprecated in tapable@1.0.0-x.
-  // The plugins should now call apply themselves.
   new WebWorkerTemplatePlugin(worker.options).apply(worker.compiler);
 
   if (this.target !== 'webworker' && this.target !== 'web') {
     new NodeTargetPlugin().apply(worker.compiler);
   }
+
+  new FetchCompileWasmTemplatePlugin({
+    mangleImports: this._compiler.options.optimization.mangleWasmImports,
+  }).apply(worker.compiler);
 
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
     worker.compiler
