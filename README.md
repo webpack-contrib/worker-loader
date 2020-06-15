@@ -71,7 +71,7 @@ And run `webpack` via your preferred method.
 Type: `Boolean`
 Default: `false`
 
-Require a fallback for non-worker supporting environments
+Require a fallback for non-worker supporting environments.
 
 **webpack.config.js**
 
@@ -94,7 +94,7 @@ module.exports = {
 Type: `Boolean`
 Default: `false`
 
-You can also inline the worker as a BLOB with the `inline` parameter
+You can also inline the worker as a BLOB with the `inline` parameter.
 
 **webpack.config.js**
 
@@ -114,12 +114,19 @@ module.exports = {
 
 _Note: Inline mode will also create chunks for browsers without support for inline workers, to disable this behavior just set `fallback` parameter as `false`._
 
+**webpack.config.js**
+
 ```js
-// webpack.config.js
-{
-  loader: 'worker-loader',
-  options: { inline: true, fallback: false }
-}
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: 'worker-loader',
+        options: { inline: true, fallback: false },
+      },
+    ],
+  },
+};
 ```
 
 ### `name`
@@ -127,16 +134,23 @@ _Note: Inline mode will also create chunks for browsers without support for inli
 Type: `String`
 Default: `[hash].worker.js`
 
-To set a custom name for the output script, use the `name` parameter. The name
-may contain the string `[hash]`, which will be replaced with a content dependent
-hash for caching purposes. When using `name` alone `[hash]` is omitted.
+To set a custom name for the output script, use the `name` parameter.
+The name may contain the string `[hash]`, which will be replaced with a content dependent hash for caching purposes.
+When using `name` alone `[hash]` is omitted.
+
+**webpack.config.js**
 
 ```js
-// webpack.config.js
-{
-  loader: 'worker-loader',
-  options: { name: 'WorkerName.[hash].js' }
-}
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: 'worker-loader',
+        options: { name: 'WorkerName.[hash].js' },
+      },
+    ],
+  },
+};
 ```
 
 ### publicPath
@@ -144,23 +158,33 @@ hash for caching purposes. When using `name` alone `[hash]` is omitted.
 Type: `String`
 Default: `null`
 
-Overrides the path from which worker scripts are downloaded. If not specified,
-the same public path used for other webpack assets is used.
+Overrides the path from which worker scripts are downloaded.
+If not specified, the same public path used for other webpack assets is used.
+
+**webpack.config.js**
 
 ```js
-// webpack.config.js
-{
-  loader: 'worker-loader',
-  options: { publicPath: '/scripts/workers/' }
-}
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: 'worker-loader',
+        options: { publicPath: '/scripts/workers/' },
+      },
+    ],
+  },
+};
 ```
 
 ## Examples
 
+### Basic
+
 The worker file can import dependencies just like any other file:
 
+**Worker.js**
+
 ```js
-// Worker.js
 const _ = require('lodash');
 
 const obj = { foo: 'foo' };
@@ -174,12 +198,13 @@ self.postMessage({ foo: 'foo' });
 self.addEventListener('message', (event) => console.log(event));
 ```
 
-### Integrating with ES2015 Modules
+### Integrating with ES Modules
 
 _Note: You can even use ES2015 Modules if you have the [`babel-loader`](https://github.com/babel/babel-loader) configured._
 
+**Worker.js**
+
 ```js
-// Worker.js
 import _ from 'lodash';
 
 const obj = { foo: 'foo' };
@@ -197,8 +222,9 @@ self.addEventListener('message', (event) => console.log(event));
 
 To integrate with TypeScript, you will need to define a custom module for the exports of your worker
 
+**typings/worker-loader.d.ts**
+
 ```typescript
-// typings/custom.d.ts
 declare module 'worker-loader!*' {
   class WebpackWorker extends Worker {
     constructor();
@@ -208,8 +234,9 @@ declare module 'worker-loader!*' {
 }
 ```
 
+**Worker.ts**
+
 ```typescript
-// Worker.ts
 const ctx: Worker = self as any;
 
 // Post data to parent thread
@@ -219,8 +246,9 @@ ctx.postMessage({ foo: 'foo' });
 ctx.addEventListener('message', (event) => console.log(event));
 ```
 
+**App.ts**
+
 ```typescript
-// App.ts
 import Worker from 'worker-loader!./Worker';
 
 const worker = new Worker();
@@ -235,38 +263,54 @@ worker.addEventListener('message', (event) => {});
 
 [`WebWorkers`](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) are restricted by a [same-origin policy](https://en.wikipedia.org/wiki/Same-origin_policy), so if your `webpack` assets are not being served from the same origin as your application, their download may be blocked by your browser.
 This scenario can commonly occur if you are hosting your assets under a CDN domain.
-Even downloads from the `webpack-dev-server` could be blocked. There are two workarounds:
+Even downloads from the `webpack-dev-server` could be blocked.
+There are two workarounds:
 
 Firstly, you can inline the worker as a blob instead of downloading it as an external script via the [`inline`](#inline) parameter
 
+**App.js**
+
 ```js
-// App.js
 import Worker from './file.worker.js';
 ```
 
+**webpack.config.js**
+
 ```js
-// webpack.config.js
-{
-  loader: 'worker-loader',
-  options: { inline: true }
-}
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: 'worker-loader',
+        options: { inline: true },
+      },
+    ],
+  },
+};
 ```
 
-Secondly, you may override the base download URL for your worker script via the
-[`publicPath`](#publicpath) option
+Secondly, you may override the base download URL for your worker script via the [`publicPath`](#publicpath) option
+
+**App.js**
 
 ```js
-// App.js
 // This will cause the worker to be downloaded from `/workers/file.worker.js`
 import Worker from './file.worker.js';
 ```
 
+**webpack.config.js**
+
 ```js
-// webpack.config.js
-{
-  loader: 'worker-loader',
-  options: { publicPath: '/workers/' }
-}
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: 'worker-loader',
+        options: { publicPath: '/workers/' },
+      },
+    ],
+  },
+};
 ```
 
 ## Contributing
