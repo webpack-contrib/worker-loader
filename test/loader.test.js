@@ -2,7 +2,9 @@ import path from 'path';
 import fs from 'fs';
 import assert from 'assert';
 
-import webpack from './helpers/compiler';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+import { compiler as webpack, getResultFromBrowser } from './helpers';
 
 const readFile = (file) =>
   fs.readFileSync(path.resolve(__dirname, file), 'utf-8');
@@ -177,5 +179,23 @@ describe('worker-loader', () => {
       expect(readFile(`__expected__/public-path-override/bundle.js`)).toContain(
         `new Worker("/some/proxy/${worker}")`
       );
+    }));
+
+  it('should work worker through puppeteer', () =>
+    webpack('puppeteer-1', {
+      plugins: [
+        new HtmlWebpackPlugin({
+          template: path.resolve(
+            __dirname,
+            'fixtures',
+            'puppeteer-1',
+            'index.html'
+          ),
+        }),
+      ],
+    }).then(async (stats) => {
+      const result = await getResultFromBrowser(stats);
+
+      expect(result).toMatchSnapshot('result');
     }));
 });
