@@ -9,6 +9,8 @@ import { compiler as webpack, getResultFromBrowser } from './helpers';
 const readFile = (file) =>
   fs.readFileSync(path.resolve(__dirname, file), 'utf-8');
 
+jest.setTimeout(10000);
+
 describe('worker-loader', () => {
   it('should create chunk with worker', () =>
     webpack('worker').then((stats) => {
