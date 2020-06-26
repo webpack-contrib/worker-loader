@@ -29,6 +29,7 @@ export default function compiler(name, config = {}) {
           },
         ],
       },
+      plugins: config.plugins ? config.plugins : [],
     };
 
     // eslint-disable-next-line no-shadow
