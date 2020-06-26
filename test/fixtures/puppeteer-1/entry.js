@@ -6,7 +6,7 @@ worker.onmessage = function (event) {
   document.getElementById('result').innerText = JSON.stringify(event.data)
 };
 
-const button = document.querySelector('button');
+const button = document.getElementById('button');
 
 button.addEventListener('click', () => {
   worker.postMessage({a:1})

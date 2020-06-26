@@ -1,3 +1,5 @@
+import path from 'path';
+
 import express from 'express';
 import puppeteer from 'puppeteer';
 
@@ -9,8 +11,8 @@ export default async function getResultFromBrowser(stats) {
   const server = app.listen(PORT);
 
   for (const asset of assets) {
-    const [route, file] = asset;
-    const { existsAt } = file;
+    const [route] = asset;
+    const existsAt = path.resolve(stats.compilation.outputOptions.path, route);
 
     if (route === 'index.html') {
       app.get('/', (req, res) => {
