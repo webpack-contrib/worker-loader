@@ -176,6 +176,13 @@ module.exports = {
 };
 ```
 
+### sharedWorker
+
+Type: `boolean`
+Default: `false`
+
+Uses SharedWorker rather than Worker.
+
 ## Examples
 
 ### Basic

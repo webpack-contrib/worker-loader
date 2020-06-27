@@ -12,6 +12,9 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "sharedWorker": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false
