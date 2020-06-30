@@ -37,7 +37,7 @@ export default function runAsChild(worker, request, options, cb) {
 
       return cb(
         null,
-        `module.exports = function() {\n  return ${worker.factory};\n};`
+        `module.exports = function(options) {\n  return ${worker.factory};\n};`
       );
     }
 

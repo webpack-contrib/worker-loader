@@ -39,7 +39,7 @@ export default function runAsChild(worker, options, cb) {
             options
           );
 
-          const newContent = `module.exports = function() {\n  return ${worker.factory};\n};`;
+          const newContent = `module.exports = function(options) {\n  return ${worker.factory};\n};`;
 
           return worker.compiler.cache.store(
             cacheIdent,
