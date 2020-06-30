@@ -258,7 +258,7 @@ ctx.addEventListener('message', (event) => console.log(event));
 ```typescript
 import Worker from 'worker-loader!./Worker';
 
-const worker = new Worker();
+const worker = new Worker(); // can pass constructor options here too
 
 worker.postMessage({ a: 1 });
 worker.onmessage = (event) => {};

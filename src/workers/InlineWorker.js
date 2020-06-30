@@ -5,7 +5,7 @@
 
 var URL = window.URL || window.webkitURL;
 
-function CreateWorker(url, options, workerType) {
+function CreateWorker(workerType, url, options) {
   switch (workerType) {
     case 'SharedWorker':
       return new SharedWorker(url, options);
@@ -39,12 +39,17 @@ module.exports = function inlineWorker(content, url, options, workerType) {
         blob = new Blob([content]);
       }
 
-      return CreateWorker(URL.createObjectURL(blob), options, workerType);
-    } catch (e) {
       return CreateWorker(
-        'data:application/javascript,' + encodeURIComponent(content),
+        workerType,
+        URL.createObjectURL(blob),
         options,
         workerType
+      );
+    } catch (e) {
+      return CreateWorker(
+        workerType,
+        'data:application/javascript,' + encodeURIComponent(content),
+        options
       );
     }
   } catch (e) {
