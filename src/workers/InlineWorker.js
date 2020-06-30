@@ -38,7 +38,8 @@ module.exports = function inlineWorker(content, url, sharedWorker) {
       return CreateWorker(URL.createObjectURL(blob), sharedWorker);
     } catch (e) {
       return CreateWorker(
-        'data:application/javascript,' + encodeURIComponent(content), sharedWorker
+        'data:application/javascript,' + encodeURIComponent(content),
+        sharedWorker
       );
     }
   } catch (e) {

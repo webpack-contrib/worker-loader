@@ -19,7 +19,7 @@ const getWorker = (file, content, options) => {
       content
     )}, ${fallbackWorkerPath}, ${options.sharedWorker})`;
   }
-  const worker = options.sharedWorker ? `SharedWorker` : `Worker`
+  const worker = options.sharedWorker ? `SharedWorker` : `Worker`;
   return `new ${worker}(${publicWorkerPath})`;
 };
 
