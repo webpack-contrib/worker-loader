@@ -5,7 +5,18 @@
 
 var URL = window.URL || window.webkitURL;
 
-module.exports = function inlineWorker(content, url) {
+function CreateWorker(url, workerType) {
+  switch (workerType) {
+    case 'SharedWorker':
+      return new SharedWorker(url);
+    case 'ServiceWorker':
+      return new ServiceWorker(url);
+    default:
+      return new Worker(url);
+  }
+}
+
+module.exports = function inlineWorker(content, url, workerType) {
   try {
     try {
       var blob;
@@ -28,10 +39,11 @@ module.exports = function inlineWorker(content, url) {
         blob = new Blob([content]);
       }
 
-      return new Worker(URL.createObjectURL(blob));
+      return CreateWorker(URL.createObjectURL(blob), workerType);
     } catch (e) {
-      return new Worker(
-        'data:application/javascript,' + encodeURIComponent(content)
+      return CreateWorker(
+        'data:application/javascript,' + encodeURIComponent(content),
+        workerType
       );
     }
   } catch (e) {
@@ -39,6 +51,6 @@ module.exports = function inlineWorker(content, url) {
       throw Error('Inline worker is not supported');
     }
 
-    return new Worker(url);
+    return CreateWorker(url, workerType);
   }
 };

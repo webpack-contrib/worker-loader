@@ -12,6 +12,9 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "workerType": {
+      "type": "string"
     }
   },
   "additionalProperties": false

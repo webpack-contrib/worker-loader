@@ -176,6 +176,13 @@ module.exports = {
 };
 ```
 
+### workerType
+
+Type: `string`
+Default: `Worker`
+
+Set the worker type. Defaults to `Worker`. Supports `ServiceWorker`, `SharedWorker`.
+
 ## Examples
 
 ### Basic
