@@ -13,8 +13,8 @@
     "publicPath": {
       "type": "string"
     },
-    "sharedWorker": {
-      "type": "boolean"
+    "workerType": {
+      "type": "string"
     }
   },
   "additionalProperties": false

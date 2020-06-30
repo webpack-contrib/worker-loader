@@ -17,9 +17,21 @@ const getWorker = (file, content, options) => {
 
     return `require(${InlineWorkerPath})(${JSON.stringify(
       content
-    )}, ${fallbackWorkerPath}, ${options.sharedWorker})`;
+    )}, ${fallbackWorkerPath}, ${options.workerType})`;
   }
-  const worker = options.sharedWorker ? `SharedWorker` : `Worker`;
+
+  let worker = 'Worker';
+  switch (options.workerType) {
+    case 'SharedWorker':
+      worker = 'SharedWorker';
+      break;
+    case 'ServiceWorker':
+      worker = 'ServiceWorker';
+      break;
+    default:
+      worker = 'Worker';
+  }
+
   return `new ${worker}(${publicWorkerPath})`;
 };
 

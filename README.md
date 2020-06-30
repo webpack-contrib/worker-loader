@@ -176,12 +176,12 @@ module.exports = {
 };
 ```
 
-### sharedWorker
+### workerType
 
-Type: `boolean`
-Default: `false`
+Type: `string`
+Default: `Worker`
 
-Uses SharedWorker rather than Worker.
+Set the worker type. Defaults to `Worker`. Supports `ServiceWorker`, `SharedWorker`.
 
 ## Examples
 
