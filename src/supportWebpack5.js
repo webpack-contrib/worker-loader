@@ -1,12 +1,12 @@
 import getWorker from './workers';
 
-export default function runAsChild(worker, options, cb) {
+export default function runAsChild(worker, options, callback) {
   // eslint-disable-next-line import/no-unresolved, global-require
   const getLazyHashedEtag = require('webpack/lib/cache/getLazyHashedEtag');
 
-  worker.compiler.runAsChild((err, entries, compilation) => {
-    if (err) {
-      return cb(err);
+  worker.compiler.runAsChild((error, entries, compilation) => {
+    if (error) {
+      return callback(error);
     }
 
     if (entries[0]) {
@@ -21,7 +21,7 @@ export default function runAsChild(worker, options, cb) {
         cacheETag,
         (getCacheError, content) => {
           if (getCacheError) {
-            return cb(getCacheError);
+            return callback(getCacheError);
           }
 
           if (options.fallback === false) {
@@ -29,7 +29,7 @@ export default function runAsChild(worker, options, cb) {
           }
 
           if (content) {
-            return cb(null, content);
+            return callback(null, content);
           }
 
           // eslint-disable-next-line no-param-reassign
@@ -47,16 +47,16 @@ export default function runAsChild(worker, options, cb) {
             newContent,
             (storeCacheError) => {
               if (storeCacheError) {
-                return cb(storeCacheError);
+                return callback(storeCacheError);
               }
 
-              return cb(null, newContent);
+              return callback(null, newContent);
             }
           );
         }
       );
     }
 
-    return cb(null, null);
+    return callback(null, null);
   });
 }

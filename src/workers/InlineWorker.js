@@ -1,9 +1,8 @@
 // http://stackoverflow.com/questions/10343913/how-to-create-a-web-worker-from-a-string
 
 /* eslint-env browser */
-/* eslint-disable no-var, vars-on-top, prefer-template */
-
-var URL = window.URL || window.webkitURL;
+/* eslint-disable no-var, vars-on-top, prefer-template, no-undef, no-use-before-define */
+var URL = URL || webkitURL;
 
 function CreateWorker(url, workerType) {
   switch (workerType) {
@@ -24,10 +23,7 @@ module.exports = function inlineWorker(content, url, workerType) {
       try {
         // BlobBuilder = Deprecated, but widely implemented
         var BlobBuilder =
-          window.BlobBuilder ||
-          window.WebKitBlobBuilder ||
-          window.MozBlobBuilder ||
-          window.MSBlobBuilder;
+          BlobBuilder || WebKitBlobBuilder || MozBlobBuilder || MSBlobBuilder;
 
         blob = new BlobBuilder();
 

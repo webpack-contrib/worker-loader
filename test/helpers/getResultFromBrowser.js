@@ -1,14 +1,14 @@
 import path from 'path';
 
+import getPort from 'get-port';
 import express from 'express';
 import puppeteer from 'puppeteer';
-
-const PORT = 3000;
 
 export default async function getResultFromBrowser(stats) {
   const assets = Object.entries(stats.compilation.assets);
   const app = express();
-  const server = app.listen(PORT);
+  const port = await getPort();
+  const server = app.listen(port);
 
   for (const asset of assets) {
     const [route] = asset;
@@ -27,7 +27,7 @@ export default async function getResultFromBrowser(stats) {
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(`http://127.0.0.1:${PORT}/`);
+  await page.goto(`http://127.0.0.1:${port}/`);
   await page.waitForSelector('button');
   await page.click('button');
   await page.waitForSelector('#result');

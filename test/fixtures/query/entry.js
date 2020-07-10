@@ -1,4 +1,4 @@
-const Worker = require('./worker.js');
+const Worker = require('!../../../src?name=test.worker.js!./my-worker-name.js');
 
 const worker = new Worker();
 
@@ -9,5 +9,5 @@ worker.onmessage = function (event) {
 const button = document.getElementById('button');
 
 button.addEventListener('click', () => {
-  worker.postMessage({a:1})
-})
+  worker.postMessage({ postMessage: true })
+});

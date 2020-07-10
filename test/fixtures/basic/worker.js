@@ -1,7 +1,7 @@
 onmessage = function(event) {
   const workerResult = event.data;
 
-  workerResult.worker = 'passed';
+  workerResult.onmessage = true;
 
   postMessage(workerResult);
-}
+};

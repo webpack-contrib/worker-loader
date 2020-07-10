@@ -11,10 +11,10 @@ import {
   getWarnings,
 } from './helpers';
 
-describe('worker-loader', () => {
+describe('"workerType" option', () => {
   beforeAll(() => del(path.resolve(__dirname, `outputs`)));
 
-  it('should work', async () => {
+  it('should use "Worker"', async () => {
     const compiler = getCompiler('./basic/entry.js');
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
@@ -27,12 +27,29 @@ describe('worker-loader', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  it('should work with inline syntax', async () => {
-    const compiler = getCompiler('./query/entry.js');
+  it('should work the "SharedWorker" value', async () => {
+    const compiler = getCompiler('./basic/entry.js', {
+      workerType: 'SharedWorker',
+    });
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    expect(getModuleSource('./query/my-worker-name.js', stats)).toMatchSnapshot(
+    expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
+  it('should work the "ServiceWorker" value', async () => {
+    const compiler = getCompiler('./basic/entry.js', {
+      workerType: 'ServiceWorker',
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
       'module'
     );
     expect(result).toMatchSnapshot('result');
