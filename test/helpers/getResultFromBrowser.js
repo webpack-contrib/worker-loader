@@ -27,6 +27,25 @@ export default async function getResultFromBrowser(stats) {
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
+
+  page
+    .on('console', (message) =>
+      // eslint-disable-next-line no-console
+      console.log(message)
+    )
+    .on('pageerror', ({ message }) =>
+      // eslint-disable-next-line no-console
+      console.log(message)
+    )
+    // .on('response', (response) =>
+    //   // eslint-disable-next-line no-console
+    //   console.log(`${response.status()} ${response.url()}`)
+    // )
+    .on('requestfailed', (request) =>
+      // eslint-disable-next-line no-console
+      console.log(`${request.failure().errorText} ${request.url()}`)
+    );
+
   await page.goto(`http://127.0.0.1:${port}/`);
   await page.waitForSelector('button');
   await page.click('button');
