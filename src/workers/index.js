@@ -20,7 +20,8 @@ const getWorker = (file, content, options) => {
     )}, ${fallbackWorkerPath}, ${options.workerType})`;
   }
 
-  let worker = 'Worker';
+  let worker;
+
   switch (options.workerType) {
     case 'SharedWorker':
       worker = 'SharedWorker';

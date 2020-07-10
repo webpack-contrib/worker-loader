@@ -39,7 +39,12 @@ module.exports = function inlineWorker(content, url, workerType) {
         blob = new Blob([content]);
       }
 
-      return CreateWorker(URL.createObjectURL(blob), workerType);
+      var objectURL = URL.createObjectURL(blob);
+      var worker = CreateWorker(objectURL, workerType);
+
+      URL.revokeObjectURL(objectURL);
+
+      return worker;
     } catch (e) {
       return CreateWorker(
         'data:application/javascript,' + encodeURIComponent(content),
