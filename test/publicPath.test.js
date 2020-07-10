@@ -1,7 +1,3 @@
-import path from 'path';
-
-import del from 'del';
-
 import {
   compile,
   getCompiler,
@@ -12,8 +8,6 @@ import {
 } from './helpers';
 
 describe('"publicPath" option', () => {
-  beforeAll(() => del(path.resolve(__dirname, `outputs`)));
-
   it('should use "__webpack_public_path__" by default', async () => {
     const compiler = getCompiler('./basic/entry.js');
     const stats = await compile(compiler);

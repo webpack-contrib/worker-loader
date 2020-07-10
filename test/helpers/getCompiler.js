@@ -1,17 +1,19 @@
 import path from 'path';
 
 import webpack from 'webpack';
-
+import { customAlphabet } from 'nanoid';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 export default (fixture, loaderOptions = {}, config = {}) => {
+  const nanoid = customAlphabet('1234567890abcdef', 10);
+
   const fullConfig = {
     mode: 'development',
     devtool: config.devtool || false,
     context: path.resolve(__dirname, '../fixtures'),
     entry: path.resolve(__dirname, '../fixtures', fixture),
     output: {
-      path: path.resolve(__dirname, '../outputs', path.dirname(fixture)),
+      path: path.resolve(__dirname, '../outputs', `test_${nanoid()}`),
       filename: '[name].bundle.js',
       chunkFilename: '[name].chunk.js',
     },

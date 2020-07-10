@@ -1,7 +1,3 @@
-import path from 'path';
-
-import del from 'del';
-
 import {
   compile,
   getCompiler,
@@ -12,8 +8,6 @@ import {
 } from './helpers';
 
 describe('"inline" option', () => {
-  beforeAll(() => del(path.resolve(__dirname, `outputs`)));
-
   it('should not work by default', async () => {
     const compiler = getCompiler('./basic/entry.js', { inline: false });
     const stats = await compile(compiler);

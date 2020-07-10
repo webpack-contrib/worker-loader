@@ -1,7 +1,3 @@
-import path from 'path';
-
-import del from 'del';
-
 import {
   compile,
   getCompiler,
@@ -12,8 +8,6 @@ import {
 } from './helpers';
 
 describe('worker-loader', () => {
-  beforeAll(() => del(path.resolve(__dirname, `outputs`)));
-
   it('should work', async () => {
     const compiler = getCompiler('./basic/entry.js');
     const stats = await compile(compiler);

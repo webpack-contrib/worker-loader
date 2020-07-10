@@ -8,6 +8,6 @@ exports[`"name" option should work: module 1`] = `
 };"
 `;
 
-exports[`"name" option should work: result 1`] = `""`;
+exports[`"name" option should work: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
 
 exports[`"name" option should work: warnings 1`] = `Array []`;
