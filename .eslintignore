@@ -2,4 +2,4 @@
 /dist
 /node_modules
 /test/fixtures
-/test/__expected__
+/test/outputs

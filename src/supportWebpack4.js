@@ -1,6 +1,6 @@
 import getWorker from './workers';
 
-export default function runAsChild(worker, request, options, cb) {
+export default function runAsChild(worker, request, options, callback) {
   const subCache = `subcache ${__dirname} ${request}`;
 
   // eslint-disable-next-line no-param-reassign
@@ -17,8 +17,10 @@ export default function runAsChild(worker, request, options, cb) {
   };
 
   worker.compiler.hooks.compilation.tap('WorkerLoader', worker.compilation);
-  worker.compiler.runAsChild((err, entries, compilation) => {
-    if (err) return cb(err);
+  worker.compiler.runAsChild((error, entries, compilation) => {
+    if (error) {
+      return callback(error);
+    }
 
     if (entries[0]) {
       // eslint-disable-next-line no-param-reassign, prefer-destructuring
@@ -35,12 +37,12 @@ export default function runAsChild(worker, request, options, cb) {
         delete this._compilation.assets[worker.file];
       }
 
-      return cb(
+      return callback(
         null,
         `module.exports = function() {\n  return ${worker.factory};\n};`
       );
     }
 
-    return cb(null, null);
+    return callback(null, null);
   });
 }

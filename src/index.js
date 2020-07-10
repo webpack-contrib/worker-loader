@@ -19,8 +19,6 @@ export function pitch(request) {
     baseDataPath: 'options',
   });
 
-  validateOptions({ name: 'Worker Loader', schema, target: options });
-
   this.cacheable(false);
 
   const cb = this.async();
@@ -47,8 +45,6 @@ export function pitch(request) {
     worker.options
   );
 
-  // Tapable.apply is deprecated in tapable@1.0.0-x.
-  // The plugins should now call apply themselves.
   new WebWorkerTemplatePlugin(worker.options).apply(worker.compiler);
 
   if (this.target !== 'webworker' && this.target !== 'web') {
