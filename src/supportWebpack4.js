@@ -1,4 +1,4 @@
-import getWorker from './workers';
+import { getWorker } from './utils';
 
 export default function runAsChild(worker, request, options, callback) {
   const subCache = `subcache ${__dirname} ${request}`;

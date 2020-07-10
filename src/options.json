@@ -1,6 +1,29 @@
 {
   "type": "object",
   "properties": {
+    "worker": {
+      "anyOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "minLength": 1
+            },
+            "options": {
+              "additionalProperties": true,
+              "type": "object"
+            }
+          },
+          "required": ["type"]
+        }
+      ]
+    },
     "name": {
       "type": "string"
     },
@@ -11,9 +34,6 @@
       "type": "boolean"
     },
     "publicPath": {
-      "type": "string"
-    },
-    "workerType": {
       "type": "string"
     }
   },

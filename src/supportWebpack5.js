@@ -1,4 +1,4 @@
-import getWorker from './workers';
+import { getWorker } from './utils';
 
 export default function runAsChild(worker, options, callback) {
   // eslint-disable-next-line import/no-unresolved, global-require
