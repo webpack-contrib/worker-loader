@@ -9,6 +9,22 @@ import schema from './options.json';
 import supportWebpack5 from './supportWebpack5';
 import supportWebpack4 from './supportWebpack4';
 
+let FetchCompileWasmPlugin;
+
+try {
+  // Webpack 5
+  // eslint-disable-next-line import/no-unresolved, global-require
+  FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin');
+} catch (ignoreError) {
+  // Nothing
+}
+
+// Webpack 4
+FetchCompileWasmPlugin =
+  FetchCompileWasmPlugin ||
+  // eslint-disable-next-line global-require
+  require('webpack/lib/web/FetchCompileWasmTemplatePlugin');
+
 export default function loader() {}
 
 export function pitch(request) {
@@ -33,12 +49,13 @@ export function pitch(request) {
   );
 
   const worker = {};
+  const compilerOptions = this._compiler.options || {};
+  const chunkFilename = compilerOptions.output.chunkFilename.replace(
+    /\.([a-z]+)(\?.+)?$/i,
+    '.worker.$1$2'
+  );
 
-  worker.options = {
-    filename,
-    chunkFilename: `[id].${filename}`,
-    namedChunkFilename: null,
-  };
+  worker.options = { filename, chunkFilename, globalObject: 'self' };
 
   worker.compiler = this._compilation.createChildCompiler(
     'worker',
@@ -51,6 +68,9 @@ export function pitch(request) {
     new NodeTargetPlugin().apply(worker.compiler);
   }
 
+  new FetchCompileWasmPlugin({
+    mangleImports: compilerOptions.optimization.mangleWasmImports,
+  }).apply(worker.compiler);
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
     worker.compiler
   );

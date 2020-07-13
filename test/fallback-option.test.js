@@ -1,7 +1,7 @@
 import {
   compile,
   getCompiler,
-  getErrors, getModuleSource,
+  getErrors,
   getResultFromBrowser,
   getWarnings,
 } from './helpers';
