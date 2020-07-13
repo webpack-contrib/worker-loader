@@ -35,6 +35,9 @@
     },
     "publicPath": {
       "type": "string"
+    },
+    "esModule": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false

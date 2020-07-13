@@ -37,9 +37,14 @@ export default function runAsChild(worker, request, options, callback) {
         delete this._compilation.assets[worker.file];
       }
 
+      const esModule =
+        typeof options.esModule !== 'undefined' ? options.esModule : true;
+
       return callback(
         null,
-        `module.exports = function() {\n  return ${worker.factory};\n};`
+        `${
+          esModule ? 'export default' : 'module.exports ='
+        } function() {\n  return ${worker.factory};\n};\n`
       );
     }
 

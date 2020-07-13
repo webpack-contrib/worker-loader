@@ -1,4 +1,4 @@
-const Worker = require('./worker.js');
+import Worker from './worker.js';
 
 const worker = new Worker();
 
