@@ -44,6 +44,10 @@ export default (fixture, loaderOptions = {}, config = {}) => {
   };
 
   if (webpack.version[0] === '5') {
+    if (!fullConfig.experiments) {
+      fullConfig.experiments = {};
+    }
+
     fullConfig.experiments.asyncWebAssembly = true;
   }
 
