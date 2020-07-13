@@ -16,6 +16,7 @@ describe('"inline" option', () => {
     expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
       'module'
     );
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -26,10 +27,7 @@ describe('"inline" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    // TODO need fix absolute path
-    // expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -43,6 +41,7 @@ describe('"inline" option', () => {
     expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
       'module'
     );
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
