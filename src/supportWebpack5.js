@@ -39,7 +39,11 @@ export default function runAsChild(worker, options, callback) {
             options
           );
 
-          const newContent = `module.exports = function() {\n  return ${worker.factory};\n};`;
+          const esModule =
+            typeof options.esModule !== 'undefined' ? options.esModule : true;
+          const newContent = `${
+            esModule ? 'export default' : 'module.exports ='
+          } function() {\n  return ${worker.factory};\n};\n`;
 
           return worker.compiler.cache.store(
             cacheIdent,
