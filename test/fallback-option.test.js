@@ -1,24 +1,18 @@
 import {
   compile,
   getCompiler,
-  getErrors,
-  getModuleSource,
+  getErrors, getModuleSource,
   getResultFromBrowser,
   getWarnings,
 } from './helpers';
 
 describe('"fallback" option', () => {
   it('should work by default', async () => {
-    const compiler = getCompiler('./basic/entry.js', {
-      inline: true,
-      fallback: true,
-    });
+    const compiler = getCompiler('./basic/entry.js', { inline: true });
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    // expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -32,9 +26,7 @@ describe('"fallback" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    // expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -48,9 +40,7 @@ describe('"fallback" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    // expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
+    expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -65,10 +55,7 @@ describe('"fallback" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    // // TODO need fix absolute path
-    // expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
@@ -83,10 +70,7 @@ describe('"fallback" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    // // TODO need fix absolute path
-    // expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
+    expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
