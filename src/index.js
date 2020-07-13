@@ -13,7 +13,7 @@ let FetchCompileWasmPlugin;
 
 try {
   // Webpack 5
-  // eslint-disable-next-line import/no-unresolved, global-require
+  // eslint-disable-next-line global-require, import/no-unresolved
   FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin');
 } catch (ignoreError) {
   // Nothing
@@ -22,7 +22,7 @@ try {
 // Webpack 4
 FetchCompileWasmPlugin =
   FetchCompileWasmPlugin ||
-  // eslint-disable-next-line global-require
+  // eslint-disable-next-line global-require, import/no-unresolved
   require('webpack/lib/web/FetchCompileWasmTemplatePlugin');
 
 export default function loader() {}
