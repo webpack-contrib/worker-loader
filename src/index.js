@@ -10,11 +10,20 @@ import supportWebpack5 from './supportWebpack5';
 import supportWebpack4 from './supportWebpack4';
 
 let FetchCompileWasmPlugin;
+let FetchCompileAsyncWasmPlugin;
 
 try {
-  // Webpack 5
+  // Webpack 5, sync WASM
   // eslint-disable-next-line global-require, import/no-unresolved
   FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin');
+} catch (ignoreError) {
+  // Nothing
+}
+
+try {
+  // Webpack 5, async WASM
+  // eslint-disable-next-line global-require, import/no-unresolved
+  FetchCompileAsyncWasmPlugin = require('webpack/lib/web/FetchCompileAsyncWasmPlugin');
 } catch (ignoreError) {
   // Nothing
 }
@@ -68,9 +77,16 @@ export function pitch(request) {
     new NodeTargetPlugin().apply(worker.compiler);
   }
 
-  new FetchCompileWasmPlugin({
-    mangleImports: compilerOptions.optimization.mangleWasmImports,
-  }).apply(worker.compiler);
+  if (FetchCompileWasmPlugin) {
+    new FetchCompileWasmPlugin({
+      mangleImports: compilerOptions.optimization.mangleWasmImports,
+    }).apply(worker.compiler);
+  }
+
+  if (FetchCompileAsyncWasmPlugin) {
+    new FetchCompileAsyncWasmPlugin().apply(worker.compiler);
+  }
+
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
     worker.compiler
   );

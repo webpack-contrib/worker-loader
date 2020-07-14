@@ -34,17 +34,16 @@ describe('worker-loader', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  // TODO fix for webpack@5, works fine with webpack@4
-  // it('should work with WASM', async () => {
-  //   const compiler = getCompiler('./wasm/entry.js');
-  //   const stats = await compile(compiler);
-  //   const result = await getResultFromBrowser(stats);
-  //
-  //   expect(getModuleSource('./wasm/worker.js', stats)).toMatchSnapshot(
-  //     'module'
-  //   );
-  //   expect(result).toMatchSnapshot('result');
-  //   expect(getWarnings(stats)).toMatchSnapshot('warnings');
-  //   expect(getErrors(stats)).toMatchSnapshot('errors');
-  // });
+  it('should work with WASM', async () => {
+    const compiler = getCompiler('./wasm/entry.js');
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./wasm/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
 });
