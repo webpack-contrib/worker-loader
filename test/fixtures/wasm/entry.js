@@ -1,4 +1,4 @@
-const Worker = require('./worker');
+import Worker from './worker';
 
 const worker = new Worker();
 
@@ -11,8 +11,6 @@ worker.onmessage = function (event) {
 
     document.body.append(result);
   }
-
-  console.log(event)
 
   result.innerText = JSON.stringify(event.data)
 };
