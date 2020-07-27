@@ -46,4 +46,17 @@ describe('worker-loader', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
+
+  it('should work with async chunks', async () => {
+    const compiler = getCompiler('./chunks/entry.js');
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./chunks/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
 });

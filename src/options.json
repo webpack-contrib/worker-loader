@@ -31,6 +31,10 @@
     "publicPath": {
       "type": "string"
     },
+    "chunkFilename": {
+      "type": "string",
+      "minLength": 1
+    },
     "inline": {
       "type": "boolean"
     },
