@@ -24,7 +24,11 @@
         }
       ]
     },
-    "name": {
+    "filename": {
+      "type": "string",
+      "minLength": 1
+    },
+    "publicPath": {
       "type": "string"
     },
     "inline": {
@@ -32,9 +36,6 @@
     },
     "fallback": {
       "type": "boolean"
-    },
-    "publicPath": {
-      "type": "string"
     },
     "esModule": {
       "type": "boolean"

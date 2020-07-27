@@ -7,10 +7,10 @@ import {
   getWarnings,
 } from './helpers';
 
-describe('"name" option', () => {
+describe('"filename" option', () => {
   it('should work', async () => {
     const compiler = getCompiler('./basic/entry.js', {
-      name: 'my-custom-name.js',
+      filename: 'my-custom-name.js',
     });
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
