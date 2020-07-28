@@ -1,3 +1,15 @@
+function getDefaultFilename(filename) {
+  if (typeof filename === 'function') {
+    return filename;
+  }
+
+  return filename.replace(/\.([a-z]+)(\?.+)?$/i, '.worker.$1$2');
+}
+
+function getDefaultChunkFilename(chunkFilename) {
+  return chunkFilename.replace(/\.([a-z]+)(\?.+)?$/i, '.worker.$1$2');
+}
+
 function getWorker(file, content, options) {
   const publicPath =
     typeof options.publicPath === 'undefined'
@@ -37,4 +49,4 @@ function getWorker(file, content, options) {
 }
 
 // eslint-disable-next-line import/prefer-default-export
-export { getWorker };
+export { getDefaultFilename, getDefaultChunkFilename, getWorker };

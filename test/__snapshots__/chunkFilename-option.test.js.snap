@@ -1,5 +1,31 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`"name" option should work and respect the "output.chunkFilename" default value option: errors 1`] = `Array []`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" default value option: module 1`] = `
+"export default function() {
+  return new Worker(__webpack_public_path__ + \\"main.worker.js\\");
+};
+"
+`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" default value option: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" default value option: warnings 1`] = `Array []`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" option value: errors 1`] = `Array []`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" option value: module 1`] = `
+"export default function() {
+  return new Worker(__webpack_public_path__ + \\"main.worker.js\\");
+};
+"
+`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" option value: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
+
+exports[`"name" option should work and respect the "output.chunkFilename" option value: warnings 1`] = `Array []`;
+
 exports[`"name" option should work: errors 1`] = `Array []`;
 
 exports[`"name" option should work: module 1`] = `
