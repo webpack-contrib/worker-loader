@@ -37,6 +37,8 @@ FetchCompileWasmPlugin =
 export default function loader() {}
 
 export function pitch(request) {
+  this.cacheable(false);
+
   const options = loaderUtils.getOptions(this);
 
   validateOptions(schema, options, {
@@ -44,17 +46,10 @@ export function pitch(request) {
     baseDataPath: 'options',
   });
 
-  this.cacheable(false);
-
-  const cb = this.async();
-
   const filename = loaderUtils.interpolateName(
     this,
-    options.name || '[hash].worker.js',
-    {
-      context: options.context || this.rootContext || this.options.context,
-      regExp: options.regExp,
-    }
+    options.filename || '[hash].worker.js',
+    { context: this.rootContext }
   );
 
   const worker = {};
@@ -90,6 +85,8 @@ export function pitch(request) {
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
     worker.compiler
   );
+
+  const cb = this.async();
 
   if (
     worker.compiler.cache &&

@@ -1,4 +1,4 @@
-import Worker from '!../../../src?name=test.worker.js!./my-worker-name.js';
+import Worker from '!../../../src?filename=test.worker.js!./my-worker-name.js';
 
 const worker = new Worker();
 

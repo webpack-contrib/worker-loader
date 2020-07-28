@@ -24,7 +24,7 @@ export default (fixture, loaderOptions = {}, config = {}) => {
           rules: [
             {
               loader: path.resolve(__dirname, '../../src'),
-              options: { name: 'test.worker.js', ...loaderOptions },
+              options: { filename: 'test.worker.js', ...loaderOptions },
             },
           ],
         },
