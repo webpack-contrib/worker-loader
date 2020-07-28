@@ -4,11 +4,16 @@ import validateOptions from 'schema-utils';
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
 import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
+import ExternalsPlugin from 'webpack/lib/ExternalsPlugin';
 
 import schema from './options.json';
 import supportWebpack5 from './supportWebpack5';
 import supportWebpack4 from './supportWebpack4';
-import { getDefaultFilename, getDefaultChunkFilename } from './utils';
+import {
+  getDefaultFilename,
+  getDefaultChunkFilename,
+  getExternalsType,
+} from './utils';
 
 let FetchCompileWasmPlugin;
 let FetchCompileAsyncWasmPlugin;
@@ -56,7 +61,11 @@ export function pitch(request) {
     ? options.chunkFilename
     : getDefaultChunkFilename(compilerOptions.output.chunkFilename);
 
-  worker.options = { filename, chunkFilename, globalObject: 'self' };
+  worker.options = {
+    filename,
+    chunkFilename,
+    globalObject: 'self',
+  };
 
   worker.compiler = this._compilation.createChildCompiler(
     'worker',
@@ -77,6 +86,13 @@ export function pitch(request) {
 
   if (FetchCompileAsyncWasmPlugin) {
     new FetchCompileAsyncWasmPlugin().apply(worker.compiler);
+  }
+
+  if (compilerOptions.externals) {
+    new ExternalsPlugin(
+      getExternalsType(compilerOptions),
+      compilerOptions.externals
+    ).apply(worker.compiler);
   }
 
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(

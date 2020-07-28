@@ -59,4 +59,25 @@ describe('worker-loader', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
+
+  it('should work with "externals"', async () => {
+    const compiler = getCompiler(
+      './external/entry.js',
+      {},
+      {
+        externals: {
+          'my-custom-module': 'navigator',
+        },
+      }
+    );
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./external/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
 });

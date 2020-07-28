@@ -10,6 +10,28 @@ function getDefaultChunkFilename(chunkFilename) {
   return chunkFilename.replace(/\.([a-z]+)(\?.+)?$/i, '.worker.$1$2');
 }
 
+function getExternalsType(compilerOptions) {
+  // For webpack@4
+  if (compilerOptions.output.libraryTarget) {
+    return compilerOptions.output.libraryTarget;
+  }
+
+  // For webpack@5
+  if (compilerOptions.externalsType) {
+    return compilerOptions.externalsType;
+  }
+
+  if (compilerOptions.output.library) {
+    return compilerOptions.output.library.type;
+  }
+
+  if (compilerOptions.output.module) {
+    return 'module';
+  }
+
+  return 'var';
+}
+
 function getWorker(file, content, options) {
   const publicPath =
     typeof options.publicPath === 'undefined'
@@ -48,5 +70,9 @@ function getWorker(file, content, options) {
   })`;
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export { getDefaultFilename, getDefaultChunkFilename, getWorker };
+export {
+  getDefaultFilename,
+  getDefaultChunkFilename,
+  getExternalsType,
+  getWorker,
+};
