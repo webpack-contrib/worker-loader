@@ -54,10 +54,12 @@ export function pitch(request) {
 
   const worker = {};
   const compilerOptions = this._compiler.options || {};
-  const chunkFilename = compilerOptions.output.chunkFilename.replace(
-    /\.([a-z]+)(\?.+)?$/i,
-    '.worker.$1$2'
-  );
+  const chunkFilename = options.chunkFilename
+    ? options.chunkFilename
+    : compilerOptions.output.chunkFilename.replace(
+        /\.([a-z]+)(\?.+)?$/i,
+        '.worker.$1$2'
+      );
 
   worker.options = { filename, chunkFilename, globalObject: 'self' };
 

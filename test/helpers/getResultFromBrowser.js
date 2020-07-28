@@ -47,9 +47,9 @@ export default async function getResultFromBrowser(stats) {
     );
 
   await page.goto(`http://127.0.0.1:${port}/`);
-  await page.waitForSelector('button');
+  await page.waitForSelector('button', { timeout: 90000 });
   await page.click('button');
-  await page.waitForSelector('#result');
+  await page.waitForSelector('#result', { timeout: 90000 });
 
   const addedFromWorkerText = await page.$eval(
     '#result',
