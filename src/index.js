@@ -8,6 +8,7 @@ import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlug
 import schema from './options.json';
 import supportWebpack5 from './supportWebpack5';
 import supportWebpack4 from './supportWebpack4';
+import { getDefaultFilename, getDefaultChunkFilename } from './utils';
 
 let FetchCompileWasmPlugin;
 let FetchCompileAsyncWasmPlugin;
@@ -46,20 +47,14 @@ export function pitch(request) {
     baseDataPath: 'options',
   });
 
-  const filename = loaderUtils.interpolateName(
-    this,
-    options.filename || '[hash].worker.js',
-    { context: this.rootContext }
-  );
-
   const worker = {};
   const compilerOptions = this._compiler.options || {};
+  const filename = options.filename
+    ? options.filename
+    : getDefaultFilename(compilerOptions.output.filename);
   const chunkFilename = options.chunkFilename
     ? options.chunkFilename
-    : compilerOptions.output.chunkFilename.replace(
-        /\.([a-z]+)(\?.+)?$/i,
-        '.worker.$1$2'
-      );
+    : getDefaultChunkFilename(compilerOptions.output.chunkFilename);
 
   worker.options = { filename, chunkFilename, globalObject: 'self' };
 
