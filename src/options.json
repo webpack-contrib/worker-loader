@@ -29,7 +29,14 @@
       "minLength": 1
     },
     "publicPath": {
-      "type": "string"
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "instanceof": "Function"
+        }
+      ]
     },
     "chunkFilename": {
       "type": "string",

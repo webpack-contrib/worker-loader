@@ -10,6 +10,15 @@ export default async function getResultFromBrowser(stats) {
   const port = await getPort();
   const server = app.listen(port);
 
+  app.use(
+    '/public-path-static',
+    express.static(stats.compilation.outputOptions.path)
+  );
+  app.use(
+    '/public-path-static-other',
+    express.static(stats.compilation.outputOptions.path)
+  );
+
   for (const asset of assets) {
     const [route] = asset;
     const existsAt = path.resolve(stats.compilation.outputOptions.path, route);

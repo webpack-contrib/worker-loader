@@ -60,10 +60,14 @@ export function pitch(request) {
   const chunkFilename = options.chunkFilename
     ? options.chunkFilename
     : getDefaultChunkFilename(compilerOptions.output.chunkFilename);
+  const publicPath = options.publicPath
+    ? options.publicPath
+    : compilerOptions.output.publicPath;
 
   worker.options = {
     filename,
     chunkFilename,
+    publicPath,
     globalObject: 'self',
   };
 

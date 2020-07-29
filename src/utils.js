@@ -33,11 +33,7 @@ function getExternalsType(compilerOptions) {
 }
 
 function getWorker(file, content, options) {
-  const publicPath =
-    typeof options.publicPath === 'undefined'
-      ? '__webpack_public_path__'
-      : JSON.stringify(options.publicPath);
-  const publicWorkerPath = `${publicPath} + ${JSON.stringify(file)}`;
+  const publicWorkerPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
 
   let workerConstructor;
   let workerOptions;
