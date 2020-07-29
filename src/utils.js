@@ -33,8 +33,6 @@ function getExternalsType(compilerOptions) {
 }
 
 function getWorker(file, content, options) {
-  const publicWorkerPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
-
   let workerConstructor;
   let workerOptions;
 
@@ -51,19 +49,22 @@ function getWorker(file, content, options) {
       `!!${require.resolve('./runtime/inline.js')}`
     );
 
-    const fallbackWorkerPath =
-      options.fallback === false ? 'null' : publicWorkerPath;
+    let fallbackWorkerPath;
+
+    if (options.inline === 'fallback') {
+      fallbackWorkerPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
+    }
 
     return `require(${InlineWorkerPath})(${JSON.stringify(
       content
-    )}, ${fallbackWorkerPath}, ${JSON.stringify(
-      workerConstructor
-    )}, ${JSON.stringify(workerOptions)})`;
+    )}, ${JSON.stringify(workerConstructor)}, ${JSON.stringify(
+      workerOptions
+    )}, ${fallbackWorkerPath})`;
   }
 
-  return `new ${workerConstructor}(${publicWorkerPath}${
-    workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''
-  })`;
+  return `new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+    file
+  )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''})`;
 }
 
 export {

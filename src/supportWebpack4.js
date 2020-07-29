@@ -33,7 +33,7 @@ export default function runAsChild(worker, request, options, callback) {
         options
       );
 
-      if (options.fallback === false) {
+      if (options.inline === 'no-fallback') {
         delete this._compilation.assets[worker.file];
       }
 

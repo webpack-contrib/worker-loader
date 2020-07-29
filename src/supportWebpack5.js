@@ -24,7 +24,7 @@ export default function runAsChild(worker, options, callback) {
             return callback(getCacheError);
           }
 
-          if (options.fallback === false) {
+          if (options.inline === 'no-fallback') {
             delete this._compilation.assets[worker.file];
           }
 
