@@ -12,7 +12,7 @@ import {
 } from './helpers';
 
 describe('"name" option', () => {
-  it('should work', async () => {
+  it('should work ("string")', async () => {
     const compiler = getCompiler('./chunks/entry.js', {
       chunkFilename: 'test.worker.chunk.js',
     });
@@ -62,7 +62,7 @@ describe('"name" option', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  it('should work and respect the "output.chunkFilename" option value', async () => {
+  it('should work and respect the "output.chunkFilename" option ("string")', async () => {
     const nanoid = customAlphabet('1234567890abcdef', 10);
     const compiler = getCompiler(
       './chunks/entry.js',

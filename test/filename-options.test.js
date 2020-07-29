@@ -12,9 +12,24 @@ import {
 } from './helpers';
 
 describe('"filename" option', () => {
-  it('should work', async () => {
+  it('should work ("string")', async () => {
     const compiler = getCompiler('./chunks/entry.js', {
-      filename: 'my-custom-name.js',
+      filename: '[name].custom.worker.js',
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./chunks/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
+  it('should work ("function")', async () => {
+    const compiler = getCompiler('./chunks/entry.js', {
+      filename: () => '[name].custom.worker.js',
     });
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
@@ -62,7 +77,7 @@ describe('"filename" option', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  it('should work and respect the "output.filename" option value', async () => {
+  it('should work and respect the "output.filename" option ("string")', async () => {
     const nanoid = customAlphabet('1234567890abcdef', 10);
     const compiler = getCompiler(
       './chunks/entry.js',
@@ -70,7 +85,7 @@ describe('"filename" option', () => {
       {
         output: {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
-          filename: '[name].bundle.js',
+          filename: '[name].custom.js',
           chunkFilename: '[name].chunk.js',
         },
         module: {
@@ -98,7 +113,7 @@ describe('"filename" option', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  it('should work and respect the "output.filename" as a function', async () => {
+  it('should work and respect the "output.filename" option ("function")', async () => {
     const nanoid = customAlphabet('1234567890abcdef', 10);
     const compiler = getCompiler(
       './chunks/entry.js',
@@ -108,7 +123,7 @@ describe('"filename" option', () => {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
           filename: (pathData) => {
             if (/worker\.js$/.test(pathData.chunk.entryModule.resource)) {
-              return '[name].worker.js';
+              return '[name].custom.worker.js';
             }
 
             return '[name].js';
@@ -129,12 +144,12 @@ describe('"filename" option', () => {
       }
     );
     const stats = await compile(compiler);
-    // const result = await getResultFromBrowser(stats);
-    //
-    // expect(getModuleSource('./chunks/worker.js', stats)).toMatchSnapshot(
-    //   'module'
-    // );
-    // expect(result).toMatchSnapshot('result');
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./chunks/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
