@@ -24,10 +24,6 @@
         }
       ]
     },
-    "filename": {
-      "type": "string",
-      "minLength": 1
-    },
     "publicPath": {
       "anyOf": [
         {
@@ -38,15 +34,16 @@
         }
       ]
     },
+    "filename": {
+      "type": "string",
+      "minLength": 1
+    },
     "chunkFilename": {
       "type": "string",
       "minLength": 1
     },
     "inline": {
-      "type": "boolean"
-    },
-    "fallback": {
-      "type": "boolean"
+      "enum": ["no-fallback", "fallback"]
     },
     "esModule": {
       "type": "boolean"

@@ -1,29 +1,29 @@
 /* eslint-env browser */
 /* eslint-disable no-undef, no-use-before-define, new-cap */
 
-module.exports = function inline(
-  content,
-  url,
-  workerConstructor,
-  workerOptions
-) {
+const URL = window.URL || window.webkitURL;
+
+module.exports = (content, workerConstructor, workerOptions, url) => {
   try {
     try {
       let blob;
 
       try {
+        // New API
+        blob = new window.Blob([content]);
+      } catch (e) {
         // BlobBuilder = Deprecated, but widely implemented
         const BlobBuilder =
-          BlobBuilder || WebKitBlobBuilder || MozBlobBuilder || MSBlobBuilder;
+          window.BlobBuilder ||
+          window.WebKitBlobBuilder ||
+          window.MozBlobBuilder ||
+          window.MSBlobBuilder;
 
         blob = new BlobBuilder();
 
         blob.append(content);
 
         blob = blob.getBlob();
-      } catch (e) {
-        // New API
-        blob = new Blob([content]);
       }
 
       const objectURL = URL.createObjectURL(blob);
