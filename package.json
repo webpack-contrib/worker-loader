@@ -71,7 +71,7 @@
     "prettier": "^2.0.5",
     "puppeteer": "^5.1.0",
     "standard-version": "^8.0.2",
-    "webpack": "4.43.0"
+    "webpack": "^4.44.0"
   },
   "keywords": [
     "webpack"
