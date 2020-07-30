@@ -1,7 +1,7 @@
-import { getWorker } from './utils';
+import { getWorker, sourceMappingURLRegex } from './utils';
 
 export default function runAsChild(worker, request, options, callback) {
-  const subCache = `subcache ${__dirname} ${request}`;
+  const subCache = `subcache worker-loader ${request}`;
 
   // eslint-disable-next-line no-param-reassign
   worker.compilation = (compilation) => {
@@ -16,7 +16,7 @@ export default function runAsChild(worker, request, options, callback) {
     }
   };
 
-  worker.compiler.hooks.compilation.tap('WorkerLoader', worker.compilation);
+  worker.compiler.hooks.compilation.tap('worker-loader', worker.compilation);
   worker.compiler.runAsChild((error, entries, compilation) => {
     if (error) {
       return callback(error);
@@ -24,17 +24,25 @@ export default function runAsChild(worker, request, options, callback) {
 
     if (entries[0]) {
       // eslint-disable-next-line no-param-reassign, prefer-destructuring
-      worker.file = entries[0].files[0];
+      worker.filename = entries[0].files[0];
 
-      // eslint-disable-next-line no-param-reassign
-      worker.factory = getWorker(
-        worker.file,
-        compilation.assets[worker.file].source(),
-        options
-      );
+      let workerSource = compilation.assets[worker.filename].source();
 
       if (options.inline === 'no-fallback') {
-        delete this._compilation.assets[worker.file];
+        // Remove `/* sourceMappingURL=url */` comment
+        workerSource = workerSource.replace(sourceMappingURLRegex, '');
+      }
+
+      // eslint-disable-next-line no-param-reassign
+      worker.factory = getWorker(worker.filename, workerSource, options);
+
+      if (options.inline === 'no-fallback') {
+        delete this._compilation.assets[worker.filename];
+
+        // TODO improve this, we should store generated source maps files for file in `assetInfo`
+        if (this._compilation.assets[`${worker.filename}.map`]) {
+          delete this._compilation.assets[`${worker.filename}.map`];
+        }
       }
 
       const esModule =
