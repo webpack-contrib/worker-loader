@@ -45,7 +45,12 @@ export default function runAsChild(worker, options, callback) {
           }
 
           // eslint-disable-next-line no-param-reassign
-          worker.factory = getWorker(worker.filename, workerSource, options);
+          worker.factory = getWorker(
+            this,
+            worker.filename,
+            workerSource,
+            options
+          );
 
           const esModule =
             typeof options.esModule !== 'undefined' ? options.esModule : true;

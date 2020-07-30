@@ -8,8 +8,7 @@ export default function runAsChild(worker, request, options, callback) {
     request
   )}`;
 
-  // eslint-disable-next-line no-param-reassign
-  worker.compilation = (compilation) => {
+  worker.compiler.hooks.compilation.tap('worker-loader', (compilation) => {
     if (compilation.cache) {
       if (!compilation.cache[subCache]) {
         // eslint-disable-next-line no-param-reassign
@@ -19,9 +18,8 @@ export default function runAsChild(worker, request, options, callback) {
       // eslint-disable-next-line no-param-reassign
       compilation.cache = compilation.cache[subCache];
     }
-  };
+  });
 
-  worker.compiler.hooks.compilation.tap('worker-loader', worker.compilation);
   worker.compiler.runAsChild((error, entries, compilation) => {
     if (error) {
       return callback(error);
@@ -39,7 +37,7 @@ export default function runAsChild(worker, request, options, callback) {
       }
 
       // eslint-disable-next-line no-param-reassign
-      worker.factory = getWorker(worker.filename, workerSource, options);
+      worker.factory = getWorker(this, worker.filename, workerSource, options);
 
       if (options.inline === 'no-fallback') {
         delete this._compilation.assets[worker.filename];
