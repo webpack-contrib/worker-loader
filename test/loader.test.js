@@ -80,4 +80,37 @@ describe('worker-loader', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
+
+  // TODO broken on webpack@5
+  // it.skip('should work and respect the "devtool" option ("source-map" value)', async () => {
+  //   const compiler = getCompiler(
+  //     './basic/entry.js',
+  //     {},
+  //     { devtool: 'source-map' }
+  //   );
+  //   const stats = await compile(compiler);
+  //   const result = await getResultFromBrowser(stats);
+  //
+  //   expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
+  //     'module'
+  //   );
+  //   expect(stats.compilation.assets['test.worker.js.map']).toBeDefined();
+  //   expect(result).toMatchSnapshot('result');
+  //   expect(getWarnings(stats)).toMatchSnapshot('warnings');
+  //   expect(getErrors(stats)).toMatchSnapshot('errors');
+  // });
+
+  it('should work and respect the "devtool" option ("false" value)', async () => {
+    const compiler = getCompiler('./basic/entry.js', {}, { devtool: false });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./basic/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(stats.compilation.assets['test.worker.js.map']).toBeUndefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
 });

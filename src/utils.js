@@ -32,7 +32,7 @@ function getExternalsType(compilerOptions) {
   return 'var';
 }
 
-function getWorker(file, content, options) {
+function getWorker(workerFilename, workerSource, options) {
   let workerConstructor;
   let workerOptions;
 
@@ -52,24 +52,49 @@ function getWorker(file, content, options) {
     let fallbackWorkerPath;
 
     if (options.inline === 'fallback') {
-      fallbackWorkerPath = `__webpack_public_path__ + ${JSON.stringify(file)}`;
+      fallbackWorkerPath = `__webpack_public_path__ + ${JSON.stringify(
+        workerFilename
+      )}`;
     }
 
     return `require(${InlineWorkerPath})(${JSON.stringify(
-      content
+      workerSource
     )}, ${JSON.stringify(workerConstructor)}, ${JSON.stringify(
       workerOptions
     )}, ${fallbackWorkerPath})`;
   }
 
   return `new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
-    file
+    workerFilename
   )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''})`;
 }
+
+// Matches only the last occurrence of sourceMappingURL
+const innerRegex = /\s*[#@]\s*sourceMappingURL\s*=\s*([^\s'"]*)\s*/;
+
+/* eslint-disable prefer-template */
+const sourceMappingURLRegex = RegExp(
+  '(?:' +
+    '/\\*' +
+    '(?:\\s*\r?\n(?://)?)?' +
+    '(?:' +
+    innerRegex.source +
+    ')' +
+    '\\s*' +
+    '\\*/' +
+    '|' +
+    '//(?:' +
+    innerRegex.source +
+    ')' +
+    ')' +
+    '\\s*'
+);
+/* eslint-enable prefer-template */
 
 export {
   getDefaultFilename,
   getDefaultChunkFilename,
   getExternalsType,
   getWorker,
+  sourceMappingURLRegex,
 };
