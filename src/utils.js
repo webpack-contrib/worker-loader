@@ -1,3 +1,5 @@
+import { stringifyRequest } from 'loader-utils';
+
 function getDefaultFilename(filename) {
   if (typeof filename === 'function') {
     return filename;
@@ -32,7 +34,7 @@ function getExternalsType(compilerOptions) {
   return 'var';
 }
 
-function getWorker(workerFilename, workerSource, options) {
+function getWorker(loaderContext, workerFilename, workerSource, options) {
   let workerConstructor;
   let workerOptions;
 
@@ -45,7 +47,8 @@ function getWorker(workerFilename, workerSource, options) {
   }
 
   if (options.inline) {
-    const InlineWorkerPath = JSON.stringify(
+    const InlineWorkerPath = stringifyRequest(
+      loaderContext,
       `!!${require.resolve('./runtime/inline.js')}`
     );
 
