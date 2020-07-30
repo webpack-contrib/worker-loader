@@ -1,4 +1,4 @@
-import loaderUtils from 'loader-utils';
+import { getOptions } from 'loader-utils';
 import validateOptions from 'schema-utils';
 
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
@@ -45,7 +45,7 @@ export default function loader() {}
 export function pitch(request) {
   this.cacheable(false);
 
-  const options = loaderUtils.getOptions(this);
+  const options = getOptions(this);
 
   validateOptions(schema, options, {
     name: 'Worker Loader',
@@ -72,7 +72,7 @@ export function pitch(request) {
   };
 
   worker.compiler = this._compilation.createChildCompiler(
-    'worker',
+    `worker-loader ${request}`,
     worker.options
   );
 
