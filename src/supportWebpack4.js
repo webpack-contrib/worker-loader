@@ -1,7 +1,12 @@
+import { stringifyRequest } from 'loader-utils';
+
 import { getWorker, sourceMappingURLRegex } from './utils';
 
 export default function runAsChild(worker, request, options, callback) {
-  const subCache = `subcache worker-loader ${request}`;
+  const subCache = `subcache worker-loader ${stringifyRequest(
+    { context: this.rootContext },
+    request
+  )}`;
 
   // eslint-disable-next-line no-param-reassign
   worker.compilation = (compilation) => {
