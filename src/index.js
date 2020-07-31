@@ -111,8 +111,8 @@ export function pitch(request) {
     workerContext.compiler.cache &&
     typeof workerContext.compiler.cache.get === 'function'
   ) {
-    supportWebpack5.call(this, workerContext, options, cb);
+    supportWebpack5(this, workerContext, options, cb);
   } else {
-    supportWebpack4.call(this, workerContext, options, cb);
+    supportWebpack4(this, workerContext, options, cb);
   }
 }

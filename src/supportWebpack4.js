@@ -2,9 +2,14 @@ import { stringifyRequest } from 'loader-utils';
 
 import { getWorker, sourceMappingURLRegex } from './utils';
 
-export default function runAsChild(workerContext, options, callback) {
+export default function runAsChild(
+  loaderContext,
+  workerContext,
+  options,
+  callback
+) {
   const subCache = `subcache worker-loader ${stringifyRequest(
-    { context: this.rootContext },
+    { context: loaderContext.rootContext },
     workerContext.request
   )}`;
 
@@ -41,18 +46,25 @@ export default function runAsChild(workerContext, options, callback) {
 
       // eslint-disable-next-line no-param-reassign
       workerContext.factory = getWorker(
-        this,
+        loaderContext,
         workerContext.filename,
         workerSource,
         options
       );
 
       if (options.inline === 'no-fallback') {
-        delete this._compilation.assets[workerContext.filename];
+        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+        delete loaderContext._compilation.assets[workerContext.filename];
 
-        // TODO improve this, we should store generated source maps files for file in `assetInfo`
-        if (this._compilation.assets[`${workerContext.filename}.map`]) {
-          delete this._compilation.assets[`${workerContext.filename}.map`];
+        // TODO improve it, we should store generated source maps files for file in `assetInfo`
+        if (
+          // eslint-disable-next-line no-underscore-dangle
+          loaderContext._compilation.assets[`${workerContext.filename}.map`]
+        ) {
+          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+          delete loaderContext._compilation.assets[
+            `${workerContext.filename}.map`
+          ];
         }
       }
 
