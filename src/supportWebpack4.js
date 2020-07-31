@@ -1,5 +1,3 @@
-import { stringifyRequest } from 'loader-utils';
-
 import { workerGenerator, sourceMappingURLRegex } from './utils';
 
 export default function runAsChild(
@@ -8,26 +6,6 @@ export default function runAsChild(
   options,
   callback
 ) {
-  const subCache = `subcache worker-loader ${stringifyRequest(
-    { context: loaderContext.rootContext },
-    workerContext.request
-  )}`;
-
-  workerContext.compiler.hooks.compilation.tap(
-    'worker-loader',
-    (compilation) => {
-      if (compilation.cache) {
-        if (!compilation.cache[subCache]) {
-          // eslint-disable-next-line no-param-reassign
-          compilation.cache[subCache] = {};
-        }
-
-        // eslint-disable-next-line no-param-reassign
-        compilation.cache = compilation.cache[subCache];
-      }
-    }
-  );
-
   workerContext.compiler.runAsChild((error, entries, compilation) => {
     if (error) {
       return callback(error);

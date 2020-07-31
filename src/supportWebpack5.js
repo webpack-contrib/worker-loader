@@ -1,3 +1,5 @@
+import { stringifyRequest } from 'loader-utils';
+
 import { workerGenerator, sourceMappingURLRegex } from './utils';
 
 export default function runAsChild(
@@ -16,9 +18,14 @@ export default function runAsChild(
 
     if (entries[0]) {
       const [workerFilename] = [...entries[0].files];
-      const cacheIdent = `${workerContext.compiler.compilerPath}/worker-loader/${__dirname}/${loaderContext.resource}`;
+      const requestIdent = stringifyRequest(
+        { context: loaderContext.rootContext },
+        workerContext.request
+      );
+      const cacheIdent = `${workerContext.compiler.compilerPath}/worker-loader|${requestIdent}`;
       const cacheETag = getLazyHashedEtag(compilation.assets[workerFilename]);
 
+      // TODO not working, need fix on webpack@5 side
       return workerContext.compiler.cache.get(
         cacheIdent,
         cacheETag,
