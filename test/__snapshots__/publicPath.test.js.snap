@@ -5,7 +5,7 @@ exports[`"publicPath" option should work and respect the "output.publicPath" opt
 exports[`"publicPath" option should work and respect the "output.publicPath" option default value: module 1`] = `
 "export default function() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-};
+}
 "
 `;
 
@@ -18,7 +18,7 @@ exports[`"publicPath" option should work and respect the "output.publicPath" opt
 exports[`"publicPath" option should work and respect the "output.publicPath" option value ("function"): module 1`] = `
 "export default function() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-};
+}
 "
 `;
 
@@ -31,7 +31,7 @@ exports[`"publicPath" option should work and respect the "output.publicPath" opt
 exports[`"publicPath" option should work and respect the "output.publicPath" option value ("string"): module 1`] = `
 "export default function() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-};
+}
 "
 `;
 
@@ -44,7 +44,7 @@ exports[`"publicPath" option should work and respect the "publicPath" option ("f
 exports[`"publicPath" option should work and respect the "publicPath" option ("function"): module 1`] = `
 "export default function() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-};
+}
 "
 `;
 
@@ -57,7 +57,7 @@ exports[`"publicPath" option should work and respect the "publicPath" option ("s
 exports[`"publicPath" option should work and respect the "publicPath" option ("string"): module 1`] = `
 "export default function() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-};
+}
 "
 `;
 
@@ -70,7 +70,7 @@ exports[`"publicPath" option should work and use "__webpack_public_path__" by de
 exports[`"publicPath" option should work and use "__webpack_public_path__" by default: module 1`] = `
 "export default function() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-};
+}
 "
 `;
 
