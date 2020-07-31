@@ -52,7 +52,7 @@ export function pitch(request) {
     baseDataPath: 'options',
   });
 
-  const worker = {};
+  const workerContext = {};
   const compilerOptions = this._compiler.options || {};
   const filename = options.filename
     ? options.filename
@@ -64,53 +64,55 @@ export function pitch(request) {
     ? options.publicPath
     : compilerOptions.output.publicPath;
 
-  worker.options = {
+  workerContext.options = {
     filename,
     chunkFilename,
     publicPath,
     globalObject: 'self',
   };
 
-  worker.compiler = this._compilation.createChildCompiler(
+  workerContext.compiler = this._compilation.createChildCompiler(
     `worker-loader ${request}`,
-    worker.options
+    workerContext.options
   );
 
-  new WebWorkerTemplatePlugin(worker.options).apply(worker.compiler);
+  new WebWorkerTemplatePlugin().apply(workerContext.compiler);
 
   if (this.target !== 'webworker' && this.target !== 'web') {
-    new NodeTargetPlugin().apply(worker.compiler);
+    new NodeTargetPlugin().apply(workerContext.compiler);
   }
 
   if (FetchCompileWasmPlugin) {
     new FetchCompileWasmPlugin({
       mangleImports: compilerOptions.optimization.mangleWasmImports,
-    }).apply(worker.compiler);
+    }).apply(workerContext.compiler);
   }
 
   if (FetchCompileAsyncWasmPlugin) {
-    new FetchCompileAsyncWasmPlugin().apply(worker.compiler);
+    new FetchCompileAsyncWasmPlugin().apply(workerContext.compiler);
   }
 
   if (compilerOptions.externals) {
     new ExternalsPlugin(
       getExternalsType(compilerOptions),
       compilerOptions.externals
-    ).apply(worker.compiler);
+    ).apply(workerContext.compiler);
   }
 
   new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
-    worker.compiler
+    workerContext.compiler
   );
+
+  workerContext.request = request;
 
   const cb = this.async();
 
   if (
-    worker.compiler.cache &&
-    typeof worker.compiler.cache.get === 'function'
+    workerContext.compiler.cache &&
+    typeof workerContext.compiler.cache.get === 'function'
   ) {
-    supportWebpack5.call(this, worker, options, cb);
+    supportWebpack5.call(this, workerContext, options, cb);
   } else {
-    supportWebpack4.call(this, worker, request, options, cb);
+    supportWebpack4.call(this, workerContext, options, cb);
   }
 }
