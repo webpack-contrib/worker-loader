@@ -34,7 +34,7 @@ function getExternalsType(compilerOptions) {
   return 'var';
 }
 
-function getWorker(loaderContext, workerFilename, workerSource, options) {
+function workerGenerator(loaderContext, workerFilename, workerSource, options) {
   let workerConstructor;
   let workerOptions;
 
@@ -98,6 +98,6 @@ export {
   getDefaultFilename,
   getDefaultChunkFilename,
   getExternalsType,
-  getWorker,
+  workerGenerator,
   sourceMappingURLRegex,
 };

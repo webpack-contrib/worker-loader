@@ -1,6 +1,6 @@
 import { stringifyRequest } from 'loader-utils';
 
-import { getWorker, sourceMappingURLRegex } from './utils';
+import { workerGenerator, sourceMappingURLRegex } from './utils';
 
 export default function runAsChild(
   loaderContext,
@@ -45,7 +45,7 @@ export default function runAsChild(
       }
 
       // eslint-disable-next-line no-param-reassign
-      workerContext.factory = getWorker(
+      workerContext.factory = workerGenerator(
         loaderContext,
         workerContext.filename,
         workerSource,
