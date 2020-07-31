@@ -35,7 +35,6 @@ function getExternalsType(compilerOptions) {
 }
 
 function workerGenerator(loaderContext, workerFilename, workerSource, options) {
-  let workerCode;
   let workerConstructor;
   let workerOptions;
 
@@ -46,6 +45,9 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
   } else {
     ({ type: workerConstructor, options: workerOptions } = options.worker);
   }
+
+  const esModule =
+    typeof options.esModule !== 'undefined' ? options.esModule : true;
 
   if (options.inline) {
     const InlineWorkerPath = stringifyRequest(
@@ -61,23 +63,27 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
       )}`;
     }
 
-    workerCode = `require(${InlineWorkerPath})(${JSON.stringify(
+    return `
+${
+  esModule
+    ? `import worker from ${InlineWorkerPath};`
+    : `var worker = require(${InlineWorkerPath});`
+}
+
+${
+  esModule ? 'export default' : 'module.exports ='
+} function() {\n  return worker(${JSON.stringify(
       workerSource
     )}, ${JSON.stringify(workerConstructor)}, ${JSON.stringify(
       workerOptions
-    )}, ${fallbackWorkerPath})`;
-  } else {
-    workerCode = `new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
-      workerFilename
-    )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''})`;
+    )}, ${fallbackWorkerPath});\n}\n`;
   }
-
-  const esModule =
-    typeof options.esModule !== 'undefined' ? options.esModule : true;
 
   return `${
     esModule ? 'export default' : 'module.exports ='
-  } function() {\n  return ${workerCode};\n};\n`;
+  } function() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+    workerFilename
+  )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''});\n}\n`;
 }
 
 // Matches only the last occurrence of sourceMappingURL

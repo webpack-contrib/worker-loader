@@ -141,4 +141,80 @@ describe('"inline" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
+
+  it('should work with "no-fallback" value and "esModule" with "false" value', async () => {
+    const compiler = getCompiler('./basic/entry.js', {
+      inline: 'no-fallback',
+      esModule: false,
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+    const moduleSource = getModuleSource('./basic/worker.js', stats);
+
+    expect(moduleSource.indexOf('inline.js') > 0).toBe(true);
+    expect(
+      moduleSource.indexOf('__webpack_public_path__ + "test.worker.js"') === -1
+    ).toBe(true);
+    expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
+  it('should work with "no-fallback" value and "esModule" with "true" value', async () => {
+    const compiler = getCompiler('./basic/entry.js', {
+      inline: 'no-fallback',
+      esModule: true,
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+    const moduleSource = getModuleSource('./basic/worker.js', stats);
+
+    expect(moduleSource.indexOf('inline.js') > 0).toBe(true);
+    expect(
+      moduleSource.indexOf('__webpack_public_path__ + "test.worker.js"') === -1
+    ).toBe(true);
+    expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
+  it('should work with "fallback" value and "esModule" with "false" value', async () => {
+    const compiler = getCompiler('./basic/entry.js', {
+      inline: 'fallback',
+      esModule: false,
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+    const moduleSource = getModuleSource('./basic/worker.js', stats);
+
+    expect(moduleSource.indexOf('inline.js') > 0).toBe(true);
+    expect(
+      moduleSource.indexOf('__webpack_public_path__ + "test.worker.js"') > 0
+    ).toBe(true);
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
+  it('should work with "fallback" value and "esModule" with "true" value', async () => {
+    const compiler = getCompiler('./basic/entry.js', {
+      inline: 'fallback',
+      esModule: true,
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+    const moduleSource = getModuleSource('./basic/worker.js', stats);
+
+    expect(moduleSource.indexOf('inline.js') > 0).toBe(true);
+    expect(
+      moduleSource.indexOf('__webpack_public_path__ + "test.worker.js"') > 0
+    ).toBe(true);
+    expect(stats.compilation.assets['test.worker.js']).toBeDefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
 });
