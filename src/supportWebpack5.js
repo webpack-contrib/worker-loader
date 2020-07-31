@@ -50,30 +50,23 @@ export default function runAsChild(
             workerSource = workerSource.replace(sourceMappingURLRegex, '');
           }
 
-          // eslint-disable-next-line no-param-reassign
-          workerContext.factory = workerGenerator(
+          const workerCode = workerGenerator(
             loaderContext,
             workerFilename,
             workerSource,
             options
           );
 
-          const esModule =
-            typeof options.esModule !== 'undefined' ? options.esModule : true;
-          const newContent = `${
-            esModule ? 'export default' : 'module.exports ='
-          } function() {\n  return ${workerContext.factory};\n};\n`;
-
           return workerContext.compiler.cache.store(
             cacheIdent,
             cacheETag,
-            newContent,
+            workerCode,
             (storeCacheError) => {
               if (storeCacheError) {
                 return callback(storeCacheError);
               }
 
-              return callback(null, newContent);
+              return callback(null, workerCode);
             }
           );
         }

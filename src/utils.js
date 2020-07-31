@@ -35,6 +35,7 @@ function getExternalsType(compilerOptions) {
 }
 
 function workerGenerator(loaderContext, workerFilename, workerSource, options) {
+  let workerCode;
   let workerConstructor;
   let workerOptions;
 
@@ -60,16 +61,23 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
       )}`;
     }
 
-    return `require(${InlineWorkerPath})(${JSON.stringify(
+    workerCode = `require(${InlineWorkerPath})(${JSON.stringify(
       workerSource
     )}, ${JSON.stringify(workerConstructor)}, ${JSON.stringify(
       workerOptions
     )}, ${fallbackWorkerPath})`;
+  } else {
+    workerCode = `new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+      workerFilename
+    )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''})`;
   }
 
-  return `new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
-    workerFilename
-  )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''})`;
+  const esModule =
+    typeof options.esModule !== 'undefined' ? options.esModule : true;
+
+  return `${
+    esModule ? 'export default' : 'module.exports ='
+  } function() {\n  return ${workerCode};\n};\n`;
 }
 
 // Matches only the last occurrence of sourceMappingURL
