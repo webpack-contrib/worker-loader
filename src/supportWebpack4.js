@@ -40,6 +40,16 @@ export default function runAsChild(
       let workerSource = compilation.assets[workerFilename].source();
 
       if (options.inline === 'no-fallback') {
+        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+        delete loaderContext._compilation.assets[workerFilename];
+
+        // TODO improve it, we should store generated source maps files for file in `assetInfo`
+        // eslint-disable-next-line no-underscore-dangle
+        if (loaderContext._compilation.assets[`${workerFilename}.map`]) {
+          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
+          delete loaderContext._compilation.assets[`${workerFilename}.map`];
+        }
+
         // Remove `/* sourceMappingURL=url */` comment
         workerSource = workerSource.replace(sourceMappingURLRegex, '');
       }
@@ -50,18 +60,6 @@ export default function runAsChild(
         workerSource,
         options
       );
-
-      if (options.inline === 'no-fallback') {
-        // eslint-disable-next-line no-underscore-dangle, no-param-reassign
-        delete loaderContext._compilation.assets[workerFilename];
-
-        // TODO improve it, we should store generated source maps files for file in `assetInfo`
-        // eslint-disable-next-line no-underscore-dangle
-        if (loaderContext._compilation.assets[`${workerFilename}.map`]) {
-          // eslint-disable-next-line no-underscore-dangle, no-param-reassign
-          delete loaderContext._compilation.assets[`${workerFilename}.map`];
-        }
-      }
 
       return callback(null, workerCode);
     }
