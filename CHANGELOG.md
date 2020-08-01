@@ -1,6 +1,56 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [3.0.0](https://github.com/webpack-contrib/worker-loader/compare/v2.0.0...v3.0.0) (2020-08-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* minimum supported Node.js version is `10.13`
+* minimum supported webpack version is `4`
+* the `name` option was renamed to the `filename` option
+* switch on ES module syntax by default, use the `esModule` option if you need backward compatibility with Common JS modules
+* the `fallback` option was removed in favor the `inline` option, the `inline` option accepts only `fallback` and `no-fallback` values
+* the `publicPath` option default value based on `output.publicPath`
+* the `filename` option default value based on `output.filename`
+
+
+### Features
+
+* added the `worker` option (replaces [#178](https://github.com/webpack-contrib/worker-loader/issues/178)) ([#247](https://github.com/webpack-contrib/worker-loader/issues/247)) ([f03498d](https://github.com/webpack-contrib/worker-loader/commit/f03498d22c6a3737b724c51bdfb56627e33b57b2))
+* added the `chunkFilename` option, default value based on `output.chunkFilename` ([905ed7b](https://github.com/webpack-contrib/worker-loader/commit/905ed7b028bbcb646050a1d09096dbe2fc1feb42))
+* added the `esModule` option
+* allow to use any web worker constructor and options for constructor
+* the `publicPath` option can be `Function`
+* the `filename` (previously `name`) option can be `Function`
+
+
+### Bug Fixes
+
+* support `WASM` ([152634c](https://github.com/webpack-contrib/worker-loader/commit/152634c0d8866d248ced3b6e5ac02761c978ae1a))
+* respect `externals` ([#264](https://github.com/webpack-contrib/worker-loader/issues/264)) ([1e761ed](https://github.com/webpack-contrib/worker-loader/commit/1e761edcbfc8b214ae3a19f44f401f20ab07b718))
+* memory leak for inline web workers ([#252](https://github.com/webpack-contrib/worker-loader/issues/252)) ([f729e34](https://github.com/webpack-contrib/worker-loader/commit/f729e342922180bf3b375a8d2ea6e1b72ca95d74))
+* source maps when `inline` using without fallback ([#269](https://github.com/webpack-contrib/worker-loader/issues/269)) ([5047abb](https://github.com/webpack-contrib/worker-loader/commit/5047abb2f9b97ff4706069716df8e718bee9de43))
+* the `publicPath` options works fine with async web workers chunks
+* compatibility with webpack@5 ([#259](https://github.com/webpack-contrib/worker-loader/issues/259)) ([e0d9887](https://github.com/webpack-contrib/worker-loader/commit/e0d98876c6ee83bc48ea9589b38437590878e9d9))
+* always use `self` as global object
+* compatibility with `webpack-dev-server`
+* increase performance
+
+
+## [2.0.0](https://github.com/webpack-contrib/worker-loader/compare/v1.1.1...v2.0.0) (2018-05-27)
+
+## Updates
+
+- refactor(index): remove `Tapable.apply` calls (#121)
+- docs: use ES6 import in TypeScript README example (#140)  …
+- docs(README): add note about omitted hashes (`options.name`) (#131)
+- fix(package): homepage URL typo (#130)
+
+## Breaking Changes
+
+Drops support for Webpack versions < 3.0.0
 
 <a name="1.1.1"></a>
 ## [1.1.1](https://github.com/webpack-contrib/worker-loader/compare/v1.1.0...v1.1.1) (2018-02-25)
