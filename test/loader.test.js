@@ -47,7 +47,7 @@ describe('worker-loader', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  it.only('should work with async chunks', async () => {
+  it('should work with async chunks', async () => {
     const compiler = getCompiler('./chunks/entry.js');
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
