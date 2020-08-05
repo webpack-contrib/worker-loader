@@ -20,7 +20,7 @@ export default (fixture, loaderOptions = {}, config = {}) => {
     module: {
       rules: [
         {
-          test: /worker\.js$/i,
+          test: /(worker|TypeDetection)\.js$/i,
           rules: [
             {
               loader: path.resolve(__dirname, '../../src'),
@@ -48,8 +48,6 @@ export default (fixture, loaderOptions = {}, config = {}) => {
       fullConfig.experiments = {};
     }
 
-    fullConfig.experiments.importAsync = true;
-    fullConfig.experiments.importAwait = true;
     fullConfig.experiments.asyncWebAssembly = true;
   }
 
