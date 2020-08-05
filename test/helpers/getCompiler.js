@@ -48,8 +48,6 @@ export default (fixture, loaderOptions = {}, config = {}) => {
       fullConfig.experiments = {};
     }
 
-    fullConfig.experiments.importAsync = true;
-    fullConfig.experiments.importAwait = true;
     fullConfig.experiments.asyncWebAssembly = true;
   }
 
