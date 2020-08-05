@@ -42,6 +42,10 @@ export default function runAsChild(
       return callback(null, workerCode);
     }
 
-    return callback(null, null);
+    return callback(
+      new Error(
+        `Failed to compile web worker "${workerContext.request}" request`
+      )
+    );
   });
 }
