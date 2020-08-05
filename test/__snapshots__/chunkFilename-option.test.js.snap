@@ -17,7 +17,7 @@ exports[`"name" option should work and respect the "output.chunkFilename" defaul
 
 exports[`"name" option should work and respect the "output.chunkFilename" default value option: module 1`] = `
 "export default function() {
-  return new Worker(__webpack_public_path__ + \\"main.worker.js\\");
+  return new Worker(__webpack_public_path__ + \\"worker.worker.js\\");
 }
 "
 `;
@@ -30,7 +30,7 @@ exports[`"name" option should work and respect the "output.chunkFilename" option
 
 exports[`"name" option should work and respect the "output.chunkFilename" option ("string"): module 1`] = `
 "export default function() {
-  return new Worker(__webpack_public_path__ + \\"main.worker.js\\");
+  return new Worker(__webpack_public_path__ + \\"worker.worker.js\\");
 }
 "
 `;
