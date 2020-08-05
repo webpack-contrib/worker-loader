@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { getOptions } from 'loader-utils';
 import validateOptions from 'schema-utils';
 
@@ -99,9 +101,11 @@ export function pitch(request) {
     ).apply(workerContext.compiler);
   }
 
-  new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(
-    workerContext.compiler
-  );
+  new SingleEntryPlugin(
+    this.context,
+    `!!${request}`,
+    path.parse(this.resourcePath).name
+  ).apply(workerContext.compiler);
 
   workerContext.request = request;
 

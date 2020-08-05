@@ -47,7 +47,7 @@ describe('worker-loader', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
-  it('should work with async chunks', async () => {
+  it.only('should work with async chunks', async () => {
     const compiler = getCompiler('./chunks/entry.js');
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
@@ -109,6 +109,21 @@ describe('worker-loader', () => {
       'module'
     );
     expect(stats.compilation.assets['test.worker.js.map']).toBeUndefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
+  it('should work and have the same base file name as the source files', async () => {
+    const compiler = getCompiler('./name/entry.js', {
+      filename: '[name].worker.js',
+    });
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(getModuleSource('./name/TypeDetection.js', stats)).toMatchSnapshot(
+      'module'
+    );
     expect(result).toMatchSnapshot('result');
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');

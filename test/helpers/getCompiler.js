@@ -20,7 +20,7 @@ export default (fixture, loaderOptions = {}, config = {}) => {
     module: {
       rules: [
         {
-          test: /worker\.js$/i,
+          test: /(worker|TypeDetection)\.js$/i,
           rules: [
             {
               loader: path.resolve(__dirname, '../../src'),

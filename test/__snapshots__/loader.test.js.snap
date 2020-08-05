@@ -1,44 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`worker-loader should work and respect the "devtool" option ("false" value): errors 1`] = `Array []`;
-
-exports[`worker-loader should work and respect the "devtool" option ("false" value): module 1`] = `
-"export default function() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-}
-"
-`;
-
-exports[`worker-loader should work and respect the "devtool" option ("false" value): result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
-
-exports[`worker-loader should work and respect the "devtool" option ("false" value): warnings 1`] = `Array []`;
-
-exports[`worker-loader should work with "externals": errors 1`] = `Array []`;
-
-exports[`worker-loader should work with "externals": module 1`] = `
-"export default function() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-}
-"
-`;
-
-exports[`worker-loader should work with "externals": result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
-
-exports[`worker-loader should work with "externals": warnings 1`] = `Array []`;
-
-exports[`worker-loader should work with WASM: errors 1`] = `Array []`;
-
-exports[`worker-loader should work with WASM: module 1`] = `
-"export default function() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-}
-"
-`;
-
-exports[`worker-loader should work with WASM: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":30}"`;
-
-exports[`worker-loader should work with WASM: warnings 1`] = `Array []`;
-
 exports[`worker-loader should work with async chunks: errors 1`] = `Array []`;
 
 exports[`worker-loader should work with async chunks: module 1`] = `
@@ -51,29 +12,3 @@ exports[`worker-loader should work with async chunks: module 1`] = `
 exports[`worker-loader should work with async chunks: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
 
 exports[`worker-loader should work with async chunks: warnings 1`] = `Array []`;
-
-exports[`worker-loader should work with inline syntax: errors 1`] = `Array []`;
-
-exports[`worker-loader should work with inline syntax: module 1`] = `
-"export default function() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-}
-"
-`;
-
-exports[`worker-loader should work with inline syntax: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
-
-exports[`worker-loader should work with inline syntax: warnings 1`] = `Array []`;
-
-exports[`worker-loader should work: errors 1`] = `Array []`;
-
-exports[`worker-loader should work: module 1`] = `
-"export default function() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-}
-"
-`;
-
-exports[`worker-loader should work: result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
-
-exports[`worker-loader should work: warnings 1`] = `Array []`;
