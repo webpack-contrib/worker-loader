@@ -1,8 +1,6 @@
 /* eslint-env browser */
 /* eslint-disable no-undef, no-use-before-define, new-cap */
 
-const URL = window.URL || window.webkitURL;
-
 module.exports = (content, workerConstructor, workerOptions, url) => {
   try {
     try {
@@ -25,7 +23,8 @@ module.exports = (content, workerConstructor, workerOptions, url) => {
 
         blob = blob.getBlob();
       }
-
+      
+      const URL = window.URL || window.webkitURL;
       const objectURL = URL.createObjectURL(blob);
       const worker = new window[workerConstructor](objectURL, workerOptions);
 
