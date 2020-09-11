@@ -71,6 +71,9 @@ describe('"inline" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
     const moduleSource = getModuleSource('./basic/worker.js', stats);
+    const sourceUrlInternalIndex = moduleSource.indexOf(
+      'sourceURL=webpack-internal:///./basic/worker.js'
+    );
 
     expect(moduleSource.indexOf('inline.js') > 0).toBe(true);
     expect(
@@ -81,10 +84,12 @@ describe('"inline" option', () => {
         'sourceMappingURL=data:application/json;charset=utf-8;base64,'
       ) === -1
     ).toBe(true);
+    expect(sourceUrlInternalIndex >= 0).toBe(true);
     expect(
-      moduleSource.indexOf(
-        '//# sourceURL=webpack-internal:///./basic/worker.js'
-      ) >= 0
+      moduleSource.lastIndexOf('//', sourceUrlInternalIndex) >
+        moduleSource.lastIndexOf('\\n', sourceUrlInternalIndex) ||
+        moduleSource.lastIndexOf('/*', sourceUrlInternalIndex) >
+          moduleSource.lastIndexOf('*/', sourceUrlInternalIndex)
     ).toBe(true);
     expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
     expect(stats.compilation.assets['test.worker.js.map']).toBeUndefined();
