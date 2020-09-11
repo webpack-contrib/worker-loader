@@ -62,6 +62,37 @@ describe('"inline" option', () => {
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
 
+  it('should work with "no-fallback" value and the "devtool" option ("eval-source-map" value)', async () => {
+    const compiler = getCompiler(
+      './basic/entry.js',
+      { inline: 'no-fallback' },
+      { devtool: 'eval-source-map' }
+    );
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+    const moduleSource = getModuleSource('./basic/worker.js', stats);
+
+    expect(moduleSource.indexOf('inline.js') > 0).toBe(true);
+    expect(
+      moduleSource.indexOf('__webpack_public_path__ + "test.worker.js"') === -1
+    ).toBe(true);
+    expect(
+      moduleSource.indexOf(
+        'sourceMappingURL=data:application/json;charset=utf-8;base64,'
+      ) === -1
+    ).toBe(true);
+    expect(
+      moduleSource.indexOf(
+        '//# sourceURL=webpack-internal:///./basic/worker.js'
+      ) >= 0
+    ).toBe(true);
+    expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
+    expect(stats.compilation.assets['test.worker.js.map']).toBeUndefined();
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
+
   it('should work with "no-fallback" value and the "devtool" option ("source-map" value)', async () => {
     const compiler = getCompiler(
       './basic/entry.js',
