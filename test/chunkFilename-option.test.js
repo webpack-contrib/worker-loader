@@ -97,4 +97,46 @@ describe('"name" option', () => {
     expect(getWarnings(stats)).toMatchSnapshot('warnings');
     expect(getErrors(stats)).toMatchSnapshot('errors');
   });
+
+  it('should chunkFilename suffix be inserted before query parameters', async () => {
+    const nanoid = customAlphabet('1234567890abcdef', 10);
+    const compiler = getCompiler(
+      './chunks/entry.js',
+      {},
+      {
+        output: {
+          path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
+          filename: '[name].js',
+          chunkFilename: '[name].chunk.js?foo=bar&baz=bar',
+        },
+        module: {
+          rules: [
+            {
+              test: /worker\.js$/i,
+              rules: [
+                {
+                  loader: path.resolve(__dirname, '../src'),
+                },
+              ],
+            },
+          ],
+        },
+      }
+    );
+    const stats = await compile(compiler);
+    const result = await getResultFromBrowser(stats);
+
+    expect(
+      Object.keys(stats.compilation.assets).includes(
+        '0.chunk.worker.js?foo=bar&baz=bar'
+      )
+    ).toBe(true);
+    expect(result).toMatchSnapshot('result');
+    expect(getModuleSource('./chunks/worker.js', stats)).toMatchSnapshot(
+      'module'
+    );
+    expect(result).toMatchSnapshot('result');
+    expect(getWarnings(stats)).toMatchSnapshot('warnings');
+    expect(getErrors(stats)).toMatchSnapshot('errors');
+  });
 });
