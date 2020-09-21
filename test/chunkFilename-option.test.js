@@ -126,11 +126,15 @@ describe('"name" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    expect(
-      Object.keys(stats.compilation.assets).includes(
-        '0.chunk.worker.js?foo=bar&baz=bar'
-      )
-    ).toBe(true);
+    let hasChankName;
+
+    Object.keys(stats.compilation.assets).forEach((asset) => {
+      if (asset.endsWith('chunk.worker.js?foo=bar&baz=bar')) {
+        hasChankName = true;
+      }
+    });
+
+    expect(hasChankName).toBe(true);
     expect(result).toMatchSnapshot('result');
     expect(getModuleSource('./chunks/worker.js', stats)).toMatchSnapshot(
       'module'
