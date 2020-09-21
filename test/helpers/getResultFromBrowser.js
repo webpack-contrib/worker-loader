@@ -20,7 +20,9 @@ export default async function getResultFromBrowser(stats) {
   );
 
   for (const asset of assets) {
-    const [route] = asset;
+    let [route] = asset;
+    [route] = route.split('?');
+
     const existsAt = path.resolve(stats.compilation.outputOptions.path, route);
 
     if (route === 'index.html') {

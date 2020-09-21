@@ -23,7 +23,7 @@ module.exports = (content, workerConstructor, workerOptions, url) => {
 
         blob = blob.getBlob();
       }
-      
+
       const URL = window.URL || window.webkitURL;
       const objectURL = URL.createObjectURL(blob);
       const worker = new window[workerConstructor](objectURL, workerOptions);
