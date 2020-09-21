@@ -51,6 +51,7 @@ describe('"filename" option', () => {
         output: {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
           chunkFilename: '[name].chunk.js',
+          publicPath: '',
         },
         module: {
           rules: [
@@ -87,6 +88,7 @@ describe('"filename" option', () => {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
           filename: '[name].custom.js',
           chunkFilename: '[name].chunk.js',
+          publicPath: '',
         },
         module: {
           rules: [
@@ -128,6 +130,7 @@ describe('"filename" option', () => {
 
             return '[name].js';
           },
+          publicPath: '',
         },
         module: {
           rules: [

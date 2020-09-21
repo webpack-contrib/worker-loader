@@ -36,6 +36,7 @@ describe('"name" option', () => {
         output: {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
           filename: '[name].js',
+          publicPath: '',
         },
         module: {
           rules: [
@@ -72,6 +73,7 @@ describe('"name" option', () => {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
           filename: '[name].js',
           chunkFilename: '[name].chunk.js',
+          publicPath: '',
         },
         module: {
           rules: [
@@ -108,6 +110,7 @@ describe('"name" option', () => {
           path: path.resolve(__dirname, './outputs', `test_${nanoid()}`),
           filename: '[name].js',
           chunkFilename: '[name].chunk.js?foo=bar&baz=bar',
+          publicPath: '',
         },
         module: {
           rules: [
@@ -126,7 +129,7 @@ describe('"name" option', () => {
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
 
-    let hasChankName;
+    let hasChankName = false;
 
     Object.keys(stats.compilation.assets).forEach((asset) => {
       if (asset.endsWith('chunk.worker.js?foo=bar&baz=bar')) {
