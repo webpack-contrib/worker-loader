@@ -87,7 +87,7 @@ ${
 }
 
 // Matches only the last occurrence of sourceMappingURL
-const innerRegex = /\s*[#@]\s*sourceMappingURL\s*=\s*(.*?(?=[\s'"]|\\n|$)(?:\\n)?)\s*/;
+const innerRegex = /\s*[#@]\s*sourceMappingURL\s*=\s*(.*?(?=[\s'"]|\\n|\*\/|$)(?:\\n)?)\s*/;
 
 /* eslint-disable prefer-template */
 const sourceMappingURLRegex = RegExp(
@@ -106,6 +106,10 @@ const sourceMappingURLRegex = RegExp(
     ')' +
     '\\s*'
 );
+
+const sourceURLWebpackRegex = RegExp(
+  '\\/\\/#\\ssourceURL=webpack-internal:\\/\\/\\/(.*?)\\\\n'
+);
 /* eslint-enable prefer-template */
 
 export {
@@ -114,4 +118,5 @@ export {
   getExternalsType,
   workerGenerator,
   sourceMappingURLRegex,
+  sourceURLWebpackRegex,
 };

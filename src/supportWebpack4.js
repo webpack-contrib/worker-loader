@@ -1,4 +1,8 @@
-import { workerGenerator, sourceMappingURLRegex } from './utils';
+import {
+  workerGenerator,
+  sourceMappingURLRegex,
+  sourceURLWebpackRegex,
+} from './utils';
 
 export default function runAsChild(
   loaderContext,
@@ -30,6 +34,9 @@ export default function runAsChild(
 
         // Remove `/* sourceMappingURL=url */` comment
         workerSource = workerSource.replace(sourceMappingURLRegex, '');
+
+        // Remove `//# sourceURL=webpack-internal` comment
+        workerSource = workerSource.replace(sourceURLWebpackRegex, '');
       }
 
       const workerCode = workerGenerator(

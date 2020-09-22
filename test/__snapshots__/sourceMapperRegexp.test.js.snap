@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`source-map-loader should work with "
+    with SourceMap
+
+    // #sourceMappingURL = /sample-source-map.map
+    // comment
+    " url: result 1`] = `
+"
+    with SourceMap
+
+    REPLASED// comment
+    "
+`;
+
+exports[`source-map-loader should work with " //  #  sourceMappingURL  =   absolute-sourceRoot-source-map.map  " url: result 1`] = `" REPLASED"`;
+
+exports[`source-map-loader should work with " //  #sourceMappingURL=absolute-sourceRoot-source-map.map" url: result 1`] = `" REPLASED"`;
+
+exports[`source-map-loader should work with "/*  #sourceMappingURL=absolute-sourceRoot-source-map.map  */" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "/*#sourceMappingURL=absolute-sourceRoot-source-map.map*/" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "// #sourceMappingURL = //sampledomain.com/external-source-map2.map" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "// #sourceMappingURL = http://sampledomain.com/external-source-map2.map" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "// @sourceMappingURL=data:application/source-map;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5saW5lLXNvdXJjZS1tYXAuanMiLCJzb3VyY2VzIjpbImlubGluZS1zb3VyY2UtbWFwLnR4dCJdLCJzb3VyY2VzQ29udGVudCI6WyJ3aXRoIFNvdXJjZU1hcCJdLCJtYXBwaW5ncyI6IkFBQUEifQ==" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "//#sourceMappingURL=absolute-sourceRoot-source-map.map" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "//@sourceMappingURL=absolute-sourceRoot-source-map.map" url: result 1`] = `"REPLASED"`;
+
+exports[`source-map-loader should work with "onmessage = function(event) {
+  const workerResult = event.data;
+
+  workerResult.onmessage = true;
+
+  postMessage(workerResult);
+};
+//# sourceURL=[module]
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi9iYXNpYy93b3JrZXIuanM/OGFiZiJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtBQUNBOztBQUVBOztBQUVBO0FBQ0EiLCJmaWxlIjoiLi9iYXNpYy93b3JrZXIuanMuanMiLCJzb3VyY2VzQ29udGVudCI6WyJvbm1lc3NhZ2UgPSBmdW5jdGlvbihldmVudCkge1xuICBjb25zdCB3b3JrZXJSZXN1bHQgPSBldmVudC5kYXRhO1xuXG4gIHdvcmtlclJlc3VsdC5vbm1lc3NhZ2UgPSB0cnVlO1xuXG4gIHBvc3RNZXNzYWdlKHdvcmtlclJlc3VsdCk7XG59O1xuIl0sInNvdXJjZVJvb3QiOiIifQ==
+//# sourceURL=webpack-internal:///./basic/worker.js
+" url: result 1`] = `
+"onmessage = function(event) {
+  const workerResult = event.data;
+
+  workerResult.onmessage = true;
+
+  postMessage(workerResult);
+};
+//# sourceURL=[module]
+REPLASED//# sourceURL=webpack-internal:///./basic/worker.js
+"
+`;
