@@ -55,6 +55,12 @@ exports[`"inline" option should work with "no-fallback" value and "esModule" wit
 
 exports[`"inline" option should work with "no-fallback" value and "esModule" with "true" value: warnings 1`] = `Array []`;
 
+exports[`"inline" option should work with "no-fallback" value and the "devtool" option ("eval-source-map" value): errors 1`] = `Array []`;
+
+exports[`"inline" option should work with "no-fallback" value and the "devtool" option ("eval-source-map" value): result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
+
+exports[`"inline" option should work with "no-fallback" value and the "devtool" option ("eval-source-map" value): warnings 1`] = `Array []`;
+
 exports[`"inline" option should work with "no-fallback" value and the "devtool" option ("source-map" value): errors 1`] = `Array []`;
 
 exports[`"inline" option should work with "no-fallback" value and the "devtool" option ("source-map" value): errors 2`] = `Array []`;
