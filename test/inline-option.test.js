@@ -84,13 +84,7 @@ describe('"inline" option', () => {
         'sourceMappingURL=data:application/json;charset=utf-8;base64,'
       ) === -1
     ).toBe(true);
-    expect(sourceUrlInternalIndex >= 0).toBe(true);
-    expect(
-      moduleSource.lastIndexOf('//', sourceUrlInternalIndex) >
-        moduleSource.lastIndexOf('\\n', sourceUrlInternalIndex) ||
-        moduleSource.lastIndexOf('/*', sourceUrlInternalIndex) >
-          moduleSource.lastIndexOf('*/', sourceUrlInternalIndex)
-    ).toBe(true);
+    expect(sourceUrlInternalIndex === -1).toBe(true);
     expect(stats.compilation.assets['test.worker.js']).toBeUndefined();
     expect(stats.compilation.assets['test.worker.js.map']).toBeUndefined();
     expect(result).toMatchSnapshot('result');
