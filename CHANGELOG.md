@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.3](https://github.com/webpack-contrib/worker-loader/compare/v3.0.2...v3.0.3) (2020-09-22)
+
+
+### Bug Fixes
+
+* remove unnecessary webpack sourceURL ([#289](https://github.com/webpack-contrib/worker-loader/issues/289)) ([eef2757](https://github.com/webpack-contrib/worker-loader/commit/eef27574160f519c344dfa5fd981b7ac561a8939))
+* compatibility with eval source maps ([#286](https://github.com/webpack-contrib/worker-loader/issues/286)) ([0d4624c](https://github.com/webpack-contrib/worker-loader/commit/0d4624c178c426aa97e5175a5f321e43de482c2b))
+
 ### [3.0.2](https://github.com/webpack-contrib/worker-loader/compare/v3.0.1...v3.0.2) (2020-08-22)
 
 

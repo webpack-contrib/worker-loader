@@ -1,6 +1,6 @@
 {
   "name": "worker-loader",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "worker loader module for webpack",
   "license": "MIT",
   "repository": "webpack-contrib/worker-loader",
