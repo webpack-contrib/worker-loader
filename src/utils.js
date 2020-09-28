@@ -79,6 +79,28 @@ ${
     )}, ${fallbackWorkerPath});\n}\n`;
   }
 
+  if (options.crossOrigin) {
+    const CrossOriginWorkerPath = stringifyRequest(
+      loaderContext,
+      `!!${require.resolve('./runtime/crossOrigin.js')}`
+    );
+
+    return `
+${
+  esModule
+    ? `import worker from ${CrossOriginWorkerPath};`
+    : `var worker = require(${CrossOriginWorkerPath});`
+}
+
+${
+  esModule ? 'export default' : 'module.exports ='
+} function() {\n  return worker(${JSON.stringify(
+      workerConstructor
+    )}, ${JSON.stringify(workerOptions)}, ${JSON.stringify(
+      options.crossOrigin
+    )} + ${JSON.stringify(workerFilename)});\n}\n`;
+  }
+
   return `${
     esModule ? 'export default' : 'module.exports ='
   } function() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(

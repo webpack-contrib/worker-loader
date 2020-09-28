@@ -4,10 +4,10 @@ import getPort from 'get-port';
 import express from 'express';
 import puppeteer from 'puppeteer';
 
-export default async function getResultFromBrowser(stats) {
+export default async function getResultFromBrowser(stats, serverPort) {
   const assets = Object.entries(stats.compilation.assets);
   const app = express();
-  const port = await getPort();
+  const port = serverPort || (await getPort());
   const server = app.listen(port);
 
   app.use(

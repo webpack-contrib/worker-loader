@@ -52,6 +52,9 @@
     "inline": {
       "enum": ["no-fallback", "fallback"]
     },
+    "crossOrigin": {
+      "type": "string"
+    },
     "esModule": {
       "type": "boolean"
     }
