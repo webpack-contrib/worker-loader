@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { getOptions } from 'loader-utils';
-import validateOptions from 'schema-utils';
+import { validate } from 'schema-utils';
 
 import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
 import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
@@ -49,7 +49,7 @@ export function pitch(request) {
 
   const options = getOptions(this);
 
-  validateOptions(schema, options, {
+  validate(schema, options, {
     name: 'Worker Loader',
     baseDataPath: 'options',
   });
