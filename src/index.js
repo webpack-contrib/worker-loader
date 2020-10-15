@@ -20,27 +20,19 @@ import {
 let FetchCompileWasmPlugin;
 let FetchCompileAsyncWasmPlugin;
 
-try {
-  // Webpack 5, sync WASM
+// determine the version of webpack peer dependency
+// eslint-disable-next-line global-require, import/no-unresolved
+const useWebpack5 = require('webpack/package.json').version.startsWith('5.');
+
+if (useWebpack5) {
   // eslint-disable-next-line global-require, import/no-unresolved
   FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin');
-} catch (ignoreError) {
-  // Nothing
-}
-
-try {
-  // Webpack 5, async WASM
   // eslint-disable-next-line global-require, import/no-unresolved
   FetchCompileAsyncWasmPlugin = require('webpack/lib/web/FetchCompileAsyncWasmPlugin');
-} catch (ignoreError) {
-  // Nothing
-}
-
-// Webpack 4
-FetchCompileWasmPlugin =
-  FetchCompileWasmPlugin ||
+} else {
   // eslint-disable-next-line global-require, import/no-unresolved
-  require('webpack/lib/web/FetchCompileWasmTemplatePlugin');
+  FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmTemplatePlugin');
+}
 
 export default function loader() {}
 
