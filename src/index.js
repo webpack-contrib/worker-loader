@@ -37,7 +37,6 @@ if (useWebpack5) {
 export default function loader() {}
 
 export function pitch(request) {
-  this.cacheable(false);
 
   const options = getOptions(this);
 
@@ -46,6 +45,8 @@ export function pitch(request) {
     baseDataPath: 'options',
   });
 
+  this.cacheable(options.cacheable || false);
+  
   const workerContext = {};
   const compilerOptions = this._compiler.options || {};
   const filename = options.filename
