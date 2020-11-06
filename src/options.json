@@ -54,6 +54,9 @@
     },
     "esModule": {
       "type": "boolean"
+    },
+    "cacheable": {
+      "type": "boolean"
     }
   },
   "additionalProperties": false
