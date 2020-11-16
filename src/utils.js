@@ -1,4 +1,4 @@
-import { stringifyRequest, interpolateName } from 'loader-utils';
+import { stringifyRequest } from 'loader-utils';
 import camelcase from 'lodash.camelcase';
 
 function getDefaultFilename(filename) {
@@ -49,11 +49,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
 
   const esModule =
     typeof options.esModule !== 'undefined' ? options.esModule : true;
-  const fnName = interpolateName(
-    loaderContext,
-    `${camelcase(workerFilename)}Worker[hash:7]`,
-    { content: workerSource }
-  );
+  const fnName = `${camelcase(workerFilename)}Worker`;
 
   if (options.inline) {
     const InlineWorkerPath = stringifyRequest(
