@@ -3,7 +3,7 @@
 exports[`"esModule" option should work and generate ES module syntax by default: errors 1`] = `Array []`;
 
 exports[`"esModule" option should work and generate ES module syntax by default: module 1`] = `
-"export default function() {
+"export default function testWorkerJsWorker78b84b4() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
 }
 "
@@ -14,7 +14,7 @@ exports[`"esModule" option should work and generate ES module syntax by default:
 exports[`"esModule" option should work with "false" value: errors 1`] = `Array []`;
 
 exports[`"esModule" option should work with "false" value: module 1`] = `
-"module.exports = function() {
+"module.exports = function testWorkerJsWorker78b84b4() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
 }
 "
@@ -27,7 +27,7 @@ exports[`"esModule" option should work with "false" value: warnings 1`] = `Array
 exports[`"esModule" option should work with "true" value: errors 1`] = `Array []`;
 
 exports[`"esModule" option should work with "true" value: module 1`] = `
-"export default function() {
+"export default function testWorkerJsWorker78b84b4() {
   return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
 }
 "
