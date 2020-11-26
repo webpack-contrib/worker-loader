@@ -1,5 +1,4 @@
 import { stringifyRequest } from 'loader-utils';
-import camelcase from 'camelcase';
 
 function getDefaultFilename(filename) {
   if (typeof filename === 'function') {
@@ -49,7 +48,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
 
   const esModule =
     typeof options.esModule !== 'undefined' ? options.esModule : true;
-  const fnName = `${camelcase(workerFilename.replace(/\//g, ''))}Worker`;
+  const fnName = `${camelCase(workerFilename)}Worker`;
 
   if (options.inline) {
     const InlineWorkerPath = stringifyRequest(
@@ -113,6 +112,74 @@ const sourceURLWebpackRegex = RegExp(
   '\\/\\/#\\ssourceURL=webpack-internal:\\/\\/\\/(.*?)\\\\n'
 );
 /* eslint-enable prefer-template */
+
+/*
+ * Based on sindresorhus/camelcase v6.2.0
+ * License: https://github.com/sindresorhus/camelcase/blob/v6.2.0/license
+ */
+function camelCase(input1) {
+  let input = input1;
+  input = input.trim();
+
+  if (input.length === 0) {
+    return '';
+  }
+
+  if (input.length === 1) {
+    return input.toLocaleLowerCase();
+  }
+
+  const hasUpperCase = input !== input.toLocaleLowerCase();
+
+  if (hasUpperCase) {
+    let isLastCharLower = false;
+    let isLastCharUpper = false;
+    let isLastLastCharUpper = false;
+
+    for (let i = 0; i < input.length; i++) {
+      const character = input[i];
+
+      if (isLastCharLower && /[\p{Lu}]/u.test(character)) {
+        input = `${input.slice(0, i)}-${input.slice(i)}`;
+        isLastCharLower = false;
+        isLastLastCharUpper = isLastCharUpper;
+        isLastCharUpper = true;
+        i += 1;
+      } else if (
+        isLastCharUpper &&
+        isLastLastCharUpper &&
+        /[\p{Ll}]/u.test(character)
+      ) {
+        input = `${input.slice(0, i - 1)}-${input.slice(i - 1)}`;
+        isLastLastCharUpper = isLastCharUpper;
+        isLastCharUpper = false;
+        isLastCharLower = true;
+      } else {
+        isLastCharLower =
+          character.toLocaleLowerCase() === character &&
+          character.toLocaleUpperCase() !== character;
+        isLastLastCharUpper = isLastCharUpper;
+        isLastCharUpper =
+          character.toLocaleUpperCase() === character &&
+          character.toLocaleLowerCase() !== character;
+      }
+    }
+  }
+
+  input = input.replace(/^[_.\- ]+/, '');
+
+  input = input.toLocaleLowerCase();
+
+  return (
+    input
+      .replace(/[_.\- ]+([\p{Alpha}\p{N}_]|$)/gu, (_, p1) =>
+        p1.toLocaleUpperCase()
+      )
+      .replace(/\d+([\p{Alpha}\p{N}_]|$)/gu, (m) => m.toLocaleUpperCase())
+      // NOTE: addition to replace `/` or `\` with ``.
+      .replace(/(\/|\\)/g, '')
+  );
+}
 
 export {
   getDefaultFilename,

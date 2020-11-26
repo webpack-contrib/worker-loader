@@ -41,9 +41,8 @@
     "webpack": "^4.0.0 || ^5.0.0"
   },
   "dependencies": {
-    "camelcase": "^6.2.0",
-    "loader-utils": "^2.0.0",
-    "schema-utils": "^3.0.0"
+    "schema-utils": "^3.0.0",
+    "loader-utils": "^2.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.11.6",
