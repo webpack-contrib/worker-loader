@@ -5,14 +5,14 @@ exports[`"publicPath" option should work and respect "filename" and "chunkFilena
 exports[`"publicPath" option should work and respect "filename" and "chunkFilename" option values: errors 2`] = `Array []`;
 
 exports[`"publicPath" option should work and respect "filename" and "chunkFilename" option values: module 1`] = `
-"export default function otherStaticJsWorkerBundleWorkerJsWorker() {
+"export default function otherStaticjsworkerBundleWorkerJsWorker() {
   return new Worker(__webpack_public_path__ + \\"other-static/js/worker.bundle.worker.js\\");
 }
 "
 `;
 
 exports[`"publicPath" option should work and respect "filename" and "chunkFilename" option values: module 2`] = `
-"export default function otherStaticJsWorkerWorkerJsWorker() {
+"export default function otherStaticjsworkerWorkerJsWorker() {
   return new Worker(__webpack_public_path__ + \\"other-static/js/worker.worker.js\\");
 }
 "

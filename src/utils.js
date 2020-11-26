@@ -1,5 +1,5 @@
 import { stringifyRequest } from 'loader-utils';
-import camelcase from 'lodash.camelcase';
+import camelcase from 'camelcase';
 
 function getDefaultFilename(filename) {
   if (typeof filename === 'function') {
@@ -49,7 +49,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
 
   const esModule =
     typeof options.esModule !== 'undefined' ? options.esModule : true;
-  const fnName = `${camelcase(workerFilename)}Worker`;
+  const fnName = `${camelcase(workerFilename.replace(/\//g, ''))}Worker`;
 
   if (options.inline) {
     const InlineWorkerPath = stringifyRequest(
