@@ -2,7 +2,7 @@ import {
   workerGenerator,
   sourceMappingURLRegex,
   sourceURLWebpackRegex,
-} from './utils';
+} from "./utils";
 
 export default function runAsChild(
   loaderContext,
@@ -21,7 +21,7 @@ export default function runAsChild(
 
       let workerSource = compilation.assets[workerFilename].source();
 
-      if (options.inline === 'no-fallback') {
+      if (options.inline === "no-fallback") {
         // eslint-disable-next-line no-underscore-dangle, no-param-reassign
         delete loaderContext._compilation.assets[workerFilename];
 
@@ -33,10 +33,10 @@ export default function runAsChild(
         }
 
         // Remove `/* sourceMappingURL=url */` comment
-        workerSource = workerSource.replace(sourceMappingURLRegex, '');
+        workerSource = workerSource.replace(sourceMappingURLRegex, "");
 
         // Remove `//# sourceURL=webpack-internal` comment
-        workerSource = workerSource.replace(sourceURLWebpackRegex, '');
+        workerSource = workerSource.replace(sourceURLWebpackRegex, "");
       }
 
       const workerCode = workerGenerator(

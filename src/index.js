@@ -1,37 +1,37 @@
-import path from 'path';
+import path from "path";
 
-import { getOptions } from 'loader-utils';
-import { validate } from 'schema-utils';
+import { getOptions } from "loader-utils";
+import { validate } from "schema-utils";
 
-import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
-import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
-import WebWorkerTemplatePlugin from 'webpack/lib/webworker/WebWorkerTemplatePlugin';
-import ExternalsPlugin from 'webpack/lib/ExternalsPlugin';
+import NodeTargetPlugin from "webpack/lib/node/NodeTargetPlugin";
+import SingleEntryPlugin from "webpack/lib/SingleEntryPlugin";
+import WebWorkerTemplatePlugin from "webpack/lib/webworker/WebWorkerTemplatePlugin";
+import ExternalsPlugin from "webpack/lib/ExternalsPlugin";
 
-import schema from './options.json';
-import supportWebpack5 from './supportWebpack5';
-import supportWebpack4 from './supportWebpack4';
+import schema from "./options.json";
+import supportWebpack5 from "./supportWebpack5";
+import supportWebpack4 from "./supportWebpack4";
 import {
   getDefaultFilename,
   getDefaultChunkFilename,
   getExternalsType,
-} from './utils';
+} from "./utils";
 
 let FetchCompileWasmPlugin;
 let FetchCompileAsyncWasmPlugin;
 
 // determine the version of webpack peer dependency
 // eslint-disable-next-line global-require, import/no-unresolved
-const useWebpack5 = require('webpack/package.json').version.startsWith('5.');
+const useWebpack5 = require("webpack/package.json").version.startsWith("5.");
 
 if (useWebpack5) {
   // eslint-disable-next-line global-require, import/no-unresolved
-  FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmPlugin');
+  FetchCompileWasmPlugin = require("webpack/lib/web/FetchCompileWasmPlugin");
   // eslint-disable-next-line global-require, import/no-unresolved
-  FetchCompileAsyncWasmPlugin = require('webpack/lib/web/FetchCompileAsyncWasmPlugin');
+  FetchCompileAsyncWasmPlugin = require("webpack/lib/web/FetchCompileAsyncWasmPlugin");
 } else {
   // eslint-disable-next-line global-require, import/no-unresolved
-  FetchCompileWasmPlugin = require('webpack/lib/web/FetchCompileWasmTemplatePlugin');
+  FetchCompileWasmPlugin = require("webpack/lib/web/FetchCompileWasmTemplatePlugin");
 }
 
 export default function loader() {}
@@ -42,8 +42,8 @@ export function pitch(request) {
   const options = getOptions(this);
 
   validate(schema, options, {
-    name: 'Worker Loader',
-    baseDataPath: 'options',
+    name: "Worker Loader",
+    baseDataPath: "options",
   });
 
   const workerContext = {};
@@ -62,7 +62,7 @@ export function pitch(request) {
     filename,
     chunkFilename,
     publicPath,
-    globalObject: 'self',
+    globalObject: "self",
   };
 
   workerContext.compiler = this._compilation.createChildCompiler(
@@ -72,7 +72,7 @@ export function pitch(request) {
 
   new WebWorkerTemplatePlugin().apply(workerContext.compiler);
 
-  if (this.target !== 'webworker' && this.target !== 'web') {
+  if (this.target !== "webworker" && this.target !== "web") {
     new NodeTargetPlugin().apply(workerContext.compiler);
   }
 
@@ -105,7 +105,7 @@ export function pitch(request) {
 
   if (
     workerContext.compiler.cache &&
-    typeof workerContext.compiler.cache.get === 'function'
+    typeof workerContext.compiler.cache.get === "function"
   ) {
     supportWebpack5(this, workerContext, options, cb);
   } else {
