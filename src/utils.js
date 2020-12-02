@@ -48,6 +48,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
 
   const esModule =
     typeof options.esModule !== 'undefined' ? options.esModule : true;
+  const fnName = `${workerConstructor}_fn`;
 
   if (options.inline) {
     const InlineWorkerPath = stringifyRequest(
@@ -72,7 +73,7 @@ ${
 
 ${
   esModule ? 'export default' : 'module.exports ='
-} function() {\n  return worker(${JSON.stringify(
+} function ${fnName}() {\n  return worker(${JSON.stringify(
       workerSource
     )}, ${JSON.stringify(workerConstructor)}, ${JSON.stringify(
       workerOptions
@@ -81,7 +82,7 @@ ${
 
   return `${
     esModule ? 'export default' : 'module.exports ='
-  } function() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+  } function ${fnName}() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
     workerFilename
   )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ''});\n}\n`;
 }
