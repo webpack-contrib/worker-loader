@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.0.6](https://github.com/webpack-contrib/worker-loader/compare/v3.0.5...v3.0.6) (2020-12-02)
+
+
+### Bug Fixes
+
+* set a name to exported function ([#299](https://github.com/webpack-contrib/worker-loader/issues/299)) ([15cf407](https://github.com/webpack-contrib/worker-loader/commit/15cf407ad6baeb09e2cbb5d7b4b869cc63bfac7f))
+
 ### [3.0.5](https://github.com/webpack-contrib/worker-loader/compare/v3.0.4...v3.0.5) (2020-10-16)
 
 
