@@ -39,7 +39,7 @@ module.exports = (content, workerConstructor, workerOptions, url) => {
     }
   } catch (e) {
     if (!url) {
-      throw Error('Inline worker is not supported');
+      throw Error("Inline worker is not supported");
     }
 
     return new window[workerConstructor](url, workerOptions);
