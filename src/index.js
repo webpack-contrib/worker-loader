@@ -57,11 +57,13 @@ export function pitch(request) {
   const publicPath = options.publicPath
     ? options.publicPath
     : compilerOptions.output.publicPath;
+  const crossOrigin = options.crossOrigin || false;
 
   workerContext.options = {
     filename,
     chunkFilename,
     publicPath,
+    crossOrigin,
     globalObject: 'self',
   };
 

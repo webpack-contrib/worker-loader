@@ -66,14 +66,15 @@ And run `webpack` via your preferred method.
 
 ## Options
 
-|                 Name                  |            Type             |             Default             | Description                                                                       |
-| :-----------------------------------: | :-------------------------: | :-----------------------------: | :-------------------------------------------------------------------------------- |
-|        **[`worker`](#worker)**        |     `{String\|Object}`      |            `Worker`             | Allows to set web worker constructor name and options                             |
-|    **[`publicPath`](#publicpath)**    |    `{String\|Function}`     |  based on `output.publicPath`   | specifies the public URL address of the output files when referenced in a browser |
-|      **[`filename`](#filename)**      |    `{String\|Function}`     |   based on `output.filename`    | The filename of entry chunks for web workers                                      |
-| **[`chunkFilename`](#chunkfilename)** |         `{String}`          | based on `output.chunkFilename` | The filename of non-entry chunks for web workers                                  |
-|        **[`inline`](#inline)**        | `'no-fallback'\|'fallback'` |           `undefined`           | Allow to inline the worker as a `BLOB`                                            |
-|      **[`esModule`](#esmodule)**      |         `{Boolean}`         |             `true`              | Use ES modules syntax                                                             |
+|                 Name                  |            Type             |             Default             | Description                                                                                   |
+| :-----------------------------------: | :-------------------------: | :-----------------------------: | :-------------------------------------------------------------------------------------------- |
+|        **[`worker`](#worker)**        |     `{String\|Object}`      |            `Worker`             | Allows to set web worker constructor name and options                                         |
+|   **[`crossOrigin`](#crossorigin)**   |         `{String}`          |           `undefined`           | Specifies origin and path to serve worker file from in case worker is from a different origin |
+|    **[`publicPath`](#publicpath)**    |    `{String\|Function}`     |  based on `output.publicPath`   | specifies the public URL address of the output files when referenced in a browser             |
+|      **[`filename`](#filename)**      |    `{String\|Function}`     |   based on `output.filename`    | The filename of entry chunks for web workers                                                  |
+| **[`chunkFilename`](#chunkfilename)** |         `{String}`          | based on `output.chunkFilename` | The filename of non-entry chunks for web workers                                              |
+|        **[`inline`](#inline)**        | `'no-fallback'\|'fallback'` |           `undefined`           | Allow to inline the worker as a `BLOB`                                                        |
+|      **[`esModule`](#esmodule)**      |         `{Boolean}`         |             `true`              | Use ES modules syntax                                                                         |
 
 ### `worker`
 
@@ -126,6 +127,32 @@ module.exports = {
               name: 'my-custom-worker-name',
             },
           },
+        },
+      },
+    ],
+  },
+};
+```
+
+### `crossOrigin`
+
+Type: `String`
+Default: `undefined`
+
+When worker file must be served from a different domain such as when using a CDN, set this to the domain and path that house the worker.
+Note that this should probably be unset during development.
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.worker\.(c|m)?js$/i,
+        loader: 'worker-loader',
+        options: {
+          crossOrigin: 'https://my-cdn.com/path/',
         },
       },
     ],
@@ -500,7 +527,31 @@ Even downloads from the `webpack-dev-server` could be blocked.
 
 There are two workarounds:
 
-Firstly, you can inline the worker as a blob instead of downloading it as an external script via the [`inline`](#inline) parameter
+Firstly, you can specifies the CDN domain and path via the [`crossOrigin`](#crossorigin) option
+
+**App.js**
+
+```js
+// This will cause the worker to be downloaded from `https://my-cdn.com/abc/file.worker.js`
+import Worker from './file.worker.js';
+```
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      {
+        loader: 'worker-loader',
+        options: { crossOrigin: 'https://my-cdn.com/abc/' },
+      },
+    ],
+  },
+};
+```
+
+Secondly, you may inline the worker as a blob instead of downloading it as an external script via the [`inline`](#inline) parameter
 
 **App.js**
 
@@ -517,30 +568,6 @@ module.exports = {
       {
         loader: 'worker-loader',
         options: { inline: 'fallback' },
-      },
-    ],
-  },
-};
-```
-
-Secondly, you may override the base download URL for your worker script via the [`publicPath`](#publicpath) option
-
-**App.js**
-
-```js
-// This will cause the worker to be downloaded from `/workers/file.worker.js`
-import Worker from './file.worker.js';
-```
-
-**webpack.config.js**
-
-```js
-module.exports = {
-  module: {
-    rules: [
-      {
-        loader: 'worker-loader',
-        options: { publicPath: '/workers/' },
       },
     ],
   },
