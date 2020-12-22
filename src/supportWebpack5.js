@@ -60,17 +60,18 @@ export default function runAsChild(
           workerSource,
           options
         );
+        const workerCodeBuffer = Buffer.from(workerCode);
 
         return cache.store(
           cacheIdent,
           cacheETag,
-          workerCode,
+          workerCodeBuffer,
           (storeCacheError) => {
             if (storeCacheError) {
               return callback(storeCacheError);
             }
 
-            return callback(null, workerCode);
+            return callback(null, workerCodeBuffer);
           }
         );
       });
