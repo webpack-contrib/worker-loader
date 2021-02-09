@@ -2,20 +2,21 @@
 /* eslint-disable no-undef, no-use-before-define, new-cap */
 
 module.exports = (content, workerConstructor, workerOptions, url) => {
+  const globalScope = self || window;
   try {
     try {
       let blob;
 
       try {
         // New API
-        blob = new window.Blob([content]);
+        blob = new globalScope.Blob([content]);
       } catch (e) {
         // BlobBuilder = Deprecated, but widely implemented
         const BlobBuilder =
-          window.BlobBuilder ||
-          window.WebKitBlobBuilder ||
-          window.MozBlobBuilder ||
-          window.MSBlobBuilder;
+          globalScope.BlobBuilder ||
+          globalScope.WebKitBlobBuilder ||
+          globalScope.MozBlobBuilder ||
+          globalScope.MSBlobBuilder;
 
         blob = new BlobBuilder();
 
@@ -24,15 +25,18 @@ module.exports = (content, workerConstructor, workerOptions, url) => {
         blob = blob.getBlob();
       }
 
-      const URL = window.URL || window.webkitURL;
+      const URL = globalScope.URL || globalScope.webkitURL;
       const objectURL = URL.createObjectURL(blob);
-      const worker = new window[workerConstructor](objectURL, workerOptions);
+      const worker = new globalScope[workerConstructor](
+        objectURL,
+        workerOptions
+      );
 
       URL.revokeObjectURL(objectURL);
 
       return worker;
     } catch (e) {
-      return new window[workerConstructor](
+      return new globalScope[workerConstructor](
         `data:application/javascript,${encodeURIComponent(content)}`,
         workerOptions
       );
@@ -42,6 +46,6 @@ module.exports = (content, workerConstructor, workerOptions, url) => {
       throw Error("Inline worker is not supported");
     }
 
-    return new window[workerConstructor](url, workerOptions);
+    return new globalScope[workerConstructor](url, workerOptions);
   }
 };
