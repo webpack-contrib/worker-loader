@@ -42,9 +42,7 @@ describe('"publicPath" option', () => {
 
   it('should work and respect the "publicPath" option ("function")', async () => {
     const compiler = getCompiler("./chunks/entry.js", {
-      publicPath: () => {
-        return `/public-path-static/`;
-      },
+      publicPath: () => `/public-path-static/`,
     });
     const stats = await compile(compiler);
     const result = await getResultFromBrowser(stats);
