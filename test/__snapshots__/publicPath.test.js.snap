@@ -13,7 +13,7 @@ exports[`"publicPath" option should work and respect "filename" and "chunkFilena
 
 exports[`"publicPath" option should work and respect "filename" and "chunkFilename" option values: module 2`] = `
 "export default function Worker_fn() {
-  return new Worker(__webpack_public_path__ + \\"other-static/js/worker.worker.js\\");
+  return new Worker(\\"/public-path-static-other/\\" + \\"other-static/js/worker.worker.js\\");
 }
 "
 `;
@@ -65,24 +65,11 @@ exports[`"publicPath" option should work and respect the "output.publicPath" opt
 
 exports[`"publicPath" option should work and respect the "output.publicPath" option value ("string"): warnings 1`] = `Array []`;
 
-exports[`"publicPath" option should work and respect the "publicPath" option ("function"): errors 1`] = `Array []`;
-
-exports[`"publicPath" option should work and respect the "publicPath" option ("function"): module 1`] = `
-"export default function Worker_fn() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
-}
-"
-`;
-
-exports[`"publicPath" option should work and respect the "publicPath" option ("function"): result 1`] = `"{\\"postMessage\\":true,\\"onmessage\\":true}"`;
-
-exports[`"publicPath" option should work and respect the "publicPath" option ("function"): warnings 1`] = `Array []`;
-
 exports[`"publicPath" option should work and respect the "publicPath" option ("string"): errors 1`] = `Array []`;
 
 exports[`"publicPath" option should work and respect the "publicPath" option ("string"): module 1`] = `
 "export default function Worker_fn() {
-  return new Worker(__webpack_public_path__ + \\"test.worker.js\\");
+  return new Worker(\\"/public-path-static/\\" + \\"test.worker.js\\");
 }
 "
 `;
