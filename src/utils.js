@@ -50,6 +50,8 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
     typeof options.esModule !== "undefined" ? options.esModule : true;
   const fnName = `${workerConstructor}_fn`;
 
+  const publicPath = options.publicPath ? JSON.stringify(options.publicPath) : '__webpack_public_path__';
+
   if (options.inline) {
     const InlineWorkerPath = stringifyRequest(
       loaderContext,
@@ -59,7 +61,7 @@ function workerGenerator(loaderContext, workerFilename, workerSource, options) {
     let fallbackWorkerPath;
 
     if (options.inline === "fallback") {
-      fallbackWorkerPath = `__webpack_public_path__ + ${JSON.stringify(
+      fallbackWorkerPath = `${publicPath} + ${JSON.stringify(
         workerFilename
       )}`;
     }
@@ -80,9 +82,13 @@ ${
     )}, ${fallbackWorkerPath});\n}\n`;
   }
 
-  return `${
+  return `${loaderContext.target === 'node'
+    ? esModule
+      ? "import {Worker} from 'worker_threads'\n"
+      : "var {Worker} = require('worker_threads')\n"
+    : ''}${
     esModule ? "export default" : "module.exports ="
-  } function ${fnName}() {\n  return new ${workerConstructor}(__webpack_public_path__ + ${JSON.stringify(
+  } function ${fnName}() {\n  return new ${workerConstructor}(${publicPath} + ${JSON.stringify(
     workerFilename
   )}${workerOptions ? `, ${JSON.stringify(workerOptions)}` : ""});\n}\n`;
 }
