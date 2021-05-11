@@ -32,7 +32,13 @@ module.exports = (content, workerConstructor, workerOptions, url) => {
         workerOptions
       );
 
-      URL.revokeObjectURL(objectURL);
+      // URL.revokeObjectUrl shouldn't be called immediately after Worker creation on IE and Edge legacy.
+      // Worker will be forked but the script will not be executed and there are no error event or runtime exceptions for this.
+      if (globalScope.setImmediate) {
+        globalScope.setImmediate(() => URL.revokeObjectURL(objectURL));
+      } else {
+        URL.revokeObjectURL(objectURL);
+      }
 
       return worker;
     } catch (e) {
