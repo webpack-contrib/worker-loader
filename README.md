@@ -455,7 +455,7 @@ To integrate with TypeScript, you will need to define a custom module for the ex
 **typings/worker-loader.d.ts**
 
 ```typescript
-declare module "worker-loader!*" {
+declare module "*.worker.ts" {
   // You need to change `Worker`, if you specified a different value for the `workerType` option
   class WebpackWorker extends Worker {
     constructor();
@@ -482,14 +482,39 @@ ctx.addEventListener("message", (event) => console.log(event));
 **index.ts**
 
 ```typescript
-import Worker from "worker-loader!./Worker";
+import MyWorker from "./my.worker.ts";
 
-const worker = new Worker();
+const worker = new MyWorker();
 
 worker.postMessage({ a: 1 });
 worker.onmessage = (event) => {};
 
 worker.addEventListener("message", (event) => {});
+```
+
+**webpack.config.js**
+
+```js
+module.exports = {
+  module: {
+    rules: [
+      // Place this *before* the `ts-loader`.
+      {
+        test: /\.worker\.ts$/,
+        loader: 'worker-loader',
+      },
+      {
+        test: /\.ts$/,
+        loader: 'ts-loader',
+      },
+    ],
+  },
+  resolve: {
+    extensions: [
+      '.ts', '.js',
+    ],
+  },
+};
 ```
 
 ### Cross-Origin Policy
