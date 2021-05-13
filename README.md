@@ -452,6 +452,53 @@ module.exports = {
 
 To integrate with TypeScript, you will need to define a custom module for the exports of your worker.
 
+#### Loading with `worker-loader!`
+
+**typings/worker-loader.d.ts**
+
+```typescript
+declare module "worker-loader!*" {
+  // You need to change `Worker`, if you specified a different value for the `workerType` option
+  class WebpackWorker extends Worker {
+    constructor();
+  }
+
+  // Uncomment this if you set the `esModule` option to `false`
+  // export = WebpackWorker;
+  export default WebpackWorker;
+}
+```
+
+**my.worker.ts**
+
+```typescript
+const ctx: Worker = self as any;
+
+// Post data to parent thread
+ctx.postMessage({ foo: "foo" });
+
+// Respond to message from parent thread
+ctx.addEventListener("message", (event) => console.log(event));
+```
+
+**index.ts**
+
+```typescript
+import Worker from "worker-loader!./Worker";
+
+const worker = new Worker();
+
+worker.postMessage({ a: 1 });
+worker.onmessage = (event) => {};
+
+worker.addEventListener("message", (event) => {});
+```
+
+#### Loading without `worker-loader!`
+
+Alternatively, you can ommit the `worker-loader!` prefix passed to `import` statement by using the following notation.
+This is useful for executing the code using a non-WebPack runtime environment (such as Node.js with `WebWorker` polyfills).
+
 **typings/worker-loader.d.ts**
 
 ```typescript
