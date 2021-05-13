@@ -549,18 +549,16 @@ module.exports = {
       // Place this *before* the `ts-loader`.
       {
         test: /\.worker\.ts$/,
-        loader: 'worker-loader',
+        loader: "worker-loader",
       },
       {
         test: /\.ts$/,
-        loader: 'ts-loader',
+        loader: "ts-loader",
       },
     ],
   },
   resolve: {
-    extensions: [
-      '.ts', '.js',
-    ],
+    extensions: [".ts", ".js"],
   },
 };
 ```

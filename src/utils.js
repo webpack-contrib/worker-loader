@@ -88,7 +88,8 @@ ${
 }
 
 // Matches only the last occurrence of sourceMappingURL
-const innerRegex = /\s*[#@]\s*sourceMappingURL\s*=\s*(.*?(?=[\s'"]|\\n|\*\/|$)(?:\\n)?)\s*/;
+const innerRegex =
+  /\s*[#@]\s*sourceMappingURL\s*=\s*(.*?(?=[\s'"]|\\n|\*\/|$)(?:\\n)?)\s*/;
 
 /* eslint-disable prefer-template */
 const sourceMappingURLRegex = RegExp(
