@@ -22,7 +22,9 @@
           },
           "required": ["type"]
         }
-      ]
+      ],
+      "description": "Set the worker type.",
+      "link": "https://github.com/webpack-contrib/worker-loader#worker"
     },
     "publicPath": {
       "anyOf": [
@@ -32,7 +34,9 @@
         {
           "instanceof": "Function"
         }
-      ]
+      ],
+      "description": "Specifies the public URL address of the output files when referenced in a browser.",
+      "link": "https://github.com/webpack-contrib/worker-loader#publicpath"
     },
     "filename": {
       "anyOf": [
@@ -43,17 +47,25 @@
         {
           "instanceof": "Function"
         }
-      ]
+      ],
+      "description": "The filename of entry chunks for web workers.",
+      "link": "https://github.com/webpack-contrib/worker-loader#filename"
     },
     "chunkFilename": {
       "type": "string",
+      "description": "The filename of non-entry chunks for web workers.",
+      "link": "https://github.com/webpack-contrib/worker-loader#chunkfilename",
       "minLength": 1
     },
     "inline": {
-      "enum": ["no-fallback", "fallback"]
+      "enum": ["no-fallback", "fallback"],
+      "description": "Allow to inline the worker as a BLOB.",
+      "link": "https://github.com/webpack-contrib/worker-loader#inline"
     },
     "esModule": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Enable or disable ES module syntax.",
+      "link": "https://github.com/webpack-contrib/worker-loader#esmodule"
     }
   },
   "additionalProperties": false
