@@ -30,7 +30,7 @@ if (useWebpack5) {
   // eslint-disable-next-line global-require, import/no-unresolved
   FetchCompileAsyncWasmPlugin = require("webpack/lib/web/FetchCompileAsyncWasmPlugin");
 } else {
-  // eslint-disable-next-line global-require, import/no-unresolved
+  // eslint-disable-next-line global-require, import/no-unresolved, import/extensions
   FetchCompileWasmPlugin = require("webpack/lib/web/FetchCompileWasmTemplatePlugin");
 }
 
