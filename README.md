@@ -14,6 +14,8 @@
 
 # worker-loader
 
+**DEPRECATED for v5**: https://webpack.js.org/guides/web-workers/
+
 Web Worker loader for webpack 4.
 
 Note that this is specific to webpack 4. To use Web Workers in webpack 5, see https://webpack.js.org/guides/web-workers/.
